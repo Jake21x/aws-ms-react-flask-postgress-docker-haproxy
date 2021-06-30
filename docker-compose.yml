@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  loadbalance:
+    image: haproxy
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./haproxy:/usr/local/etc/haproxy
+
+  api-service1:
+    image: api-service
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=developement
+      - PORT=9081
+
+  api-service2:
+    image: api-service
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=developement
+      - PORT=9082
+  api-service3:
+    image: api-service
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=developement
+      - PORT=9083
+  api-service4:
+    image: api-service
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=developement
+      - PORT=9084
+  app-dashboard:
+    image: app-dashboard
