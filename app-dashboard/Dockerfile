@@ -5,7 +5,6 @@ WORKDIR /home/app
 COPY ./package.json .
 COPY ./yarn.lock .
 COPY ./tsconfig.json .
-COPY ./.gitignore .
 COPY ./src ./src
 COPY ./public ./public
 
