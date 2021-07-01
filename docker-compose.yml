@@ -9,41 +9,39 @@ services:
       - ./haproxy:/usr/local/etc/haproxy
 
   api-service1:
-    build: ./api-service
-    container_name: api-service
-    restart: always
+    image: api-service
+    ports:
+      - "9081:9081"
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=developement
       - PORT=9081
 
   api-service2:
-    depends_on: api-service
     image: api-service
-    restart: always
+    ports:
+      - "9082:9082"
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=developement
       - PORT=9082
   api-service3:
-    depends_on: api-service
     image: api-service
-    restart: always
+    ports:
+      - "9083:9083"
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=developement
       - PORT=9083
   api-service4:
-    depends_on: api-service
     image: api-service
-    restart: always
+    ports:
+      - "9084:9084"
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=developement
       - PORT=9084
   # app-dashboard:
-  #   build: ./app-dashboard
-  #   container_name: app-dashboard
-  #   restart: always
+  #   image: app-dashboard
   #   ports:
-  #     - 3000
+  #     - '3000':'3000'
