@@ -1,14 +1,71 @@
 from flask import Flask
-import time
-import os
+from flask_restful import Resource, Api
+import json
+from flask import request
+from flask_httpauth import HTTPBasicAuth
+import jwt
+import os,datetime
+from functools import wraps
+
 
 app = Flask(__name__)
+api = Api(app)
+auth = HTTPBasicAuth()
+app.config['SECRET_KEY'] = 'mykey'
 
-@app.route('/',methods=['GET'])
-def index():
-    port = int(os.environ.get('PORT', 5000))
-    return { "time":time.time() , "port":port }
 
-if __name__=='__main__':
+USER_DATA = {"admin":"admin"}
+
+
+@auth.verify_password
+def verify(username, password):
+    if not (username and password):
+        return False
+    return USER_DATA.get(username) == password
+
+
+class Login(Resource):
+
+    @auth.login_required
+    def get(self):
+        token = jwt.encode({
+            'user':request.authorization.username,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30),
+
+        }, app.config['SECRET_KEY'])
+
+        return json.dumps({
+            'token':token.decode('UTF-8')
+
+        }, indent=3)
+
+
+
+def verify_token(f):
+    @wraps(f)
+    def decorator(*args, **kwargs):
+        token = request.args.get('token', None)
+        if token is None:
+            return {"Message":"Your are missing Token"}
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'])
+            return f(*args, **kwargs)
+        except Exception as e:
+            print(e)
+            return {"Message":"Token is Missing or invalid"}
+    return decorator
+
+
+class HelloWorld(Resource):
+    @verify_token
+    def get(self):
+        return json.dumps({"Messagesssssss ":"ok "})
+
+
+api.add_resource(Login, '/login')
+api.add_resource(HelloWorld, '/verify')
+
+
+if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    app.run(debug=True,host='0.0.0.0',port=port)
+    app.run(debug=True,host="0.0.0.0",port=port)
