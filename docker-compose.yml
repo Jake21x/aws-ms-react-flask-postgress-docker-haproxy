@@ -1,12 +1,12 @@
 version: "3"
 
 services:
-  # loadbalance:
-  #   image: haproxy
-  #   ports:
-  #     - "8080:8080"
-  #   volumes:
-  #     - ./haproxy:/usr/local/etc/haproxy
+  loadbalance:
+    image: haproxy
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./haproxy:/usr/local/etc/haproxy
 
   # nginx_lb:
   #   image: nginx:alpine
@@ -15,6 +15,10 @@ services:
   #   ports:
   #     - "8080:8080"
   #     - "3000:3000"
+
+  pg:
+    image: eg_postgresql
+    restart: always
 
   api-service1:
     image: api-service
