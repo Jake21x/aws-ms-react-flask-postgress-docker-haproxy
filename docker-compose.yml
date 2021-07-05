@@ -24,40 +24,40 @@ services:
     image: api-service
     restart: always
     ports:
-      - "9081:9081"
+      - "7081:7081"
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=developement
-      - PORT=9081
+      - PORT=7081
 
   api-service2:
     image: api-service
     restart: always
     ports:
-      - "9082:9082"
+      - "7082:7082"
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=developement
-      - PORT=9082
+      - PORT=7082
 
   api-service3:
     image: api-service
     restart: always
     ports:
-      - "9083:9083"
+      - "7083:7083"
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=developement
-      - PORT=9083
+      - PORT=7083
 
   api-service4:
     image: api-service
     ports:
-      - "9084:9084"
+      - "7084:7084"
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=developement
-      - PORT=9084
+      - PORT=7084
 
   # app-dashboard:
   #   image: app-dashboard
