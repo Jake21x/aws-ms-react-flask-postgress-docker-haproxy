@@ -1,15 +1,24 @@
 version: "3"
 
 services:
-  loadbalance:
-    image: haproxy
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./haproxy:/usr/local/etc/haproxy
+  # loadbalance:
+  #   image: haproxy
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - ./haproxy:/usr/local/etc/haproxy
+
+  # nginx_lb:
+  #   image: nginx:alpine
+  #   volumes:
+  #     - ./nginx:/etc/nginx/
+  #   ports:
+  #     - "8080:8080"
+  #     - "3000:3000"
 
   api-service1:
     image: api-service
+    restart: always
     ports:
       - "9081:9081"
     environment:
@@ -19,20 +28,24 @@ services:
 
   api-service2:
     image: api-service
+    restart: always
     ports:
       - "9082:9082"
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=developement
       - PORT=9082
+
   api-service3:
     image: api-service
+    restart: always
     ports:
       - "9083:9083"
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=developement
       - PORT=9083
+
   api-service4:
     image: api-service
     ports:
@@ -41,7 +54,7 @@ services:
       - FLASK_APP=app.py
       - FLASK_ENV=developement
       - PORT=9084
-  # app-dashboard:
-  #   image: app-dashboard
-  #   ports:
-  #     - '3000':'3000'
+
+  app-dashboard:
+    image: app-dashboard
+    restart: always
