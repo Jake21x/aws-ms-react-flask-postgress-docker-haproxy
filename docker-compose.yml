@@ -59,6 +59,6 @@ services:
       - FLASK_ENV=developement
       - PORT=9084
 
-  app-dashboard:
-    image: app-dashboard
-    restart: always
+  # app-dashboard:
+  #   image: app-dashboard
+  #   restart: always
