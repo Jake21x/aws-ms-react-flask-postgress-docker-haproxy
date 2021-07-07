@@ -8,18 +8,6 @@ services:
     volumes:
       - ./haproxy:/usr/local/etc/haproxy
 
-  # nginx_lb:
-  #   image: nginx:alpine
-  #   volumes:
-  #     - ./nginx:/etc/nginx/
-  #   ports:
-  #     - "8080:8080"
-  #     - "3000:3000"
-
-  pg:
-    image: eg_postgresql
-    restart: always
-
   api-service1:
     image: api-service
     restart: always
@@ -59,6 +47,8 @@ services:
       - FLASK_ENV=developement
       - PORT=7084
 
-  # app-dashboard:
-  #   image: app-dashboard
-  #   restart: always
+  app-dashboard:
+    image: app-dashboard
+    restart: always
+    ports:
+      - "80:80"
