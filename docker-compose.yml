@@ -48,6 +48,7 @@ services:
   #     - PORT=7084
 
   app-dashboard:
+    stdin_open: true # docker run -i
     image: app-dashboard
     restart: always
     ports:
