@@ -6,6 +6,8 @@ import jwt,json,os,datetime,time,random,base64
 from random import randint 
 from functools import wraps
 from itertools import chain
+from database import Database
+
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 APP_ROOT_UPLOAD = os.path.dirname(os.path.abspath('api-service'))
@@ -17,6 +19,8 @@ auth = HTTPBasicAuth()
 app.config['SECRET_KEY'] = 'mykey'
 
 USER_DATA = {"admin":"admin"}
+
+db = Database()
 
 def server_generated_id(): 
     candidateChars = "0123456789abcdefghijklmnopqrstuvwxyz"
@@ -94,9 +98,17 @@ class UPFILE(Resource):
         return json.dumps({"FILE ":"ok "})
 
 
+class STATUS(Resource):
+    def get(self):  
+        result = db.execute_query('select version()')
+        print('result',result)
+        return json.dumps({"result ":result})
+
+
 api.add_resource(Login, '/login')
 api.add_resource(HelloWorld, '/verify')
 api.add_resource(UPFILE, '/upload')
+api.add_resource(STATUS, '/status')
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
