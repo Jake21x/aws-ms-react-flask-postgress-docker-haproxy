@@ -19,7 +19,7 @@ class Database(object):
         connection = cls.get_connection()
         try:
             cursor = connection.cursor()
-        except pyodbc.ProgrammingError:
+        except psycopg2.ProgrammingError:
             connection = cls.get_connection(new=True)  # Create new connection
             cursor = connection.cursor()
         cursor.execute(query)

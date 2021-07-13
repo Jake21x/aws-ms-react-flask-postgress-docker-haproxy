@@ -104,11 +104,26 @@ class STATUS(Resource):
         print('result',result)
         return json.dumps({"result ":result})
 
+class UploadUsers(Resource):
+    def post(self):  
+        result = db.execute_query('select version()')
+        print('result',result)
+        return {"result ":result}
+
+
+class UploadUsersSchedules(Resource):
+    def post(self):  
+        result = db.execute_query('select version()')
+        print('result',result)
+        return {"result ":result}
+
 
 api.add_resource(Login, '/login')
 api.add_resource(HelloWorld, '/verify')
 api.add_resource(UPFILE, '/upload')
 api.add_resource(STATUS, '/status')
+api.add_resource(UploadUsers, '/api/upload/template/users')
+api.add_resource(UploadUsersSchedules, '/api/upload/template/chain')
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
