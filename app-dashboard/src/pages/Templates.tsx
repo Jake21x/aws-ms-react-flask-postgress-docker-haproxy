@@ -10,15 +10,15 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 
 type FormValues = {
-  file_chain: File;
-  file_area: File;
-  file_category: File;
-  file_categoryreference: File;
-  file_sku: File;
-  file_stores: File;
-  file_storeskus: File;
-  file_users: File;
-  file_usersschedules: File;
+  file_chain: Blob;
+  file_area: Blob;
+  file_category: Blob;
+  file_categoryreference: Blob;
+  file_sku: Blob;
+  file_stores: Blob;
+  file_storeskus: Blob;
+  file_users: Blob;
+  file_usersschedules: Blob;
 };
 
 type TSheet = {
@@ -89,18 +89,23 @@ function Templates() {
   // },[selected])
 
   const onSubmit = (form: any) => {
-    console.log("onSubmit > form", form);
-    uploadValue(active);
+    const isactive = "file_" + active.name.toLowerCase().replaceAll(" ", "");
+    console.log("onSubmit > form", form[isactive][0]);
+    uploadValue(isactive, form[isactive][0]);
   };
 
-  const uploadValue = (value: TSheet) => {
+  const uploadValue = (value: string, form: Blob) => {
+    const newfilename = value.replace("file_", "") + ".xlsx";
     console.log("uploadValue > ", value);
     setLoading(true);
+    var bodyFormData = new FormData();
+    bodyFormData.append("file", form, newfilename);
+    // Object.keys(form).forEach((key) => {
+    // formData.append(key, this.form[key])
+    // })
+
     axios
-      .post(
-        "/api/upload/template/" + value.name.toLowerCase().replaceAll(" ", ""),
-        null
-      )
+      .post("/api/upload/template/" + value.replace("file_", ""), bodyFormData)
       .then((response) => {
         setLoading(false);
         console.log("response", response);

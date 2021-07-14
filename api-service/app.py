@@ -1,13 +1,13 @@
 from flask import Flask
-from flask_restful import Resource, Api 
+from flask_restful import Resource, Api ,request
 from flask import request
 from flask_httpauth import HTTPBasicAuth 
-import jwt,json,os,datetime,time,random,base64
-from random import randint 
+import jwt,json,os,datetime,time,random,base64 
 from functools import wraps
-from itertools import chain
+from itertools import chain 
 from database import Database
-
+from utils import server_generated_id
+import xlrd
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 APP_ROOT_UPLOAD = os.path.dirname(os.path.abspath('api-service'))
@@ -20,15 +20,19 @@ app.config['SECRET_KEY'] = 'mykey'
 
 USER_DATA = {"admin":"admin"}
 
-db = Database()
+conn = Database()
 
-def server_generated_id(): 
-    candidateChars = "0123456789abcdefghijklmnopqrstuvwxyz"
-    length = 7
-    sb = ""
-    for i in range(0, length):
-        sb = sb + str(candidateChars[random.randint(0, len(candidateChars)-1)])
-    return 'SR'+(str(datetime.datetime.now().strftime("%y%m%d%H%M%S%f"))+str(sb)).upper()
+# dbconfig = {
+#     'dbname':'sales_track_v2', 
+#     'user':'postgres',
+#     'host':'db.pcrwpfgzubsfyfbrczlj.supabase.co', 
+#     'password':'jmgtechplays21x', 
+#     'connect_timeout':'3',
+#     'options':'-c statement_timeout=5000000'            
+#     }
+
+
+
 
 @auth.verify_password
 def verify(username, password):
@@ -37,8 +41,7 @@ def verify(username, password):
     return USER_DATA.get(username) == password
 
 
-class Login(Resource):
-
+class Login(Resource): 
     @auth.login_required
     def get(self):
         token = jwt.encode({
@@ -99,23 +102,52 @@ class UPFILE(Resource):
 
 
 class STATUS(Resource):
-    def get(self):  
-        result = db.execute_query('select version()')
-        print('result',result)
-        return json.dumps({"result ":result})
+    def get(self):    
+        data = conn.execute('select version()') 
+        print('result',data) 
+        return {"result ":data}
 
 class UploadUsers(Resource):
-    def post(self):  
-        result = db.execute_query('select version()')
-        print('result',result)
-        return {"result ":result}
-
+    def post(self):
+        data = conn.execute('select version()') 
+        print('result',data) 
+        return {"result ":data}
 
 class UploadUsersSchedules(Resource):
-    def post(self):  
-        result = db.execute_query('select version()')
-        print('result',result)
-        return {"result ":result}
+    def post(self):   
+        data = conn.execute('select version()') 
+        print('result',data) 
+        return {"result ":data}
+
+class UploadArea(Resource):
+    def post(self): 
+        data = conn.execute('select version()') 
+        print('result',data) 
+        return {"result ":data}
+
+class UploadChain(Resource):
+    def post(self):   
+        template = request.files['file']
+        
+        if template.filename != '':
+            filename = server_generated_id('chain_',2)+'.'+ template.filename.split(".")[-1]
+            file_path = os.path.join(UPLOAD_FOLDER, filename)
+            template.save(file_path)
+
+            book = xlrd.open_workbook(file_path)
+            sheet = book.sheet_by_index(0)
+
+            col1 = []
+            for r in range(1, sheet.nrows):
+               col1.append(str(sheet.cell(r, 0).value).replace('.0', ''))
+ 
+            print('template', template.filename)
+            print('template', col1)
+             
+        print('template',template)
+        # data = conn.execute('select version()') 
+        # print('result',data) 
+        return {"result ": 'OK'}
 
 
 api.add_resource(Login, '/login')
@@ -123,7 +155,9 @@ api.add_resource(HelloWorld, '/verify')
 api.add_resource(UPFILE, '/upload')
 api.add_resource(STATUS, '/status')
 api.add_resource(UploadUsers, '/api/upload/template/users')
-api.add_resource(UploadUsersSchedules, '/api/upload/template/chain')
+api.add_resource(UploadArea, '/api/upload/template/area')
+api.add_resource(UploadChain, '/api/upload/template/chain')
+api.add_resource(UploadUsersSchedules, '/api/upload/template/usersschedules')
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
