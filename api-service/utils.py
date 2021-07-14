@@ -6,6 +6,9 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 APP_ROOT_UPLOAD = os.path.dirname(os.path.abspath('api-service'))
 UPLOAD_FOLDER = 'uploads' 
 
+DEV_ROOTPASSPORT = 'root.admin-'
+DEV_PASSPORT = 'dev.admin-'
+
 def server_generated_id(name="SR",rand=7): 
     candidateChars = "0123456789abcdefghijklmnopqrstuvwxyz"
     length = rand

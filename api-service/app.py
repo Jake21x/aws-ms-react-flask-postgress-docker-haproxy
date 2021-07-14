@@ -1,8 +1,9 @@
 from flask import Flask
-from flask_restful import Resource, Api ,request
+from flask_restful import Resource, reqparse, request , Api
 from flask import request
 from flask_httpauth import HTTPBasicAuth 
 import jwt,json,os,datetime,time,random,base64 
+from flask_jwt_extended import JWTManager
 from functools import wraps
 from itertools import chain 
 from database import Database  
@@ -15,9 +16,12 @@ from api.upload_chain import UploadChain
 from api.upload_stores import UploadStores
 from api.upload_users import UploadUsers
 from api.upload_users_schedules import UploadUsersSchedules
+from api.auth import LoginAuth
 
 app = Flask(__name__)
+jwt = JWTManager()
 api = Api(app)
+jwt.init_app(app)
 auth = HTTPBasicAuth()
 app.config['SECRET_KEY'] = 'mykey'
 
@@ -149,7 +153,19 @@ class ApiUploadArea(Resource):
 class ApiUploadChain(Resource):
     def post(self):   
         template = request.files['file']  
-        return UploadChain(conn,template)  
+        return UploadChain(conn,template)
+
+class ApiAuth(Resource):
+    def post(self):      
+        parser = reqparse.RequestParser()
+        parser.add_argument('username', type=str)
+        parser.add_argument('password', type=str)
+        parser.add_argument('device_id', type=str)
+        parser.add_argument('appversion', type=str)
+        parser.add_argument('device_info', type=str)
+        parser.add_argument('IMEI', type=str) 
+        args = parser.parse_args()  
+        return LoginAuth(conn,args)   
 
 api.add_resource(Login, '/login')
 api.add_resource(HelloWorld, '/verify')
@@ -165,6 +181,7 @@ api.add_resource(ApiUploadChain, '/api/upload/template/chain')
 api.add_resource(ApiUploadAgency, '/api/upload/template/agency')
 api.add_resource(ApiUploadStores, '/api/upload/template/stores')
 api.add_resource(ApiUploadUsersSchedules, '/api/upload/template/users_schedules') 
+api.add_resource(ApiAuth, '/gmsi/mobiletracker/login_api') 
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
