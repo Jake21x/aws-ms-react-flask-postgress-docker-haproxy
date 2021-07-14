@@ -5,13 +5,16 @@ from flask_httpauth import HTTPBasicAuth
 import jwt,json,os,datetime,time,random,base64 
 from functools import wraps
 from itertools import chain 
-from database import Database
-from utils import server_generated_id
-import xlrd
-
-APP_ROOT = os.path.dirname(os.path.abspath(__file__))
-APP_ROOT_UPLOAD = os.path.dirname(os.path.abspath('api-service'))
-UPLOAD_FOLDER = 'uploads' 
+from database import Database  
+from api.upload_agency import UploadAgency
+from api.upload_skus import UploadSKUs
+from api.upload_category import UploadCategory
+from api.upload_category_refs import UploadCategoryRefs
+from api.upload_area import UploadArea
+from api.upload_chain import UploadChain
+from api.upload_stores import UploadStores
+from api.upload_users import UploadUsers
+from api.upload_users_schedules import UploadUsersSchedules
 
 app = Flask(__name__)
 api = Api(app)
@@ -76,8 +79,6 @@ class HelloWorld(Resource):
     @verify_token
     def get(self):
         return json.dumps({"Messagesssssss ":"ok "})
-
-        
 class UPFILE(Resource):
     @verify_token
     def post(self):
@@ -107,57 +108,63 @@ class STATUS(Resource):
         print('result',data) 
         return {"result ":data}
 
-class UploadUsers(Resource):
+class ApiUploadCategoryRefs(Resource):
     def post(self):
-        data = conn.execute('select version()') 
-        print('result',data) 
-        return {"result ":data}
+        template = request.files['file']  
+        return UploadCategoryRefs(conn,template) 
 
-class UploadUsersSchedules(Resource):
+class ApiUploadCategory(Resource):
+    def post(self):
+        template = request.files['file']  
+        return UploadCategory(conn,template) 
+
+class ApiUploadSKUs(Resource):
+    def post(self):
+        template = request.files['file']  
+        return UploadSKUs(conn,template) 
+class ApiUploadStores(Resource):
+    def post(self):
+        template = request.files['file']  
+        return UploadStores(conn,template) 
+class ApiUploadUsers(Resource):
+    def post(self):
+        template = request.files['file']  
+        return UploadUsers(conn,template) 
+
+class ApiUploadUsersSchedules(Resource):
     def post(self):   
-        data = conn.execute('select version()') 
-        print('result',data) 
-        return {"result ":data}
+        template = request.files['file']  
+        return UploadUsersSchedules(conn,template) 
 
-class UploadArea(Resource):
-    def post(self): 
-        data = conn.execute('select version()') 
-        print('result',data) 
-        return {"result ":data}
-
-class UploadChain(Resource):
+class ApiUploadAgency(Resource):
     def post(self):   
-        template = request.files['file']
-        
-        if template.filename != '':
-            filename = server_generated_id('chain_',2)+'.'+ template.filename.split(".")[-1]
-            file_path = os.path.join(UPLOAD_FOLDER, filename)
-            template.save(file_path)
+        template = request.files['file']  
+        return UploadAgency(conn,template) 
 
-            book = xlrd.open_workbook(file_path)
-            sheet = book.sheet_by_index(0)
+class ApiUploadArea(Resource):
+    def post(self):   
+        template = request.files['file']  
+        return UploadArea(conn,template) 
 
-            col1 = []
-            for r in range(1, sheet.nrows):
-               col1.append(str(sheet.cell(r, 0).value).replace('.0', ''))
- 
-            print('template', template.filename)
-            print('template', col1)
-             
-        print('template',template)
-        # data = conn.execute('select version()') 
-        # print('result',data) 
-        return {"result ": 'OK'}
-
+class ApiUploadChain(Resource):
+    def post(self):   
+        template = request.files['file']  
+        return UploadChain(conn,template)  
 
 api.add_resource(Login, '/login')
 api.add_resource(HelloWorld, '/verify')
 api.add_resource(UPFILE, '/upload')
 api.add_resource(STATUS, '/status')
-api.add_resource(UploadUsers, '/api/upload/template/users')
-api.add_resource(UploadArea, '/api/upload/template/area')
-api.add_resource(UploadChain, '/api/upload/template/chain')
-api.add_resource(UploadUsersSchedules, '/api/upload/template/usersschedules')
+
+api.add_resource(ApiUploadCategoryRefs, '/api/upload/template/category_reference')
+api.add_resource(ApiUploadCategory, '/api/upload/template/category')
+api.add_resource(ApiUploadSKUs, '/api/upload/template/skus')
+api.add_resource(ApiUploadUsers, '/api/upload/template/users')
+api.add_resource(ApiUploadArea, '/api/upload/template/area')
+api.add_resource(ApiUploadChain, '/api/upload/template/chain')
+api.add_resource(ApiUploadAgency, '/api/upload/template/agency')
+api.add_resource(ApiUploadStores, '/api/upload/template/stores')
+api.add_resource(ApiUploadUsersSchedules, '/api/upload/template/users_schedules') 
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

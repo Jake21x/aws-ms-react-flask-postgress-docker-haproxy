@@ -6,7 +6,7 @@ import { store } from "./app/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { Box, ChakraProvider, extendTheme } from "@chakra-ui/react";
 
 const colors = {
   brand: {
@@ -21,6 +21,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ChakraProvider theme={theme}>
+        <Box w="100%" id="networkstatus" />
         <App />
       </ChakraProvider>
     </Provider>

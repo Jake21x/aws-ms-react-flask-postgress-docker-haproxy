@@ -1,5 +1,10 @@
 import datetime,time,random
 from random import randint 
+import os
+
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+APP_ROOT_UPLOAD = os.path.dirname(os.path.abspath('api-service'))
+UPLOAD_FOLDER = 'uploads' 
 
 def server_generated_id(name="SR",rand=7): 
     candidateChars = "0123456789abcdefghijklmnopqrstuvwxyz"

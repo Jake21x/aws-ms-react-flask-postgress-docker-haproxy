@@ -13,12 +13,12 @@ type FormValues = {
   file_chain: Blob;
   file_area: Blob;
   file_category: Blob;
-  file_categoryreference: Blob;
+  file_category_reference: Blob;
   file_sku: Blob;
   file_stores: Blob;
-  file_storeskus: Blob;
+  file_stores_skus: Blob;
   file_users: Blob;
-  file_usersschedules: Blob;
+  file_users_schedules: Blob;
 };
 
 type TSheet = {
@@ -43,6 +43,11 @@ function Templates() {
       data: [],
     },
     {
+      name: "Agency",
+      column: chain_columns,
+      data: [],
+    },
+    {
       name: "Stores",
       column: chain_columns,
       data: [],
@@ -58,7 +63,7 @@ function Templates() {
       data: [],
     },
     {
-      name: "SKU",
+      name: "SKUs",
       column: chain_columns,
       data: [],
     },
@@ -73,7 +78,7 @@ function Templates() {
       data: [],
     },
     {
-      name: "Store SKUs",
+      name: "Stores SKUs",
       column: chain_columns,
       data: [],
     },
@@ -89,7 +94,8 @@ function Templates() {
   // },[selected])
 
   const onSubmit = (form: any) => {
-    const isactive = "file_" + active.name.toLowerCase().replaceAll(" ", "");
+    const isactive = "file_" + active.name.toLowerCase().replaceAll(" ", "_");
+    console.log("onSubmit > form", form);
     console.log("onSubmit > form", form[isactive][0]);
     uploadValue(isactive, form[isactive][0]);
   };
@@ -100,12 +106,11 @@ function Templates() {
     setLoading(true);
     var bodyFormData = new FormData();
     bodyFormData.append("file", form, newfilename);
-    // Object.keys(form).forEach((key) => {
-    // formData.append(key, this.form[key])
-    // })
+    const url = "/api/upload/template/" + value.replace("file_", "");
+    console.log("url", url);
 
     axios
-      .post("/api/upload/template/" + value.replace("file_", ""), bodyFormData)
+      .post(url, bodyFormData)
       .then((response) => {
         setLoading(false);
         console.log("response", response);
@@ -147,7 +152,7 @@ function Templates() {
                     <Input
                       accept=".xlsx, .xls"
                       name={
-                        "file_" + value.name.toLowerCase().replaceAll(" ", "")
+                        "file_" + value.name.toLowerCase().replaceAll(" ", "_")
                       }
                       ref={register}
                       type="file"

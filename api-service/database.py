@@ -5,24 +5,11 @@ class Database(object):
     def get_connection(cls, new=False):
         """Creates return new Singleton database connection"""
         if new or not cls.connection:
-            # cls.connection = psycopg2.connect(
-            #     dbname='sales_track_v2', 
-            #     user='postgres',
-            #     host='db.pcrwpfgzubsfyfbrczlj.supabase.co', 
-            #     password='jmgtechplays21x', 
-            #     connect_timeout=3,
-            #     keepalives=1,
-            #     keepalives_idle=5,
-            #     keepalives_interval=2,
-            #     keepalives_count=2,
-            #     options='-c statement_timeout=5000000'
-            # )    
             cls.connection = psycopg2.connect(
-                dbname='youtube', 
+                dbname='sales_track_v2', 
                 user='postgres',
-                host='127.0.0.1', 
-                password='mysuperpassword', 
-                port=5432,
+                host='db.pcrwpfgzubsfyfbrczlj.supabase.co', 
+                password='jmgtechplays21x', 
                 connect_timeout=3,
                 keepalives=1,
                 keepalives_idle=5,
@@ -32,9 +19,12 @@ class Database(object):
             )    
         return cls.connection
 
-    def execute(cls, query):
+    def execute(cls, query,result = False,commit = False,log=False):
         """execute query on singleton db connection"""
+        
         cursor = None
+        rs = None
+
         try: 
             connection = cls.get_connection()
             print('db connection reused')
@@ -43,29 +33,45 @@ class Database(object):
             print('db connection created')
             connection = cls.get_connection(new=True)  # Create new connection
             cursor = connection.cursor()
-         
-        # try:
+          
         cursor.execute(query)
-        result = cursor.fetchall() 
-        # except psycopg2.ProgrammingError:
-        #     print('error') 
-        return result
 
-    def mogrify(cls, query,data):
+        if log: 
+            print('query',query)
+        
+        if result:
+            rs = cursor.fetchall()
+
+        if commit:
+            connection.commit()
+ 
+        return rs
+
+    def mogrify(cls, query,data , result = False,commit = False,log=False):
         """execute query on singleton db connection"""
         cursor = None
+        rs = None
         try: 
             connection = cls.get_connection()
             print('db connection reused')
             cursor = connection.cursor()
+        
         except psycopg2.ProgrammingError:
             print('db connection created')
             connection = cls.get_connection(new=True)  # Create new connection
             cursor = connection.cursor()
+            
+        query = cursor.mogrify(query,data)
+        print('query',query) 
 
-        # try:
-        cursor.execute(cursor.mogrify(query,data))
-        result = cursor.fetchall() 
+        cursor.execute(query)
+         
+        if result:
+            rs = cursor.fetchall()
+
+        if commit:
+            connection.commit() 
+
         # finally:
         #     cursor.close() 
-        return result
+        return rs
