@@ -20,7 +20,7 @@ from api.auth import LoginAuth
 from api.skus import ApiGetSKUs
 from api.latestupdates import ApiLatestUpdates
 from api.appversion import ApiAppVersion
-from api.stores import ApiGetAllStores,ApiGetStoreSKUs
+from api.stores import ApiGetAllStores,ApiGetStoreSKUs,ApiGetAssignUsersInStore
 from api.category import ApiGetCategory
 
 app = Flask(__name__)
@@ -183,6 +183,7 @@ api.add_resource(ApiAppVersion, '/get/latest/app-version')
 api.add_resource(ApiGetAllStores, '/get/store_sku_50')
 api.add_resource(ApiGetCategory, '/get/category_api')
 api.add_resource(ApiGetStoreSKUs, '/get/store_api/<string:storeid>')
+api.add_resource(ApiGetAssignUsersInStore, '/get/assigned_user_in_store_api/<string:storeid>')
 
 api.add_resource(ApiUploadCategoryRefs, '/api/upload/template/category_reference')
 api.add_resource(ApiUploadCategory, '/api/upload/template/category')

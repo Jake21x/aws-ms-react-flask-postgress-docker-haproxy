@@ -101,7 +101,7 @@ GET http://{{host}}/get/store_api/{{tblstoreid}}
 Authorization:  Bearer {{token}}
 
 ### Store SKUs
-GET http://{{host}}/get/assigned_user_in_store_api/300816
+GET http://{{host}}/get/assigned_user_in_store_api/{{tblstoreid}}
 Authorization:  Bearer {{token}}
 
 ### SYNC OSA
