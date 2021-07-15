@@ -1,0 +1,64 @@
+version: "3"
+
+services:
+  loadbalance:
+    image: haproxy
+    ports:
+      - "8800:8800"
+    volumes:
+      - ./haproxy:/usr/local/etc/haproxy
+
+  api-service1:
+    image: api-service
+    restart: always
+    ports:
+      - "7081:7081"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=developement
+      - PORT=7081
+    volumes:
+      - ./api-service/uploads:/home/app/uploads
+
+  api-service2:
+    image: api-service
+    restart: always
+    ports:
+      - "7082:7082"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=developement
+      - PORT=7082
+    volumes:
+      - ./api-service/uploads:/home/app/uploads
+
+  api-service3:
+    image: api-service
+    restart: always
+    ports:
+      - "7083:7083"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=developement
+      - PORT=7083
+    volumes:
+      - ./api-service/uploads:/home/app/uploads
+
+  # api-service4:
+  #   image: api-service
+  #   ports:
+  #     - "7084:7084"
+  #   environment:
+  #     - FLASK_APP=app.py
+  #     - FLASK_ENV=developement
+  #     - PORT=7084
+
+  # app-dashboard:
+  #   image: app-dashboard
+  #   restart: always
+  #   ports:
+  #     - "80:80"
+  #   environment:
+  #     - CHOKIDAR_USEPOLLING=true
+  #   stdin_open: true
+  #   tty: true

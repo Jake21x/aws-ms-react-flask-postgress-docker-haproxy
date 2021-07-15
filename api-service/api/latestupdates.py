@@ -33,7 +33,7 @@ class ApiLatestUpdates(Resource):
             where 
             users_schedules.storeid = stores_skus.storeid AND 
             users_schedules.userid = users.userid AND   
-            users.userid = 'DPUSER002'  
+            users.userid = '{u}'  
             GROUP BY stores_skus.date_updated, stores_skus.storeid
             ORDER BY stores_skus.date_updated ASC
             """.format(u=userid),result=True)
@@ -65,22 +65,4 @@ class ApiLatestUpdates(Resource):
         store_update = [dict(((result_update.description[i][0]), value) for i, value in enumerate(row)) for row in result_update.fetchall()]
         data[0]['store_update'] = store_update
         
-        return data
-        
-        # return [
-        #     {
-        #         "cat_latest_update": "2021-01-20 15:28:15",
-        #         "master_sku_latest_update": "2021-07-14 08:48:01",
-        #         "master_store_latest_update": "2021-07-15 12:19:42",
-        #         "ref_latest_update": "2021-06-01 18:32:16",
-        #         "store_sku_latest_update": "2021-07-16 14:11:32",
-        #         "store_sku_update": [
-        #         {
-        #             "testmercury2": "2021-07-14 14:36:51",
-        #             "torgteststore01": "2021-07-14 14:36:51"
-        #         }
-        #         ],
-        #         "store_update": [],
-        #         "user_store_latest_update": "2021-04-12 12:48:04"
-        #     }
-        #     ]
+        return data 
