@@ -5,11 +5,11 @@ services:
     image: api-service
     restart: always
     ports:
-      - "8080:8080"
+      - "7980:7980"
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=developement
-      - PORT=8080
+      - PORT=7980
     volumes:
       - ./api-service/uploads:/home/app/uploads
 
