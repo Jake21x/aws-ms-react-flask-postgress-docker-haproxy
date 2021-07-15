@@ -40,7 +40,7 @@ class Database(object):
             print('query',query)
         
         if result:
-            rs = cursor.fetchall()
+            rs = cursor
 
         if commit:
             connection.commit()
@@ -67,7 +67,7 @@ class Database(object):
         cursor.execute(query)
          
         if result:
-            rs = cursor.fetchall()
+            rs = cursor
 
         if commit:
             connection.commit() 

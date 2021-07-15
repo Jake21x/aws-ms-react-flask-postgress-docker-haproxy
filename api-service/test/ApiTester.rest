@@ -30,14 +30,13 @@
 # @appversion = v03032020
 # @device_info = OPPO-CPH1909
 @passport = dev.admin-
-@username = dev.admin-DP-ACSUP
-@password = dev.admin-MNC2021
+@username = DP-AC1
+@password = MNC2021
 @device_id = d81edde9172f-caba8fde38179625234
 @appversion = v03032020
 @device_info = OPPO-CPH1909
 ### Login
 POST http://localhost:5000/gmsi/mobiletracker/login_api?username={{username}}&password={{password}}&device_id={{device_id}}&appversion={{appversion}}&device_info={{device_info}} 
-Content-Type: multipart/form-data
 
 ### APIs PlayGround ####
 

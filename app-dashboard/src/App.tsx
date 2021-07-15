@@ -3,11 +3,16 @@ import { Flex, Text } from "@chakra-ui/layout";
 import { Collapse } from "@chakra-ui/transition";
 import { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import "./App.css";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import NotifPortal from "./components/NotifPortal";
+import Page404 from "./pages/404Page";
 import Dashboard from "./pages/Dashboard";
-import Login from "./pages/Login";
+import LoginPage from "./pages/LoginPage";
 import Templates from "./pages/Templates";
 
 function App() {
@@ -58,9 +63,15 @@ function App() {
       </NotifPortal>
       <Router>
         <Switch>
-          <Route path="/admin/templates" component={Templates} />
-          <Route path="/login" component={Login} />
-          <Route exact path="/" component={Dashboard} />
+          <Route
+            exact
+            path="/:username/admin/templates"
+            component={Templates}
+          />
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/:username" component={Dashboard} />
+          {/* <Route exact path="/" component={Loader} /> */}
+          <Route component={Page404} />
         </Switch>
       </Router>
     </QueryClientProvider>

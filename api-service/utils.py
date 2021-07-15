@@ -9,6 +9,18 @@ UPLOAD_FOLDER = 'uploads'
 DEV_ROOTPASSPORT = 'root.admin-'
 DEV_PASSPORT = 'dev.admin-'
 
+
+excludeLogin = (
+        '9032849083',
+        'c_test003',
+        'ctorg1001',
+        'storg1001',
+        'mtorg1001',
+        'mgrtorg1001',
+        'mtorg10005',
+        'rm9999',
+    )
+
 def server_generated_id(name="SR",rand=7): 
     candidateChars = "0123456789abcdefghijklmnopqrstuvwxyz"
     length = rand
