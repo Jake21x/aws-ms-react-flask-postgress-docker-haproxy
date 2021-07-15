@@ -5,16 +5,16 @@ services:
     image: api-service
     restart: always
     ports:
-      - "7980:7980"
+      - "8981:8981"
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=developement
-      - PORT=7980
+      - PORT=8981
     volumes:
       - ./api-service/uploads:/home/app/uploads
 
   dashboard-nextjs:
-    image: app-dashboard-nextjs
+    image: dashboard-nextjs
     restart: always
     ports:
       - "3000:3000"
