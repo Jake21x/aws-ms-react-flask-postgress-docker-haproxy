@@ -17,6 +17,8 @@ from api.upload_stores import UploadStores
 from api.upload_users import UploadUsers
 from api.upload_users_schedules import UploadUsersSchedules
 from api.auth import LoginAuth
+from api.skus import ApiGetSKUs
+from api.latestupdates import ApiLatestUpdates
 
 app = Flask(__name__)
 jwt = JWTManager()
@@ -36,10 +38,7 @@ conn = Database()
 #     'password':'jmgtechplays21x', 
 #     'connect_timeout':'3',
 #     'options':'-c statement_timeout=5000000'            
-#     }
-
-
-
+#     } 
 
 @auth.verify_password
 def verify(username, password):
@@ -165,12 +164,18 @@ class ApiAuth(Resource):
         parser.add_argument('device_info', type=str)
         parser.add_argument('IMEI', type=str) 
         args = parser.parse_args()  
-        return LoginAuth(conn,args)   
+        return LoginAuth(conn,args) 
+ 
 
 api.add_resource(Login, '/login')
 api.add_resource(HelloWorld, '/verify')
 api.add_resource(UPFILE, '/upload')
 api.add_resource(STATUS, '/status')
+
+api.add_resource(ApiAuth, '/gmsi/mobiletracker/login_api') 
+
+api.add_resource(ApiLatestUpdates, '/get/latest_store_sku_category_ref/<string:userid>')
+api.add_resource(ApiGetSKUs, '/get/sku')
 
 api.add_resource(ApiUploadCategoryRefs, '/api/upload/template/category_reference')
 api.add_resource(ApiUploadCategory, '/api/upload/template/category')
@@ -181,7 +186,6 @@ api.add_resource(ApiUploadChain, '/api/upload/template/chain')
 api.add_resource(ApiUploadAgency, '/api/upload/template/agency')
 api.add_resource(ApiUploadStores, '/api/upload/template/stores')
 api.add_resource(ApiUploadUsersSchedules, '/api/upload/template/users_schedules') 
-api.add_resource(ApiAuth, '/gmsi/mobiletracker/login_api') 
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

@@ -53,7 +53,8 @@ def LoginAuth(conn,args):
                     lastname,
                     employeeid,
                     roleid,userid,
-                    (select userrole from users_role where roleid = users.roleid) 
+                    (select userrole from users_role where roleid = users.roleid),
+                    agencyid
                     FROM users WHERE 
                     username =  \'{u}\' AND 
                     password = \'{p}\';""".format(u=_user, p=m)
@@ -76,25 +77,43 @@ def LoginAuth(conn,args):
      
         access_token = create_access_token(identity=_user + str(datetime.datetime.now())+m, fresh=True, expires_delta=expires)
         
-        stores = conn.execute("""
-            select 
-            stores.storeid as tblstoreid,
-            name as store_name,
-            geofence,
-            longitude,
-            latitude,
-            null as address,
-            to_char(stores.date_updated, 'yyyy-mm-dd HH24:MI:SS') AS date_updated
-            from stores,users,users_schedules
-            where 
-            users_schedules.storeid = stores.storeid AND 
-            users_schedules.userid = users.userid AND 
-            users.username = 'DP-AC1' AND
-            stores.active = 'Yes' and stores.priority = '1'
-            """.format(u=data[0]['username']),result=True)
+        stores = []
+
+        x1 = data[0]['roleid']
+
+        if(x1 == 8): 
+            stores = conn.execute("""
+                select 
+                stores.storeid as tblstoreid,
+                name as store_name,
+                geofence,
+                longitude,
+                latitude,
+                null as address,
+                to_char(stores.date_updated, 'yyyy-mm-dd HH24:MI:SS') AS date_updated
+                from stores
+                where agencyid='{a}' active = 'Yes' and priority = '1'
+                """.format(a=data[0]['agencyid']),result=True)
+        else:
+            stores = conn.execute("""
+                    select 
+                    stores.storeid as tblstoreid,
+                    name as store_name,
+                    geofence,
+                    longitude,
+                    latitude,
+                    null as address,
+                    to_char(stores.date_updated, 'yyyy-mm-dd HH24:MI:SS') AS date_updated
+                    from stores,users,users_schedules
+                    where 
+                    users_schedules.storeid = stores.storeid AND 
+                    users_schedules.userid = users.userid AND 
+                    users.username = '{u}' AND
+                    stores.active = 'Yes' and stores.priority = '1'
+                """.format(u=data[0]['username']),result=True)
         
         assigned_stores = [dict(((stores.description[i][0]), value) for i, value in enumerate(row)) for row in stores.fetchall()]
-        print('assigned_stores',assigned_stores)
+        print('assigned_stores',assigned_stores) 
         
         _sucess_r = [{
             "tblsingleroleid": data[0]['roleid'],
@@ -177,14 +196,14 @@ def execute_device_lock(_sucess_r, conn, _ux, _px, _device_id, _device_info, _ap
                 # print(chknull(_device_id),chknull(_device_info))
 
             
-            #manager no locking 
+            #admin no locking 
             if str(_sucess_r[0]['tblsingleroleid']) == '4':
                     print('This user is admin!')
                     login_log(status, _sucess_r[0]['tbluserid'],
                             _device_id, _appversion, _device_info, _imei)
                     return _sucess_r
 
-            # ac/acsup
+            # ac/acsup/manager
             elif str(_sucess_r[0]['tblsingleroleid']) in ['5', '6', '8']:
                 # print('user_auth -----')
                 # print(user_auth)
@@ -193,7 +212,7 @@ def execute_device_lock(_sucess_r, conn, _ux, _px, _device_id, _device_info, _ap
                     # print('_sucess_r')
                     return _sucess_r
 
-                elif len(user_auth) != 0 and str(user_auth[0]['device_id']) == chknull(_device_id) and str(user_auth[0]['tbluserid']) == str(_sucess_r[0]['tbluserid']) and str(user_auth[0]['device_info']) == chknull(_device_info):
+                elif len(user_auth) != 0 and str(user_auth[0]['device_id']) == chknull(_device_id) and str(user_auth[0]['userid']) == str(_sucess_r[0]['tbluserid']) and str(user_auth[0]['device_info']) == chknull(_device_info):
                     # print('_sucess_r')
                     login_log(conn,status, _sucess_r[0]['tbluserid'], _device_id, _appversion, _device_info, _imei)
                     return _sucess_r
