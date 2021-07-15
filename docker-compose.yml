@@ -1,15 +1,22 @@
 version: "3"
 
 services:
-  api-service:
+  loadbalance:
+    image: haproxy
+    ports:
+      - "8981:8981"
+    volumes:
+      - ./haproxy:/usr/local/etc/haproxy
+
+  api-service1:
     image: api-service
     restart: always
     ports:
-      - "8981:8981"
+      - "7081:7081"
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=developement
-      - PORT=8981
+      - PORT=7081
     volumes:
       - ./api-service/uploads:/home/app/uploads
 
