@@ -1,1 +1,5 @@
 # sudo docker rm -f $(sudo docker ps -a -q)
+
+# docker rmi Image Image
+
+# sudo docker rmi $(sudo docker images | grep "^<none" | awk '{print $3}')
