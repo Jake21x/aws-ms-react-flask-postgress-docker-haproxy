@@ -170,20 +170,20 @@ class ApiAuth(Resource):
         return LoginAuth(conn,args) 
  
 
-api.add_resource(Login, '/login')
-api.add_resource(HelloWorld, '/verify')
-api.add_resource(UPFILE, '/upload')
-api.add_resource(STATUS, '/status')
+api.add_resource(Login, '/api/login')
+api.add_resource(HelloWorld, '/api/verify')
+api.add_resource(UPFILE, '/api/upload')
+api.add_resource(STATUS, '/api/status')
 
-api.add_resource(ApiAuth, '/gmsi/mobiletracker/login_api') 
+api.add_resource(ApiAuth, '/api/gmsi/mobiletracker/login_api') 
 
-api.add_resource(ApiLatestUpdates, '/get/latest_store_sku_category_ref/<string:userid>')
-api.add_resource(ApiGetSKUs, '/get/sku')
-api.add_resource(ApiAppVersion, '/get/latest/app-version')
-api.add_resource(ApiGetAllStores, '/get/store_sku_50')
-api.add_resource(ApiGetCategory, '/get/category_api')
-api.add_resource(ApiGetStoreSKUs, '/get/store_api/<string:storeid>')
-api.add_resource(ApiGetAssignUsersInStore, '/get/assigned_user_in_store_api/<string:storeid>')
+api.add_resource(ApiLatestUpdates, '/api/get/latest_store_sku_category_ref/<string:userid>')
+api.add_resource(ApiGetSKUs, '/api/get/sku')
+api.add_resource(ApiAppVersion, '/api/get/latest/app-version')
+api.add_resource(ApiGetAllStores, '/api/get/store_sku_50')
+api.add_resource(ApiGetCategory, '/api/get/category_api')
+api.add_resource(ApiGetStoreSKUs, '/api/get/store_api/<string:storeid>')
+api.add_resource(ApiGetAssignUsersInStore, '/api/get/assigned_user_in_store_api/<string:storeid>')
 
 api.add_resource(ApiUploadCategoryRefs, '/api/upload/template/category_reference')
 api.add_resource(ApiUploadCategory, '/api/upload/template/category')
