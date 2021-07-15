@@ -15,11 +15,22 @@ select * from logs_logins;
 
 
 
+
 insert into tbl_sku_stocks_per_store_new select * from tbl_sku_stocks_per_store 
 ON CONFLICT (tblstoreid,tblskuid) DO UPDATE 
 SET (carry,app_update) = (EXCLUDED.carry, now());
 select * from tbl_sku_stocks_per_store_new order by date_transaction desc limit 200;
 
+
+CREATE TABLE public.app_versions
+(
+    id serial PRIMARY KEY,
+    version character varying(255) COLLATE pg_catalog."default",
+    date_created timestamp with time zone DEFAULT now(),
+    date_updated timestamp with time zone DEFAULT now(),
+    mdc text COLLATE pg_catalog."default",
+    coor_mgr text COLLATE pg_catalog."default"
+);
 
 CREATE TABLE public.devices
 (

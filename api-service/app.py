@@ -19,6 +19,9 @@ from api.upload_users_schedules import UploadUsersSchedules
 from api.auth import LoginAuth
 from api.skus import ApiGetSKUs
 from api.latestupdates import ApiLatestUpdates
+from api.appversion import ApiAppVersion
+from api.stores import ApiGetAllStores,ApiGetStoreSKUs
+from api.category import ApiGetCategory
 
 app = Flask(__name__)
 jwt = JWTManager()
@@ -176,6 +179,10 @@ api.add_resource(ApiAuth, '/gmsi/mobiletracker/login_api')
 
 api.add_resource(ApiLatestUpdates, '/get/latest_store_sku_category_ref/<string:userid>')
 api.add_resource(ApiGetSKUs, '/get/sku')
+api.add_resource(ApiAppVersion, '/get/latest/app-version')
+api.add_resource(ApiGetAllStores, '/get/store_sku_50')
+api.add_resource(ApiGetCategory, '/get/category_api')
+api.add_resource(ApiGetStoreSKUs, '/get/store_api/<string:storeid>')
 
 api.add_resource(ApiUploadCategoryRefs, '/api/upload/template/category_reference')
 api.add_resource(ApiUploadCategory, '/api/upload/template/category')

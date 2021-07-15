@@ -43,7 +43,7 @@ POST http://localhost:5000/gmsi/mobiletracker/login_api?username={{username}}&pa
 @tbluserid_acsup = ctorg1001 
 @tbluserid_diser = mtorg1001
 @general_tbluserid = mtorg1001
-@tblstoreid = m100778
+@tblstoreid = DPC4-04
 @token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWRtaW4iLCJleHAiOjE2MjYwNzQ0NTN9.b0ZbyjbNLvT3dwHmobT-JLyGlghCr5jg1MRHqZy2kq4
 ### SKU Masterlist
 GET http://{{host}}/get/sku

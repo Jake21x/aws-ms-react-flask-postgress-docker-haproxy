@@ -24,9 +24,47 @@ class ApiLatestUpdates(Resource):
         # print('ApiGetSKUs > cursor',cursor)
         data  = [dict(((cursor.description[i][0]), value) for i, value in enumerate(row)) for row in cursor.fetchall()]
         print('ApiLatestUpdates > userid',userid)
-        data[0]['store_sku_update'] = []
-        data[0]['store_update'] = []
-        data[0]['user_store_latest_update'] = "null"
+        
+        result_store_sku = conn.execute("""
+            SELECT 
+            stores_skus.storeid AS store_sku_update,
+            to_char(stores_skus.date_updated,'yyyy-mm-dd HH24:MI:SS') AS latest_updated_date 
+            FROM stores_skus,users,users_schedules
+            where 
+            users_schedules.storeid = stores_skus.storeid AND 
+            users_schedules.userid = users.userid AND   
+            users.userid = 'DPUSER002'  
+            GROUP BY stores_skus.date_updated, stores_skus.storeid
+            ORDER BY stores_skus.date_updated ASC
+            """.format(u=userid),result=True)
+
+        ar_result_store_sku = result_store_sku.fetchall()
+        store_sku_update = [] if len(ar_result_store_sku) == 0 else [dict(result_store_sku.fetchall())]
+        data[0]['store_sku_update'] = store_sku_update
+
+        result_update = conn.execute("""
+            SELECT 
+            stores.name as store_name,
+            longitude,
+            latitude,
+            geofence,
+            address,
+            stores.storeid,
+            day_off as day_off,
+            schedule_day AS schedule_day,
+            schedule_type AS schedule_type 
+            FROM stores,users,users_schedules
+            where 
+            users_schedules.storeid = stores.storeid AND 
+            users_schedules.userid = users.userid AND 
+            users.userid = '{u}' AND
+            stores.date_updated::date = now()::date or 
+            users_schedules.date_updated::date = now()::date 
+            """.format(u=userid),result=True)
+        
+        store_update = [dict(((result_update.description[i][0]), value) for i, value in enumerate(row)) for row in result_update.fetchall()]
+        data[0]['store_update'] = store_update
+        
         return data
         
         # return [
