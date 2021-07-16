@@ -1,8 +1,8 @@
 ### SetUp 
-@local = localhost:8081/api/gmsi/mobiletracker
+@local = localhost:8080/api/gmsi/mobiletracker
 @server = 34.221.170.139:8080/api/gmsi/mobiletracker
  
-@host = {{server}}
+@host = {{local}}
 
 #gms@drive
 #kaelmercury
@@ -33,15 +33,22 @@
 @passport = dev.admin-
 @username = {{passport}}DP-AC1
 @password = {{passport}}MNC2021
-@device_id = d81edde9172f-caba8fde38179625234
+@device_id = caba8fde38179625234
+@imei = d81edde9172f-caba8fde38179625234
 @appversion = v03032020
 @device_info = OPPO-CPH1909
 ### Login
 POST http://{{host}}/login_api?username={{username}}&password={{password}}&device_id={{device_id}}&appversion={{appversion}}&device_info={{device_info}} 
 
 
-### test login
-POST http://13.228.23.99:8080/api/gmsi/mobiletracker/login_api?username=DP-AC1&password=MNC2021&device_id=d81edde9172f-caba8fde38179625234&appversion=v03032020&device_info=OPPO-CPH1909
+### asdf
+POST http://34.221.170.139:8080/api/gmsi/mobiletracker/login_api?username=DP-AC1&password=MNC2021&IMEI=103f44c8f912-d87bce48a35bef6f&device_id=0b7715a7-8c6d-41f5-a804-8a9f313715ee&appversion=v07072021&device_info=Redmi-M2006C3MG&commit=commit
+
+### asdf 
+POST http://34.221.170.139:8080/api/gmsi/mobiletracker/login_api?username=DP-AC1&password=MNC2021&IMEI=103f44c8f912-d87bce48a35bef6f&device_id=0b7715a7-8c6d-41f5-a804-8a9f313715ee&appversion=v07072021&device_info=Redmi-M2006C3MG&commit=commit
+
+### asdf
+POST http://34.221.170.139:8080/api/gmsi/mobiletracker/login_api?username=DP-AC1&password=MNC2021&IMEI=103f44c8f912-d87bce48a35bef6f&device_id=0b7715a7-8c6d-41f5-a804-8a9f313715ee&appversion=v07072021&device_info=Redmi-M2006C3MG&commit=commit
 
 ### APIs PlayGround ####
 

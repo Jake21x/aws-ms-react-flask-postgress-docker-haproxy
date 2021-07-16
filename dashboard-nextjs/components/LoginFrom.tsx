@@ -23,16 +23,20 @@ function LoginFrom() {
     const url_params = `/api/gmsi/mobiletracker/login_api?username=${form.username}&password=${form.password}&device_id=${form.device_id}&appversion=${form.appversion}&device_info=${form.device_info}`;
     console.log("url_params", url_params);
     setLoading(true);
-    axios.post(url_params).then(
-      (res) => {
-        console.log("res", res);
-        setLoading(false);
-      },
-      (err: AxiosError) => {
-        setLoading(false);
-        console.log("error", err.message);
-      }
-    );
+    axios
+      .post("/api/auth", {
+        url: url_params,
+      })
+      .then(
+        (res) => {
+          console.log("res", res);
+          setLoading(false);
+        },
+        (err: AxiosError) => {
+          setLoading(false);
+          console.log("error", err.message);
+        }
+      );
     console.log("onSubmit", form);
   };
 

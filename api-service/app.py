@@ -7,8 +7,8 @@ from flask_jwt_extended import JWTManager
 from functools import wraps
 from itertools import chain 
 from database import Database  
-from api.upload_agency import UploadAgency
-from api.upload_skus import UploadSKUs
+from api.upload_agency import ApiUploadAgency
+from api.upload_skus import ApiUploadSKUs
 from api.upload_category import UploadCategory
 from api.upload_category_refs import UploadCategoryRefs
 from api.upload_area import UploadArea
@@ -35,7 +35,6 @@ from api.m_planograms import ApiPostPlanograms
 from api.m_promo_compet_acts import ApiPostPromoCompetActs
 
 
-
 from utils import BASE_API_URI
 
 app = Flask(__name__)
@@ -46,9 +45,6 @@ auth = HTTPBasicAuth()
 app.config['SECRET_KEY'] = 'mykey'
 
 USER_DATA = {"admin":"admin"}
-
-conn = Database()
-
 # dbconfig = {
 #     'dbname':'sales_track_v2', 
 #     'user':'postgres',
@@ -138,10 +134,6 @@ class ApiUploadCategory(Resource):
         template = request.files['file']  
         return UploadCategory(conn,template) 
 
-class ApiUploadSKUs(Resource):
-    def post(self):
-        template = request.files['file']  
-        return UploadSKUs(conn,template) 
 class ApiUploadStores(Resource):
     def post(self):
         template = request.files['file']  
@@ -155,11 +147,7 @@ class ApiUploadUsersSchedules(Resource):
     def post(self):   
         template = request.files['file']  
         return UploadUsersSchedules(conn,template) 
-
-class ApiUploadAgency(Resource):
-    def post(self):   
-        template = request.files['file']  
-        return UploadAgency(conn,template) 
+ 
 
 class ApiUploadArea(Resource):
     def post(self):   

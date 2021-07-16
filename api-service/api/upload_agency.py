@@ -2,7 +2,17 @@ import os
 from utils import server_generated_id
 import psycopg2
 import xlrd
-from utils import UPLOAD_FOLDER
+from utils import UPLOAD_FOLDER 
+import datetime
+from flask_restful import Resource,request
+from database import Database  
+class ApiUploadAgency(Resource):
+    def post(self):   
+
+        conn = Database()  
+        template = request.files['file']  
+        return UploadAgency(conn,template) 
+
 
 def UploadAgency(conn,template): 
     data = []

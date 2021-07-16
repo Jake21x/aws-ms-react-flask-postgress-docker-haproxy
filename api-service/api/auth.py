@@ -8,7 +8,7 @@ from database import Database
 
 class ApiAuth(Resource):
     def post(self):   
-        
+
         conn = Database() 
 
         parser = reqparse.RequestParser()
@@ -159,7 +159,7 @@ def LoginAuth(conn,args):
 
 def execute_device_lock(_sucess_r, conn, _ux, _px, _device_id, _device_info, _appversion, _imei):
     lock_mgs = 'You are not authorize!,\nThis device is locked to other user please contact the administrator!'
-    user_details = _sucess_r[0]['firstname'] + ' ' + _sucess_r[0]['lastname'] + ' ('+_sucess_r[0]['user_role']+')'
+    user_details = str(_sucess_r[0]['firstname']) + ' ' + str(_sucess_r[0]['lastname']) + ' ('+str(_sucess_r[0]['user_role'])+')'
     status = 'Logged-in Successfully'
     print('user_details', status)
     ExcludeUser = excludeLogin 
@@ -204,11 +204,19 @@ def execute_device_lock(_sucess_r, conn, _ux, _px, _device_id, _device_info, _ap
             if len(user_auth) != 0:
                 version = str(user_auth[0]['appversion'])
                 if version != str(_appversion):
-                    print('updating app version..')
-                    conn.execute("""
-                        UPDATE devices SET appversion='{a}' ,date_updated='{b}' 
-                        WHERE tbluserid='{c}' AND device_id='{d}' AND device_info ='{e}'
-                    """.format(a=_appversion,b=date_updated,c=_sucess_r[0]['tbluserid'],d=_device_id,e=_device_info) ,commit=True)
+                    up_query = """
+                        UPDATE devices SET appversion='{a}',date_updated='{b}' 
+                        WHERE userid='{c}' AND device_id='{d}' AND device_info ='{e}'
+                    """.format(
+                            a=_appversion,
+                            b= date_updated,
+                            c=str(_sucess_r[0]['tbluserid']),
+                            d=_device_id,
+                            e=_device_info
+                        ) 
+
+                    print('updating app version..' , up_query) 
+                    conn.execute(up_query,commit=True)
             else:
                 print('No user auth')
                 # print(chknull(_device_id),chknull(_device_info))
@@ -217,8 +225,7 @@ def execute_device_lock(_sucess_r, conn, _ux, _px, _device_id, _device_info, _ap
             #admin no locking 
             if str(_sucess_r[0]['tblsingleroleid']) == '4':
                     print('This user is admin!')
-                    login_log(status, _sucess_r[0]['tbluserid'],
-                            _device_id, _appversion, _device_info, _imei)
+                    login_log(status, str(_sucess_r[0]['tbluserid']), _device_id, _appversion, _device_info, _imei)
                     return _sucess_r
 
             # ac/acsup/manager
@@ -232,18 +239,17 @@ def execute_device_lock(_sucess_r, conn, _ux, _px, _device_id, _device_info, _ap
 
                 elif len(user_auth) != 0 and str(user_auth[0]['device_id']) == chknull(_device_id) and str(user_auth[0]['userid']) == str(_sucess_r[0]['tbluserid']) and str(user_auth[0]['device_info']) == chknull(_device_info):
                     # print('_sucess_r')
-                    login_log(conn,status, _sucess_r[0]['tbluserid'], _device_id, _appversion, _device_info, _imei)
+                    login_log(conn,status, str(_sucess_r[0]['tbluserid']), _device_id, _appversion, _device_info, _imei)
                     return _sucess_r
                 else:
                     # print({'status' : 'failed', 'message' :  lock_mgs })
                     status = 'Unauthorized Device'
-                    login_log(conn,status, _sucess_r[0]['tbluserid'], _device_id, _appversion, _device_info, _imei)
+                    login_log(conn,status, str(_sucess_r[0]['tbluserid']), _device_id, _appversion, _device_info, _imei)
                     return {'status': 'failed', 'message':  lock_mgs}
     
     except Exception as e:
         status = 'Login Error, '+str(e)
-        login_log(conn,status, _sucess_r[0]['tbluserid'],
-                  _device_id, _appversion, _device_info, _imei)
+        login_log(conn,status, str(_sucess_r[0]['tbluserid']),_device_id, _appversion, _device_info, _imei)
         return {'status': 'failed', 'message': 'failed' + str(e)}
             
 
