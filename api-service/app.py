@@ -22,6 +22,8 @@ from api.latestupdates import ApiLatestUpdates
 from api.appversion import ApiAppVersion
 from api.stores import ApiGetAllStores,ApiGetStoreSKUs,ApiGetAssignUsersInStore
 from api.category import ApiGetCategory
+from api.user_stores_skus import ApiGetUserStoresSKU
+
 
 from api.logs_mobile import ApiPostLogsMobile
 from api.m_breaks import ApiPostBreaks
@@ -31,6 +33,8 @@ from api.m_mcp import ApiPostMCP
 from api.m_osa import ApiPostOSA
 from api.m_planograms import ApiPostPlanograms
 from api.m_promo_compet_acts import ApiPostPromoCompetActs
+
+
 
 from utils import BASE_API_URI
 
@@ -184,6 +188,7 @@ api.add_resource(ApiGetAllStores, BASE_API_URI + '/get/store_sku_50')
 api.add_resource(ApiGetCategory, BASE_API_URI + '/get/category_api')
 api.add_resource(ApiGetStoreSKUs, BASE_API_URI + '/get/store_api/<string:storeid>')
 api.add_resource(ApiGetAssignUsersInStore, BASE_API_URI + '/get/assigned_user_in_store_api/<string:storeid>')
+api.add_resource(ApiGetUserStoresSKU, BASE_API_URI + '/get/sku_per_store_lists/<string:userid>')
 
 
 # POST REQUEST

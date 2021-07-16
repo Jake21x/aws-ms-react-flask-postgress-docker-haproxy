@@ -8,6 +8,7 @@ from database import Database
 
 class ApiAuth(Resource):
     def post(self):   
+        
         conn = Database() 
 
         parser = reqparse.RequestParser()

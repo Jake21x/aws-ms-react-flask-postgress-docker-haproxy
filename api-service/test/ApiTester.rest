@@ -39,6 +39,10 @@
 ### Login
 POST http://{{host}}/login_api?username={{username}}&password={{password}}&device_id={{device_id}}&appversion={{appversion}}&device_info={{device_info}} 
 
+
+### test login
+POST http://13.228.23.99:8080/api/gmsi/mobiletracker/login_api?username=DP-AC1&password=MNC2021&device_id=d81edde9172f-caba8fde38179625234&appversion=v03032020&device_info=OPPO-CPH1909
+
 ### APIs PlayGround ####
 
 @tbluserid_acsup = ctorg1001 
@@ -48,6 +52,10 @@ POST http://{{host}}/login_api?username={{username}}&password={{password}}&devic
 @token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWRtaW4iLCJleHAiOjE2MjYwNzQ0NTN9.b0ZbyjbNLvT3dwHmobT-JLyGlghCr5jg1MRHqZy2kq4
 ### SKU Masterlist
 GET http://{{host}}/get/sku
+Authorization:  Bearer {{token}}
+
+### User Stores SKU Masterlist
+GET http://{{host}}/get/sku_per_store_lists/DPUSER002
 Authorization:  Bearer {{token}}
 
 ### "store_sku_latest_update": "2021-04-29 18:50:32",
