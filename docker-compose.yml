@@ -18,7 +18,12 @@ services:
       - FLASK_ENV=developement
       - PORT=7081
     volumes:
+      - ./api-service/api:/home/app/api
+      - ./api-service/reports:/home/app/reports
       - ./api-service/uploads:/home/app/uploads
+      - ./api-service/app.py:/home/app/app.py
+      - ./api-service/database:/home/app/database
+      - ./api-service/utils.py:/home/app/utils.py
 
   api-service2:
     image: api-service
@@ -30,7 +35,12 @@ services:
       - FLASK_ENV=developement
       - PORT=7082
     volumes:
-      - ./api-service/:/home/app/
+      - ./api-service/api:/home/app/api
+      - ./api-service/reports:/home/app/reports
+      - ./api-service/uploads:/home/app/uploads
+      - ./api-service/app.py:/home/app/app.py
+      - ./api-service/database:/home/app/database
+      - ./api-service/utils.py:/home/app/utils.py
 
   dashboard-nextjs:
     image: dashboard-nextjs
@@ -42,4 +52,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - ./dashboard-nextjs/:/app/
+      - ./dashboard-nextjs/components:/app/components
+      - ./dashboard-nextjs/pages:/app/pages
+      - ./dashboard-nextjs/public:/app/public
+      - ./dashboard-nextjs/utils:/app/utils
