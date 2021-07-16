@@ -52,9 +52,6 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - ./dashboard-nextjs/components:/app/components
-      - ./dashboard-nextjs/pages:/app/pages
-      - ./dashboard-nextjs/public:/app/public
-      - ./dashboard-nextjs/utils:/app/utils
+      - ./dashboard-nextjs:/app
       - /app/node_modules
       - /app/.next
