@@ -2,6 +2,8 @@ import datetime,time,random
 from random import randint 
 import os
 
+BASE_API_URI = '/api/gmsi/mobiletracker'
+
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 APP_ROOT_UPLOAD = os.path.dirname(os.path.abspath('api-service'))
 UPLOAD_FOLDER = 'uploads' 

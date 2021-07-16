@@ -16,7 +16,7 @@ from api.upload_chain import UploadChain
 from api.upload_stores import UploadStores
 from api.upload_users import UploadUsers
 from api.upload_users_schedules import UploadUsersSchedules
-from api.auth import LoginAuth
+from api.auth import ApiAuth
 from api.skus import ApiGetSKUs
 from api.latestupdates import ApiLatestUpdates
 from api.appversion import ApiAppVersion
@@ -31,6 +31,8 @@ from api.m_mcp import ApiPostMCP
 from api.m_osa import ApiPostOSA
 from api.m_planograms import ApiPostPlanograms
 from api.m_promo_compet_acts import ApiPostPromoCompetActs
+
+from utils import BASE_API_URI
 
 app = Flask(__name__)
 jwt = JWTManager()
@@ -70,7 +72,6 @@ class Login(Resource):
 
         return json.dumps({
             'token':token.decode('UTF-8')
-
         }, indent=3)
 
 
@@ -166,47 +167,35 @@ class ApiUploadChain(Resource):
         template = request.files['file']  
         return UploadChain(conn,template)
 
-class ApiAuth(Resource):
-    def post(self):      
-        parser = reqparse.RequestParser()
-        parser.add_argument('username', type=str)
-        parser.add_argument('password', type=str)
-        parser.add_argument('device_id', type=str)
-        parser.add_argument('appversion', type=str)
-        parser.add_argument('device_info', type=str)
-        parser.add_argument('IMEI', type=str) 
-        args = parser.parse_args()  
-        return LoginAuth(conn,args) 
- 
 
 api.add_resource(Login, '/api/login')
 api.add_resource(HelloWorld, '/api/verify')
 api.add_resource(UPFILE, '/api/upload')
 api.add_resource(STATUS, '/api/status')
 
-api.add_resource(ApiAuth, '/api/gmsi/mobiletracker/login_api') 
 
+api.add_resource(ApiAuth, BASE_API_URI + '/login_api') 
 
 # GET REQUEST
-api.add_resource(ApiLatestUpdates, '/api/get/latest_store_sku_category_ref/<string:userid>')
-api.add_resource(ApiGetSKUs, '/api/get/sku')
-api.add_resource(ApiAppVersion, '/api/get/latest/app-version')
-api.add_resource(ApiGetAllStores, '/api/get/store_sku_50')
-api.add_resource(ApiGetCategory, '/api/get/category_api')
-api.add_resource(ApiGetStoreSKUs, '/api/get/store_api/<string:storeid>')
-api.add_resource(ApiGetAssignUsersInStore, '/api/get/assigned_user_in_store_api/<string:storeid>')
+api.add_resource(ApiLatestUpdates, BASE_API_URI +'/get/latest_store_sku_category_ref/<string:userid>')
+api.add_resource(ApiGetSKUs, BASE_API_URI + '/get/sku')
+api.add_resource(ApiAppVersion, BASE_API_URI + '/get/latest/app-version')
+api.add_resource(ApiGetAllStores, BASE_API_URI + '/get/store_sku_50')
+api.add_resource(ApiGetCategory, BASE_API_URI + '/get/category_api')
+api.add_resource(ApiGetStoreSKUs, BASE_API_URI + '/get/store_api/<string:storeid>')
+api.add_resource(ApiGetAssignUsersInStore, BASE_API_URI + '/get/assigned_user_in_store_api/<string:storeid>')
 
 
 # POST REQUEST
 # api.add_resource(ApiLatestUpdates, '/insert/team_attendance_api') 
-api.add_resource(ApiPostOSA, '/insert/shelf_availability_api') 
-api.add_resource(ApiPostMCP, '/insert/mcp_api') 
-api.add_resource(ApiPostFacings, '/insert/facings_api') 
-api.add_resource(ApiPostPlanograms, '/insert/planograms_api') 
-api.add_resource(ApiPostLogsMobile, '/insert/tbl_logs_api') 
-api.add_resource(ApiPostPromoCompetActs, '/insert/promotions_api"') 
-api.add_resource(ApiPostFileLeave, '/insert/file_leave_api') 
-api.add_resource(ApiPostBreaks, '/insert/break_time_api') 
+api.add_resource(ApiPostOSA, BASE_API_URI + '/insert/shelf_availability_api') 
+api.add_resource(ApiPostMCP, BASE_API_URI + '/insert/mcp_api') 
+api.add_resource(ApiPostFacings, BASE_API_URI + '/insert/facings_api') 
+api.add_resource(ApiPostPlanograms,  BASE_API_URI + '/insert/planograms_api') 
+api.add_resource(ApiPostLogsMobile, BASE_API_URI + '/insert/tbl_logs_api') 
+api.add_resource(ApiPostPromoCompetActs, BASE_API_URI + '/insert/promotions_api"') 
+api.add_resource(ApiPostFileLeave, BASE_API_URI + '/insert/file_leave_api') 
+api.add_resource(ApiPostBreaks, BASE_API_URI + '/insert/break_time_api') 
 
 
 # API UPLOADS

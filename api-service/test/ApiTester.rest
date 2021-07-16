@@ -1,5 +1,6 @@
 ### SetUp 
-@local = localhost:8081/api
+@local = localhost:8081/api/gmsi/mobiletracker
+@server = localhost:8081/api
  
 @host = {{local}}
 
@@ -36,7 +37,7 @@
 @appversion = v03032020
 @device_info = OPPO-CPH1909
 ### Login
-POST http://localhost:5000/gmsi/mobiletracker/login_api?username={{username}}&password={{password}}&device_id={{device_id}}&appversion={{appversion}}&device_info={{device_info}} 
+POST http://{{host}}/login_api?username={{username}}&password={{password}}&device_id={{device_id}}&appversion={{appversion}}&device_info={{device_info}} 
 
 ### APIs PlayGround ####
 

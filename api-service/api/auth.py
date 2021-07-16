@@ -2,6 +2,23 @@ from utils import DEV_PASSPORT,DEV_ROOTPASSPORT,excludeLogin
 from flask_jwt_extended import create_access_token
 import hashlib
 import datetime
+from flask_restful import Resource,reqparse
+from database import Database  
+
+
+class ApiAuth(Resource):
+    def post(self):   
+        conn = Database() 
+
+        parser = reqparse.RequestParser()
+        parser.add_argument('username', type=str)
+        parser.add_argument('password', type=str)
+        parser.add_argument('device_id', type=str)
+        parser.add_argument('appversion', type=str)
+        parser.add_argument('device_info', type=str)
+        parser.add_argument('IMEI', type=str) 
+        args = parser.parse_args()  
+        return LoginAuth(conn,args) 
 
 def LoginAuth(conn,args): 
   
