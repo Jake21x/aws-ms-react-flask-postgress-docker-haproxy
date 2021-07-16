@@ -49,7 +49,7 @@ class ApiLatestUpdates(Resource):
             latitude,
             geofence,
             address,
-            stores.storeid,
+            stores.storeid as tblstoreid,
             day_off as day_off,
             schedule_day AS schedule_day,
             schedule_type AS schedule_type 
