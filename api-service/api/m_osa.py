@@ -40,14 +40,14 @@ class ApiPostOSA(Resource):
             conn.rollback()
             return {'status' : 'failed', 'message' : str(exc)}
             
+        except psycopg2.ProgrammingError as exc:
+            return {'status' : 'failed', 'message' : str(exc)}
+            
         except BaseException as e:
-            if conn is not None:
-                conn.rollback()
             return {'status' : 'failed', 'message' : str(e)}
         except Exception as e:
             x = str(e)
             x.replace('\n', '')
-            
             return {'status' : 'failed', 'message' : str(x)}
         finally:
             print("completed")

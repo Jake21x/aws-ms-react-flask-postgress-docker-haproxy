@@ -1,13 +1,14 @@
 from utils import server_generated_id
-from flask_restful import Resource,request
-from database import Database  
+from flask_restful import Resource,request  
 from itertools import chain 
 import psycopg2
+from database import Database
 
 class ApiPostLogsMobile(Resource):
     def post(self):
 
         conn = Database() 
+
         json_dict = request.get_json(force=True, silent=True)
 
         try: 
@@ -44,17 +45,13 @@ class ApiPostLogsMobile(Resource):
             return {'status' : 'success', 'message' : 'success'}
 
         except psycopg2.ProgrammingError as exc:
-            conn.rollback()
             return {'status' : 'failed', 'message' : str(exc)}
             
         except BaseException as e:
-            if conn is not None:
-                conn.rollback()
             return {'status' : 'failed', 'message' : str(e)}
         except Exception as e:
             x = str(e)
             x.replace('\n', '')
-            
             return {'status' : 'failed', 'message' : str(x)}
         finally:
             print("completed")
