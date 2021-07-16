@@ -14,12 +14,221 @@ select * from devices;
 select * from logs_logins;
 
 
+-- SELECT 
+-- tbl_stores.store_name
+-- tbl_stores.tblstoreid AS tblstoreid
+-- tbl_stores.geofence
+-- longitude
+-- latitude
+-- null as address
+-- to_char(tbl_stores.app_update
+-- 'yyyy-mm-dd HH24:MI:SS') AS date_updated 
+-- FROM 
+-- tbl_stores 
+-- INNER JOIN tbl_assigned_stores 
+-- ON tbl_assigned_stores.tblstoreid = tbl_stores.tblstoreid 
+-- INNER JOIN tbl_users 
+-- ON tbl_assigned_stores.tbluserid = tbl_users.tbluserid 
+-- WHERE 
+-- username =  'DP-ACSUP' AND 
+-- password = '176bb4f126c1a6a1f937f31f6ffdf41a' AND 
+-- tbl_users.active = 'Yes' 
+-- ORDER BY tbl_stores.store_name ASC
 
+
+
+-- select * from users_schedules ;
+-- select * from users; 
 
 insert into tbl_sku_stocks_per_store_new select * from tbl_sku_stocks_per_store 
 ON CONFLICT (tblstoreid,tblskuid) DO UPDATE 
 SET (carry,app_update) = (EXCLUDED.carry, now());
 select * from tbl_sku_stocks_per_store_new order by date_transaction desc limit 200;
+
+
+CREATE TABLE public.m_facings (
+    id serial not null,
+    tbluserid character varying(255) COLLATE pg_catalog."default",
+    tblrefid integer,
+    tblcategoryid integer,
+    no_of_facings integer,
+    tblstoreid character varying(50) COLLATE pg_catalog."default",
+    category_space character varying(50) COLLATE pg_catalog."default",
+    mnc_space character varying(50) COLLATE pg_catalog."default",
+    actual_cm_space character varying(255) COLLATE pg_catalog."default",
+    percent_share character varying(50) COLLATE pg_catalog."default",
+    target real,
+    complied character varying(50) COLLATE pg_catalog."default",
+    date_created timestamp without time zone,
+    date_updated timestamp without time zone,
+    date_sync timestamp with time zone DEFAULT now(),
+    mobile_generated_id character varying(50) COLLATE pg_catalog."default",
+    constraint m_facings_pk primary key (id,date_created),
+    UNIQUE(tbluserid,mobile_generated_id,date_created)
+) PARTITION BY RANGE (date_created);
+
+CREATE INDEX idx_m_facings_u ON m_facings (tbluserid,tblstoreid,date_created);
+
+CREATE TABLE m_facings_y21p1 PARTITION OF m_facings
+FOR VALUES FROM ('2020-12-01') TO ('2021-03-01');
+CREATE TABLE m_facings_y21p2 PARTITION OF m_facings
+FOR VALUES FROM ('2021-03-01') TO ('2021-06-01');
+CREATE TABLE m_facings_y21p3 PARTITION OF m_facings
+FOR VALUES FROM ('2021-06-01') TO ('2021-09-01');
+CREATE TABLE m_facings_y21p4 PARTITION OF m_facings
+FOR VALUES FROM ('2021-09-01') TO ('2021-12-01');
+
+
+CREATE TABLE public.m_planograms
+(
+    id bigserial not null,
+    tbluserid character varying(255) COLLATE pg_catalog."default",
+    tblstoreid character varying(50) COLLATE pg_catalog."default",
+    type character varying(50) COLLATE pg_catalog."default",
+    tblrefid integer,
+    tblcategoryid integer,
+    followed character varying(50) COLLATE pg_catalog."default",
+    notes character varying(255) COLLATE pg_catalog."default",
+    image_path character varying(255) COLLATE pg_catalog."default",
+    date_created timestamp without time zone,
+    date_updated timestamp without time zone,
+    date_sync timestamp with time zone DEFAULT now(),
+    mobile_generated_id character varying(255) COLLATE pg_catalog."default",
+    constraint m_planograms_pk primary key (id, date_created),
+    UNIQUE(tbluserid,mobile_generated_id,date_created)
+) PARTITION BY RANGE (date_created);
+
+CREATE INDEX idx_m_planograms_u ON m_planograms (tbluserid,tblstoreid,date_created);
+
+CREATE TABLE m_planograms_y21p1 PARTITION OF m_planograms
+FOR VALUES FROM ('2020-12-01') TO ('2021-03-01');
+CREATE TABLE m_planograms_y21p2 PARTITION OF m_planograms
+FOR VALUES FROM ('2021-03-01') TO ('2021-06-01');
+CREATE TABLE m_planograms_y21p3 PARTITION OF m_planograms
+FOR VALUES FROM ('2021-06-01') TO ('2021-09-01');
+CREATE TABLE m_planograms_y21p4 PARTITION OF m_planograms
+FOR VALUES FROM ('2021-09-01') TO ('2021-12-01');
+
+
+CREATE TABLE public.m_compet_acts
+(
+    id bigserial not null,
+    tbluserid character varying(255) COLLATE pg_catalog."default",
+    tblstoreid character varying(50) COLLATE pg_catalog."default",
+    tblskuid character varying(255) COLLATE pg_catalog."default",
+    tblcategoryid integer,
+    sku_name character varying(255) COLLATE pg_catalog."default",
+    activity_name character varying(255) COLLATE pg_catalog."default",
+    mechanics character varying(255) COLLATE pg_catalog."default",
+    notes text COLLATE pg_catalog."default",
+    scheme character varying(255) COLLATE pg_catalog."default",
+    price real,
+    placement character varying(255) COLLATE pg_catalog."default",
+    duration_type character varying(255) COLLATE pg_catalog."default",
+    date_from date,
+    date_to date,
+    type character varying(100) COLLATE pg_catalog."default",
+    has_effect_on_offtake character varying(255) COLLATE pg_catalog."default",
+    image_path character varying(255) COLLATE pg_catalog."default",
+    date_created timestamp without time zone,
+    date_updated timestamp without time zone,
+    date_sync timestamp with time zone DEFAULT now(),
+    competitor character varying(255) COLLATE pg_catalog."default",
+    mobile_generated_id character varying(255) COLLATE pg_catalog."default",
+    sku_price character varying(255) COLLATE pg_catalog."default",
+    brand character varying(255) COLLATE pg_catalog."default",
+    constraint m_compet_acts_pk primary key (id, date_created),
+    UNIQUE(tbluserid,mobile_generated_id,date_created)
+) PARTITION BY RANGE (date_created);
+
+CREATE INDEX idx_m_compet_acts_u ON m_compet_acts (tbluserid,tblstoreid,date_created); 
+
+CREATE TABLE m_compet_acts_y21p1 PARTITION OF m_compet_acts
+FOR VALUES FROM ('2020-12-01') TO ('2021-03-01');
+CREATE TABLE m_compet_acts_y21p2 PARTITION OF m_compet_acts
+FOR VALUES FROM ('2021-03-01') TO ('2021-06-01');
+CREATE TABLE m_compet_acts_y21p3 PARTITION OF m_compet_acts
+FOR VALUES FROM ('2021-06-01') TO ('2021-09-01');
+CREATE TABLE m_compet_acts_y21p4 PARTITION OF m_compet_acts
+FOR VALUES FROM ('2021-09-01') TO ('2021-12-01');
+
+CREATE TABLE public.m_promo_acts
+(
+    id bigserial not null,
+    tbluserid character varying(255) COLLATE pg_catalog."default",
+    tblstoreid character varying(50) COLLATE pg_catalog."default",
+    tblskuid character varying(255) COLLATE pg_catalog."default",
+    tblcategoryid integer,
+    sku_name character varying(255) COLLATE pg_catalog."default",
+    activity_name character varying(255) COLLATE pg_catalog."default",
+    mechanics character varying(255) COLLATE pg_catalog."default",
+    notes text COLLATE pg_catalog."default",
+    scheme character varying(255) COLLATE pg_catalog."default",
+    price real,
+    placement character varying(255) COLLATE pg_catalog."default",
+    duration_type character varying(255) COLLATE pg_catalog."default",
+    date_from date,
+    date_to date,
+    type character varying(100) COLLATE pg_catalog."default",
+    has_effect_on_offtake character varying(255) COLLATE pg_catalog."default",
+    image_path character varying(255) COLLATE pg_catalog."default",
+    date_created timestamp without time zone,
+    date_updated timestamp without time zone,
+    date_sync timestamp with time zone DEFAULT now(),
+    competitor character varying(255) COLLATE pg_catalog."default",
+    mobile_generated_id character varying(255) COLLATE pg_catalog."default",
+    sku_price character varying(255) COLLATE pg_catalog."default",
+    brand character varying(255) COLLATE pg_catalog."default",
+    constraint m_promo_acts_pk primary key (id, date_created),
+    UNIQUE(tbluserid,mobile_generated_id,date_created)
+) PARTITION BY RANGE (date_created);
+
+CREATE INDEX idx_m_promo_acts_u ON m_promo_acts (tbluserid,tblstoreid,date_created); 
+
+CREATE TABLE m_promo_acts_y21p1 PARTITION OF m_promo_acts
+FOR VALUES FROM ('2020-12-01') TO ('2021-03-01');
+CREATE TABLE m_promo_acts_y21p2 PARTITION OF m_promo_acts
+FOR VALUES FROM ('2021-03-01') TO ('2021-06-01');
+CREATE TABLE m_promo_acts_y21p3 PARTITION OF m_promo_acts
+FOR VALUES FROM ('2021-06-01') TO ('2021-09-01');
+CREATE TABLE m_promo_acts_y21p4 PARTITION OF m_promo_acts
+FOR VALUES FROM ('2021-09-01') TO ('2021-12-01');
+
+CREATE TABLE public.m_file_leave
+(
+    id bigserial primary key,
+    tbluserid character varying(255) COLLATE pg_catalog."default",
+    tblstoreid character varying(50) COLLATE pg_catalog."default",
+    mobile_generated_id character varying(200) COLLATE pg_catalog."default",
+    longitude character varying(50) COLLATE pg_catalog."default",
+    latitude character varying(50) COLLATE pg_catalog."default",
+    leave_category character varying(50) COLLATE pg_catalog."default",
+    date_of_leave_from date,
+    date_of_leave_to date,
+    reason character varying(255) COLLATE pg_catalog."default",
+    confirmation character varying(50) COLLATE pg_catalog."default",
+    confirm_by character varying(255) COLLATE pg_catalog."default",
+    date_created timestamp without time zone,
+    date_update timestamp without time zone,
+    date_sync timestamp with time zone DEFAULT now(), 
+    UNIQUE(tbluserid,mobile_generated_id)
+);
+
+
+CREATE TABLE public.m_over_time
+(
+    id bigserial primary key,
+    tbluserid character varying(255) COLLATE pg_catalog."default",
+    tblstoreid character varying(50) COLLATE pg_catalog."default",
+    ot_hour character varying(20) COLLATE pg_catalog."default",
+    reason character varying(255) COLLATE pg_catalog."default",
+    confirm_by character varying(255) COLLATE pg_catalog."default",
+    confirmation character varying(50) COLLATE pg_catalog."default",
+    mobile_generated_id character varying(255) COLLATE pg_catalog."default",
+    date_created timestamp without time zone,
+    date_sync timestamp with time zone DEFAULT now(), 
+    UNIQUE(tbluserid,mobile_generated_id)
+);
 
 
 CREATE TABLE public.app_versions
@@ -47,6 +256,8 @@ CREATE TABLE public.devices
     UNIQUE(userid,device_id)
 );
 
+CREATE INDEX idx_logs_mobile_u ON devices (userid); 
+
 
 CREATE TABLE public.channel
 (
@@ -68,32 +279,6 @@ CREATE TABLE public.users_role
     UNIQUE(roleid,userrole)
 );
 
-
--- SELECT 
--- tbl_stores.store_name
--- tbl_stores.tblstoreid AS tblstoreid
--- tbl_stores.geofence
--- longitude
--- latitude
--- null as address
--- to_char(tbl_stores.app_update
--- 'yyyy-mm-dd HH24:MI:SS') AS date_updated 
--- FROM 
--- tbl_stores 
--- INNER JOIN tbl_assigned_stores 
--- ON tbl_assigned_stores.tblstoreid = tbl_stores.tblstoreid 
--- INNER JOIN tbl_users 
--- ON tbl_assigned_stores.tbluserid = tbl_users.tbluserid 
--- WHERE 
--- username =  'DP-ACSUP' AND 
--- password = '176bb4f126c1a6a1f937f31f6ffdf41a' AND 
--- tbl_users.active = 'Yes' 
--- ORDER BY tbl_stores.store_name ASC
-
-
-
--- select * from users_schedules ;
--- select * from users;
 
 CREATE TABLE public.logs_mobile
 (   
@@ -117,6 +302,9 @@ CREATE TABLE public.logs_mobile
     constraint mobile_logs_pk primary key (id, date_created),
     UNIQUE(tbluserid,date_created)
 ) PARTITION BY RANGE (date_created);
+
+CREATE INDEX idx_logs_mobile_m_dc ON logs_mobile (tbluserid,module,date_created); 
+CREATE INDEX idx_logs_mobile_dc ON logs_mobile (tbluserid,date_created); 
 
 CREATE TABLE logs_mobile_y21p1 PARTITION OF logs_mobile
 FOR VALUES FROM ('2020-12-01') TO ('2021-03-01');
@@ -143,6 +331,9 @@ CREATE TABLE public.logs_logins
     constraint logs_logins_pk primary key (id, date_created),
     UNIQUE(tbluserid,date_created)
 ) PARTITION BY RANGE (date_created);;
+
+CREATE INDEX idx_logs_logins_ifn ON logs_logins (tbluserid,device_id); 
+CREATE INDEX idx_logs_logins_id ON logs_logins (tbluserid,date_created); 
 
 CREATE TABLE logs_logins_y21p1 PARTITION OF logs_logins
 FOR VALUES FROM ('2020-12-01') TO ('2021-03-01');
@@ -204,6 +395,7 @@ CREATE TABLE IF NOT EXISTS public.users
     UNIQUE(userid)
 );
 
+CREATE INDEX idx_users_id ON users (userid); 
 
 CREATE TABLE IF NOT EXISTS public.users_schedules
 (
@@ -221,6 +413,9 @@ CREATE TABLE IF NOT EXISTS public.users_schedules
     PRIMARY KEY(storeid,userid)
 );
 
+CREATE INDEX idx_users_schedules_s ON users_schedules (storeid);
+CREATE INDEX idx_users_schedules_u ON users_schedules (userid);
+CREATE INDEX idx_users_schedules_su ON users_schedules (storeid,userid);
 
 CREATE TABLE IF NOT EXISTS public.agency
 (   
@@ -254,6 +449,7 @@ CREATE TABLE IF NOT EXISTS public.chains
     date_updated timestamp with time zone DEFAULT now(),
     UNIQUE(chainid)
 );
+
 
 CREATE TABLE IF NOT EXISTS public.category
 (
@@ -309,6 +505,10 @@ CREATE TABLE IF NOT EXISTS public.stores
     UNIQUE(storeid)
 );
 
+CREATE INDEX idx_stores ON stores (storeid);
+CREATE INDEX idx_stores_cd ON stores (date_created);
+
+
 CREATE TABLE IF NOT EXISTS public.stores_skus
 (
     id serial PRIMARY KEY,
@@ -321,6 +521,9 @@ CREATE TABLE IF NOT EXISTS public.stores_skus
     date_updated timestamp with time zone DEFAULT now(),
     UNIQUE(storeid,skuid)
 );
+
+CREATE INDEX idx_stores_skus_skus ON stores_skus (skuid,storeid);
+CREATE INDEX idx_stores_skus_du ON stores_skus (storeid,date_updated);
 
 //copy old data : insert into tbl_location_logs_v2 select * from tbl_location_logs where datetime_log::date = '2021-06-01'
 CREATE TABLE IF NOT EXISTS public.tbl_location_logs_y21
@@ -344,12 +547,7 @@ CREATE TABLE IF NOT EXISTS public.tbl_location_logs_y21
     tblstoreid character varying(255)
 ) PARTITION BY RANGE (datetime_log); 
 
-
-
-
-
-
-
+ 
 
 //PG 10 not supported should only applies in Child Partitions
 CREATE INDEX idx_user_mod_store_dt_evt ON tbl_location_logs_y21 (tbluserid,module,event,tblstoreid,datetime_log);
