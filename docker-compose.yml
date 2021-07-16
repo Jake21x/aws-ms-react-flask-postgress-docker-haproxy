@@ -56,3 +56,5 @@ services:
       - ./dashboard-nextjs/pages:/app/pages
       - ./dashboard-nextjs/public:/app/public
       - ./dashboard-nextjs/utils:/app/utils
+      - /app/node_modules
+      - /app/.next
