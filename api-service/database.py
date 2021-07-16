@@ -5,11 +5,12 @@ class Database(object):
     def get_connection(cls, new=False):
         """Creates return new Singleton database connection"""
         if new or not cls.connection:
+            
             cls.connection = psycopg2.connect(
-                dbname='sales_track_v2', 
+                dbname='postgres', 
                 user='postgres',
-                host='db.pcrwpfgzubsfyfbrczlj.supabase.co', 
-                password='jmgtechplays21x', 
+                host='database-1.cua1z6h2gwyu.us-west-2.rds.amazonaws.com', 
+                password=':FgSBNs~s4s$4L)u', 
                 connect_timeout=3,
                 keepalives=1,
                 keepalives_idle=5,
@@ -17,6 +18,19 @@ class Database(object):
                 keepalives_count=2,
                 options='-c statement_timeout=5000000'
             )    
+
+            # cls.connection = psycopg2.connect(
+            #     dbname='sales_track_v2', 
+            #     user='postgres',
+            #     host='db.pcrwpfgzubsfyfbrczlj.supabase.co', 
+            #     password='jmgtechplays21x', 
+            #     connect_timeout=3,
+            #     keepalives=1,
+            #     keepalives_idle=5,
+            #     keepalives_interval=2,
+            #     keepalives_count=2,
+            #     options='-c statement_timeout=5000000'
+            # )    
         return cls.connection
 
     def execute(cls, query,result = False,commit = False,log=False):
