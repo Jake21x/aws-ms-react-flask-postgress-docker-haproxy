@@ -19,6 +19,7 @@ function LoginFrom() {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = (form: TLogin) => {
+    // http://34.221.170.139:8080
     const url_params = `/api/gmsi/mobiletracker/login_api?username=${form.username}&password=${form.password}&device_id=${form.device_id}&appversion=${form.appversion}&device_info=${form.device_info}`;
     console.log("url_params", url_params);
     setLoading(true);
@@ -40,28 +41,28 @@ function LoginFrom() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           name="username"
-          value="DP-AC1"
+          defaultValue="DP-AC1"
           ref={register({ required: true })}
         />
         <Input
           name="password"
-          value="MNC2021"
+          defaultValue="MNC2021"
           ref={register({ required: true })}
           type="password"
         />
         <Input
           name="appversion"
-          value="v03032020"
+          defaultValue="v03032020"
           ref={register({ required: true })}
         />
         <Input
           name="device_id"
-          value="d81edde9172f-caba8fde38179625234"
+          defaultValue="d81edde9172f-caba8fde38179625234"
           ref={register({ required: true })}
         />
         <Input
           name="device_info"
-          value="OPPO-CPH1909"
+          defaultValue="OPPO-CPH1909"
           ref={register({ required: true })}
         />
 
