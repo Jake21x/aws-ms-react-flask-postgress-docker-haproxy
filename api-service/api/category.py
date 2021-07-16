@@ -6,7 +6,7 @@ class ApiGetCategory(Resource):
     def get(self):
         conn = Database() 
  
-        cats = conn.execute("select catid as tblcategoryid,name,to_char(date_updated,\'Dy, DD Mon YYYY HH12:MI:SS\') as app_update,to_char(date_created,\'Dy ,DD Mon YYYY HH12:MI:SS\') as date_transaction from category",result=True)
+        cats = conn.execute("select catid as tblcategoryid,name as category,to_char(date_updated,\'Dy, DD Mon YYYY HH12:MI:SS\') as app_update,to_char(date_created,\'Dy ,DD Mon YYYY HH12:MI:SS\') as date_transaction from category",result=True)
         x = [dict(((cats.description[i][0]), value) for i, value in enumerate(row)) for row in cats.fetchall()]
         
         for c in chain(range(0, len(x))):
