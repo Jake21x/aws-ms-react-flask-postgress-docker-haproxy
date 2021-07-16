@@ -23,6 +23,15 @@ from api.appversion import ApiAppVersion
 from api.stores import ApiGetAllStores,ApiGetStoreSKUs,ApiGetAssignUsersInStore
 from api.category import ApiGetCategory
 
+from api.logs_mobile import ApiPostLogsMobile
+from api.m_breaks import ApiPostBreaks
+from api.m_file_leave import ApiPostFileLeave
+from api.m_facings import ApiPostFacings
+from api.m_mcp import ApiPostMCP
+from api.m_osa import ApiPostOSA
+from api.m_planograms import ApiPostPlanograms
+from api.m_promo_compet_acts import ApiPostPromoCompetActs
+
 app = Flask(__name__)
 jwt = JWTManager()
 api = Api(app)
@@ -177,6 +186,8 @@ api.add_resource(STATUS, '/api/status')
 
 api.add_resource(ApiAuth, '/api/gmsi/mobiletracker/login_api') 
 
+
+# GET REQUEST
 api.add_resource(ApiLatestUpdates, '/api/get/latest_store_sku_category_ref/<string:userid>')
 api.add_resource(ApiGetSKUs, '/api/get/sku')
 api.add_resource(ApiAppVersion, '/api/get/latest/app-version')
@@ -185,6 +196,20 @@ api.add_resource(ApiGetCategory, '/api/get/category_api')
 api.add_resource(ApiGetStoreSKUs, '/api/get/store_api/<string:storeid>')
 api.add_resource(ApiGetAssignUsersInStore, '/api/get/assigned_user_in_store_api/<string:storeid>')
 
+
+# POST REQUEST
+# api.add_resource(ApiLatestUpdates, '/insert/team_attendance_api') 
+api.add_resource(ApiPostOSA, '/insert/shelf_availability_api') 
+api.add_resource(ApiPostMCP, '/insert/mcp_api') 
+api.add_resource(ApiPostFacings, '/insert/facings_api') 
+api.add_resource(ApiPostPlanograms, '/insert/planograms_api') 
+api.add_resource(ApiPostLogsMobile, '/insert/tbl_logs_api') 
+api.add_resource(ApiPostPromoCompetActs, '/insert/promotions_api"') 
+api.add_resource(ApiPostFileLeave, '/insert/file_leave_api') 
+api.add_resource(ApiPostBreaks, '/insert/break_time_api') 
+
+
+# API UPLOADS
 api.add_resource(ApiUploadCategoryRefs, '/api/upload/template/category_reference')
 api.add_resource(ApiUploadCategory, '/api/upload/template/category')
 api.add_resource(ApiUploadSKUs, '/api/upload/template/skus')

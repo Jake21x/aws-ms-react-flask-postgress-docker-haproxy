@@ -46,6 +46,93 @@ SET (carry,app_update) = (EXCLUDED.carry, now());
 select * from tbl_sku_stocks_per_store_new order by date_transaction desc limit 200;
 
 
+CREATE TABLE public.confirm_mcp
+(
+    id serial primary key,
+    tbluserid character varying(255) COLLATE pg_catalog."default",
+    tcp_user_id character varying(255) COLLATE pg_catalog."default",
+    schedule date,
+    schedule_type character varying(100) COLLATE pg_catalog."default",
+    tc_tcp_store_id character varying(255) COLLATE pg_catalog."default",
+    schedule_status character varying(100) COLLATE pg_catalog."default",
+    adjustment_status character varying(50) COLLATE pg_catalog."default",
+    mobile_generated_id character varying(255) COLLATE pg_catalog."default",
+    confirmed_by character varying(50) COLLATE pg_catalog."default",
+    date_confirmed date,
+    office character varying(50) COLLATE pg_catalog."default",
+    status character varying(50) COLLATE pg_catalog."default",
+    reason character varying(255) COLLATE pg_catalog."default",
+    date_created timestamp without time zone,
+    date_updated timestamp without time zone,
+    date_sync timestamp with time zone DEFAULT now()
+);
+
+
+CREATE TABLE public.m_mcp
+(
+    id bigserial not null,
+    tbluserid character varying(255) COLLATE pg_catalog."default",
+    tcp_user_id character varying(255) COLLATE pg_catalog."default",
+    schedule date,
+    schedule_type character varying(100) COLLATE pg_catalog."default",
+    tc_tcp_store_id character varying(255) COLLATE pg_catalog."default",
+    schedule_status character varying(100) COLLATE pg_catalog."default",
+    adjustment_status character varying(50) COLLATE pg_catalog."default",
+    mobile_generated_id character varying(255) COLLATE pg_catalog."default",
+    confirmed_by character varying(50) COLLATE pg_catalog."default",
+    date_confirmed date,
+    office character varying(50) COLLATE pg_catalog."default",
+    status character varying(50) COLLATE pg_catalog."default",
+    date_created timestamp without time zone,
+    date_updated timestamp without time zone,
+    date_sync timestamp with time zone DEFAULT now(),
+    constraint m_mcp_pk primary key (id, date_created),
+    UNIQUE(tbluserid,mobile_generated_id,date_created)
+) PARTITION BY RANGE (date_created);
+
+CREATE INDEX idx_m_mcp_u_y_s ON m_mcp (tbluserid,schedule_type,schedule); 
+CREATE INDEX idx_m_mcp_u_s ON m_mcp (tbluserid,schedule); 
+CREATE INDEX idx_m_mcp_u_s_s ON m_mcp (tbluserid,schedule_status,schedule); 
+
+CREATE TABLE m_mcp_y21p1 PARTITION OF m_mcp
+FOR VALUES FROM ('2020-12-01') TO ('2021-03-01');
+CREATE TABLE m_mcp_y21p2 PARTITION OF m_mcp
+FOR VALUES FROM ('2021-03-01') TO ('2021-06-01');
+CREATE TABLE m_mcp_y21p3 PARTITION OF m_mcp
+FOR VALUES FROM ('2021-06-01') TO ('2021-09-01');
+CREATE TABLE m_mcp_y21p4 PARTITION OF m_mcp
+FOR VALUES FROM ('2021-09-01') TO ('2021-12-01');
+
+
+CREATE TABLE public.m_osa
+(
+    id bigserial not null,
+    tbluserid character varying(255) COLLATE pg_catalog."default",
+    tblskuid character varying(255) COLLATE pg_catalog."default",
+    tblstoreid character varying(255) COLLATE pg_catalog."default",
+    availability character varying(255) COLLATE pg_catalog."default",
+    mobile_generated_id character varying(255) COLLATE pg_catalog."default",
+    date_created timestamp without time zone,
+    date_updated timestamp without time zone,
+    date_sync timestamp with time zone DEFAULT now(),
+    sku_generated_id character varying(255) COLLATE pg_catalog."default",
+    constraint m_osa_pk primary key (id, date_created),
+    UNIQUE(tbluserid,tblstoreid,sku_generated_id,date_created)
+) PARTITION BY RANGE (date_created);
+
+CREATE INDEX idx_m_osa_m_dc ON logs_mobile (tbluserid,module,date_created); 
+CREATE INDEX idx_m_osa_dc ON logs_mobile (tbluserid,date_created); 
+
+CREATE TABLE m_osa_y21p1 PARTITION OF m_osa
+FOR VALUES FROM ('2020-12-01') TO ('2021-03-01');
+CREATE TABLE m_osa_y21p2 PARTITION OF m_osa
+FOR VALUES FROM ('2021-03-01') TO ('2021-06-01');
+CREATE TABLE m_osa_y21p3 PARTITION OF m_osa
+FOR VALUES FROM ('2021-06-01') TO ('2021-09-01');
+CREATE TABLE m_osa_y21p4 PARTITION OF m_osa
+FOR VALUES FROM ('2021-09-01') TO ('2021-12-01');
+
+
 CREATE TABLE public.m_facings (
     id serial not null,
     tbluserid character varying(255) COLLATE pg_catalog."default",
@@ -214,6 +301,46 @@ CREATE TABLE public.m_file_leave
     UNIQUE(tbluserid,mobile_generated_id)
 );
 
+CREATE TABLE public.confirm_over_time
+(
+    id bigserial primary key,
+    tbluserid character varying(255) COLLATE pg_catalog."default",
+    mobile_generated_id character varying(255) COLLATE pg_catalog."default",
+    confirm_by character varying(255) COLLATE pg_catalog."default",
+    confirmation character varying(255) COLLATE pg_catalog."default",
+    date_confirmed timestamp without time zone,
+    date_sync timestamp with time zone DEFAULT now()
+);
+
+CCREATE TABLE public.confirm_file_leave(
+    id bigserial primary key,
+    tblfileleaveid bigint,
+    confirmation character varying(50) COLLATE pg_catalog."default",
+    confirm_by character varying(255) COLLATE pg_catalog."default",
+    date_confirmed timestamp without time zone,
+    cancel_generated_id character varying(255) COLLATE pg_catalog."default",
+    date_sync timestamp with time zone DEFAULT now()
+);
+
+CREATE TABLE public.m_breaks
+(
+    id serial PRIMARY KEY,
+    mobile_generated_id character varying(255) COLLATE pg_catalog."default",
+    tbluserid character varying(255) COLLATE pg_catalog."default",
+    tblstoreid character varying(50) COLLATE pg_catalog."default",
+    break_name character varying(50) COLLATE pg_catalog."default",
+    break_designated_time character varying(255) COLLATE pg_catalog."default",
+    break_consume_time character varying(50) COLLATE pg_catalog."default",
+    break_status character varying(50) COLLATE pg_catalog."default",
+    "time" time without time zone,
+    date date,
+    date_created timestamp without time zone,
+    date_updated timestamp without time zone,
+    date_sync timestamp with time zone DEFAULT now(),
+    over_break_minutes character varying COLLATE pg_catalog."default",
+    UNIQUE(tbluserid,mobile_generated_id)
+);
+
 
 CREATE TABLE public.m_over_time
 (
@@ -300,7 +427,7 @@ CREATE TABLE public.logs_mobile
     device_id character varying(255) COLLATE pg_catalog."default",
     tblstoreid character varying(255) COLLATE pg_catalog."default",
     constraint mobile_logs_pk primary key (id, date_created),
-    UNIQUE(tbluserid,date_created)
+    UNIQUE(tbluserid,mgenerated_id,date_created)
 ) PARTITION BY RANGE (date_created);
 
 CREATE INDEX idx_logs_mobile_m_dc ON logs_mobile (tbluserid,module,date_created); 
