@@ -30,7 +30,7 @@ services:
       - FLASK_ENV=developement
       - PORT=7082
     volumes:
-      - ./api-service/uploads:/home/app/uploads
+      - ./api-service/:/home/app/
 
   dashboard-nextjs:
     image: dashboard-nextjs
@@ -41,3 +41,5 @@ services:
       - CHOKIDAR_USEPOLLING=true
     stdin_open: true
     tty: true
+    volumes:
+      - ./dashboard-nextjs/:/app/

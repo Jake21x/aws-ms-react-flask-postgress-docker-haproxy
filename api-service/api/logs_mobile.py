@@ -29,28 +29,12 @@ class ApiPostLogsMobile(Resource):
                     json_dict[i]['battery'],
                     json_dict[i]['netinfo'],
                     json_dict[i]['device_id'],
-                    json_dict[i]['date_created'], )) 
+                    json_dict[i]['datetime_log'], )) 
 
             args_str = ','.join(['%s'] * len(data)) 
             query = conn.mogrify("""
                 insert into logs_mobile (tbluserid,tblstoreid,mgenerated_id,module, event, current_longitude, current_latitude, end_longitude, end_latitude, gps_accuracy, gps_provider, battery,netinfo,device_id, date_created) values {}
-                ON CONFLICT (tbluserid,mgenerated_id) DO UPDATE 
-                SET (tblstoreid,module, event, current_longitude, current_latitude, end_longitude,
-                    end_latitude, gps_accuracy, gps_provider,battery,netinfo,device_id) = 
-                    (
-                        EXCLUDED.tblstoreid,
-                        EXCLUDED.module,
-                        EXCLUDED.event,
-                        EXCLUDED.current_longitude,
-                        EXCLUDED.current_latitude,
-                        EXCLUDED.end_longitude,
-                        EXCLUDED.end_latitude,
-                        EXCLUDED.gps_accuracy,
-                        EXCLUDED.gps_provider,
-                        EXCLUDED.battery,
-                        EXCLUDED.netinfo,
-                        EXCLUDED.device_id
-                    );
+                ON CONFLICT (tbluserid,mgenerated_id) DO NOTHING;
                 """.format(args_str) , data , commit=True) 
         
             return {'status' : 'success', 'message' : 'success'}

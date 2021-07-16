@@ -42,7 +42,7 @@ POST http://{{host}}/login_api?username={{username}}&password={{password}}&devic
 
 
 ### asdf
-POST http://localhost:8080/api/gmsi/mobiletracker/login_api?username=DP-AC1&password=MNC2021&IMEI=103f44c8f912-d87bce48a35bef6f&device_id=0b7715a7-8c6d-41f5-a804-8a9f313715ee&appversion=v07072021&device_info=Redmi-M2006C3MG&commit=commit
+POST http://34.221.170.139:8080/api/gmsi/mobiletracker/login_api?username=DP-AC1&password=MNC2021&IMEI=103f44c8f912-d87bce48a35bef6f&device_id=0b7715a7-8c6d-41f5-a804-8a9f313715ee&appversion=v07072021&device_info=Redmi-M2006C3MG&commit=commit
 
 ### asdf 
 POST http://34.221.170.139:8080/api/gmsi/mobiletracker/login_api?username=DP-AC1&password=MNC2021&IMEI=103f44c8f912-d87bce48a35bef6f&device_id=0b7715a7-8c6d-41f5-a804-8a9f313715ee&appversion=v07072021&device_info=Redmi-M2006C3MG&commit=commit
