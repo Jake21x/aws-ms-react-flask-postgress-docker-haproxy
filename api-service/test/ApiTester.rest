@@ -1,8 +1,8 @@
 ### SetUp 
 @local = localhost:8081/api/gmsi/mobiletracker
-@server = localhost:8081/api
+@server = 34.221.170.139:8080/api/gmsi/mobiletracker
  
-@host = {{local}}
+@host = {{server}}
 
 #gms@drive
 #kaelmercury
@@ -31,8 +31,8 @@
 # @appversion = v03032020
 # @device_info = OPPO-CPH1909
 @passport = dev.admin-
-@username = DP-AC1
-@password = MNC2021
+@username = {{passport}}DP-AC1
+@password = {{passport}}MNC2021
 @device_id = d81edde9172f-caba8fde38179625234
 @appversion = v03032020
 @device_info = OPPO-CPH1909

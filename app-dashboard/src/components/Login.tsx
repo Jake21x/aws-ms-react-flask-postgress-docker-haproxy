@@ -26,7 +26,7 @@ function Login() {
           type="password"
         />
 
-        <Box m="1" colorScheme="red">
+        <Box m="1">
           {errors.username && (
             <Text fontSize="xs" textAlign="start" color="tomato">
               username is required!
