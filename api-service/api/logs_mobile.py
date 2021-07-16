@@ -1,3 +1,4 @@
+from utils import server_generated_id
 from flask_restful import Resource,request
 from database import Database  
 from itertools import chain 
@@ -14,6 +15,9 @@ class ApiPostLogsMobile(Resource):
             x = len(json_dict)
             data = []
             for i in chain(range(0, x)): 
+                gid = json_dict[i]['mgenerated_id'] 
+                json_dict[i]['mgenerated_id'] = server_generated_id() if gid in ('.','') else gid
+
                 data.append((
                     json_dict[i]['tbluserid'],
                     json_dict[i]['tblstoreid'],
