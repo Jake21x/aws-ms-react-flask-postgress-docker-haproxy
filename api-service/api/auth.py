@@ -225,7 +225,7 @@ def execute_device_lock(_sucess_r, conn, _ux, _px, _device_id, _device_info, _ap
             #admin no locking 
             if str(_sucess_r[0]['tblsingleroleid']) == '4':
                     print('This user is admin!')
-                    login_log(status, str(_sucess_r[0]['tbluserid']), _device_id, _appversion, _device_info, _imei)
+                    login_log(conn,status, str(_sucess_r[0]['tbluserid']), _device_id, _appversion, _device_info, _imei)
                     return _sucess_r
 
             # ac/acsup/manager
