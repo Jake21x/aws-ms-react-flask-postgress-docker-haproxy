@@ -16,8 +16,7 @@ class ApiPostLogsMobile(Resource):
             data = []
             for i in chain(range(0, x)): 
                 gid = json_dict[i]['mgenerated_id'] 
-                print('gid',str(gid)) 
-
+                print('gid',str(gid))  
                 json_dict[i]['mgenerated_id'] = server_generated_id() if gid in ('.','',None) else gid
                 print('mgenerated_id',json_dict[i]['mgenerated_id'])
                 data.append((

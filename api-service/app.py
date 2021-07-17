@@ -24,8 +24,10 @@ from api.stores import ApiGetAllStores,ApiGetStoreSKUs,ApiGetAssignUsersInStore
 from api.category import ApiGetCategory
 from api.user_stores_skus import ApiGetUserStoresSKU
 
+from api.users import ApiGetUserHeirarchyAC,ApiGetUserHeirarchyACSUP
+ 
 from api.m_changdayoff import ApiPostChangeDayoff
-from api.m_team_attendance import ApiPostTeamAttendance
+from api.m_attendance import ApiPostTeamAttendance,ApiPostIndividualAttendance
 from api.logs_mobile import ApiPostLogsMobile
 from api.m_breaks import ApiPostBreaks
 from api.m_file_leave import ApiPostFileLeave
@@ -177,6 +179,8 @@ api.add_resource(ApiGetCategory, BASE_API_URI + '/get/category_api')
 api.add_resource(ApiGetStoreSKUs, BASE_API_URI + '/get/store_api/<string:storeid>')
 api.add_resource(ApiGetAssignUsersInStore, BASE_API_URI + '/get/assigned_user_in_store_api/<string:storeid>')
 api.add_resource(ApiGetUserStoresSKU, BASE_API_URI + '/get/sku_per_store_lists/<string:userid>')
+api.add_resource(ApiGetUserHeirarchyACSUP, BASE_API_URI + '/get/users_heirarchy_ac_acsup/<string:userid>')
+api.add_resource(ApiGetUserHeirarchyAC, BASE_API_URI + '/get/users_heirarchy_ac/<string:userid>')
 
 
 # POST REQUEST
@@ -189,6 +193,7 @@ api.add_resource(ApiPostLogsMobile, BASE_API_URI + '/insert/tbl_logs_api')
 api.add_resource(ApiPostPromoCompetActs, BASE_API_URI + '/insert/promotions_api"') 
 api.add_resource(ApiPostFileLeave, BASE_API_URI + '/insert/file_leave_api') 
 api.add_resource(ApiPostChangeDayoff, BASE_API_URI + '/insert/change_dayoff_api') 
+api.add_resource(ApiPostIndividualAttendance, BASE_API_URI + '/insert/individual_attendance_monitoring_api') 
 api.add_resource(ApiPostBreaks, BASE_API_URI + '/insert/break_time_api') 
 
 

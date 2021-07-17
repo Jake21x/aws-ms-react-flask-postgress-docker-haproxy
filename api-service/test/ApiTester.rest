@@ -92,6 +92,15 @@ Authorization:  Bearer {{token}}
 "mobile_generated_id":"ctoddgfd342"
 }]
 
+### acsup
+GET http://{{host}}/get/users_heirarchy_ac_acsup/DPUSER001
+Authorization:  Bearer {{token}}
+
+
+### ac
+GET http://{{host}}/get/users_heirarchy_ac/ctorg1001
+Authorization:  Bearer {{token}}
+
 ### GET VIDEO ACCESS
 GET http://{{host}}/get/video_access/ctorg1001
 Authorization:  Bearer {{token}}
