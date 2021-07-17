@@ -9,7 +9,7 @@ def UploadArea(conn,template):
     result = {'status': 'success','message':'sucess'}
         
     if template.filename != '':
-        filename = server_generated_id('area_',2)+'.'+ template.filename.split(".")[-1]
+        filename = server_generated_id('area',2)+'.'+ template.filename.split(".")[-1]
         file_path = os.path.join(UPLOAD_FOLDER+'/templates', filename)
         template.save(file_path)
 

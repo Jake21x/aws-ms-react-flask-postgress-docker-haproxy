@@ -11,7 +11,7 @@ def UploadCategoryRefs(conn,template):
     
         
     if template.filename != '':
-        filename = server_generated_id('catrefs_',2)+'.'+ template.filename.split(".")[-1]
+        filename = server_generated_id('catrefs',2)+'.'+ template.filename.split(".")[-1]
         file_path = os.path.join(UPLOAD_FOLDER+'/templates', filename)
         template.save(file_path)
 

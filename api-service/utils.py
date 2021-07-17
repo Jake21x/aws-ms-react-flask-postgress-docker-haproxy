@@ -9,6 +9,7 @@ APP_ROOT_UPLOAD = os.path.dirname(os.path.abspath('api-service'))
 UPLOAD_FOLDER = 'uploads' 
 UPLOAD_FOLDER_PHOTO = 'uploads/photo/' 
 UPLOAD_FOLDER_MEDIA = 'uploads/media/' 
+UPLOAD_FOLDER_TEMPLATES = 'uploads/templates/' 
 
 DEV_ROOTPASSPORT = 'root.admin-'
 DEV_PASSPORT = 'dev.admin-'
