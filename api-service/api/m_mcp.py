@@ -440,7 +440,7 @@ class ApiPostMCPChangeRequest(Resource):
 
             print('mcp>new>request', mobile_generated_id, reason) 
 
-            item = [tbluserid,tc_tcp_store_id,useTcpUserId,mobile_generated_id,schedule,schedule_type,'pending',reason,date_created,date_created]
+            item = [(tbluserid,tc_tcp_store_id,useTcpUserId,mobile_generated_id,schedule,schedule_type,'pending',reason,date_created,date_created)]
             args_str = ','.join(['%s'] * len(item)) 
             conn.mogrify('INSERT INTO confirm_mcp(tbluserid,tc_tcp_store_id,tcp_user_id,mobile_generated_id,schedule,schedule_type,adjustment_status,reason, date_created,date_updated) VALUES {} '.format(args_str),item,commit=True)
 
