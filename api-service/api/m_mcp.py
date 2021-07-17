@@ -408,10 +408,8 @@ class ApiPostMCPChangeRequest(Resource):
 
         conn = Database() 
         json_dict = request.get_json(force=True, silent=True)
-        try: 
-
-            print('json_dict',json_dict)
-
+        print('json_dict',json_dict)
+        try:  
             tbluserid = str(json_dict[0]['tbluserid'])
             tc_tcp_store_id = str(json_dict[0]['tc_tcp_store_id'])
             tcp_user_id = str(json_dict[0]['tcp_user_id'])
