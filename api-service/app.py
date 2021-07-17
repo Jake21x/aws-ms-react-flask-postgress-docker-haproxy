@@ -7,6 +7,7 @@ from flask_jwt_extended import JWTManager
 from functools import wraps
 from itertools import chain 
 from database import Database  
+
 from api.upload_agency import ApiUploadAgency
 from api.upload_skus import ApiUploadSKUs
 from api.upload_category import UploadCategory
@@ -32,11 +33,12 @@ from api.logs_mobile import ApiPostLogsMobile
 from api.m_breaks import ApiPostBreaks
 from api.m_file_leave import ApiPostFileLeave
 from api.m_facings import ApiPostFacings
-from api.m_mcp import ApiPostMCP,ApiPostTCP
+from api.m_mcp import ApiPostMCP,ApiPostTCP,ApiGetMCPPending
 from api.m_osa import ApiPostOSA
 from api.m_planograms import ApiPostPlanograms
 from api.m_promo_compet_acts import ApiPostPromoCompetActs
 from api.m_storeaudit import ApiPostStoreAuditData,ApiPostStoreAuditImages
+from api.m_over_time import ApiGetPendingOT
 
 from utils import BASE_API_URI,server_generated_id,UPLOAD_FOLDER_PHOTO 
 
@@ -181,6 +183,9 @@ api.add_resource(ApiGetAssignUsersInStore, BASE_API_URI + '/get/assigned_user_in
 api.add_resource(ApiGetUserStoresSKU, BASE_API_URI + '/get/sku_per_store_lists/<string:userid>')
 api.add_resource(ApiGetUserHeirarchyACSUP, BASE_API_URI + '/get/users_heirarchy_ac_acsup/<string:userid>')
 api.add_resource(ApiGetUserHeirarchyAC, BASE_API_URI + '/get/users_heirarchy_ac/<string:userid>')
+
+api.add_resource(ApiGetMCPPending, BASE_API_URI + '/get/mcp_not_pending/<string:userid>')
+api.add_resource(ApiGetPendingOT, BASE_API_URI + '/get/request_ot/<string:userid>')
 
 
 # POST REQUEST
