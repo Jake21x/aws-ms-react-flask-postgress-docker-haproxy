@@ -409,62 +409,62 @@ class ApiPostMCPChangeRequest(Resource):
         conn = Database() 
         json_dict = request.get_json(force=True, silent=True)
         print('json_dict',json_dict)
-        # try:  
-        tbluserid = str(json_dict[0]['tbluserid'])
-        tc_tcp_store_id = str(json_dict[0]['tc_tcp_store_id'])
-        tcp_user_id = str(json_dict[0]['tcp_user_id'])
-        schedule_type = str(json_dict[0]['schedule_type'])
-        schedule = str(json_dict[0]['schedule'])
-        reason = str(json_dict[0]['reason'])
-        date_created = str(json_dict[0]['date_created'])
-        mobile_generated_id = str(json_dict[0]['mobile_generated_id'])
+        try:  
+            tbluserid = str(json_dict[0]['tbluserid'])
+            tc_tcp_store_id = str(json_dict[0]['tc_tcp_store_id'])
+            tcp_user_id = str(json_dict[0]['tcp_user_id'])
+            schedule_type = str(json_dict[0]['schedule_type'])
+            schedule = str(json_dict[0]['schedule'])
+            reason = str(json_dict[0]['reason'])
+            date_created = str(json_dict[0]['date_created'])
+            mobile_generated_id = str(json_dict[0]['mobile_generated_id'])
 
-        conf_data = []
+            conf_data = []
 
-        # always get the last request base on mobile_generated_id
-        q_conf = str('SELECT * from confirm_mcp where mobile_generated_id = \'' +mobile_generated_id + '\' AND adjustment_status = \'pending\' order by date_created desc limit 1')
-        print('mcp>new>request', q_conf)
-        res =conn.execute(q_conf,result=True) 
-        conf_data = [dict(((res.description[i][0]), value) for i, value in enumerate(row)) for row in res.fetchall()]
-        print('mcp>new>request', conf_data)
+            # always get the last request base on mobile_generated_id
+            q_conf = str('SELECT * from confirm_mcp where mobile_generated_id = \'' +mobile_generated_id + '\' AND adjustment_status = \'pending\' order by date_created desc limit 1')
+            print('mcp>new>request', q_conf)
+            res =conn.execute(q_conf,result=True) 
+            conf_data = [dict(((res.description[i][0]), value) for i, value in enumerate(row)) for row in res.fetchall()]
+            print('mcp>new>request', conf_data)
 
-        if len(conf_data) == 0: 
-            # sales agent (reseller)
-            # area sales manager / account manager (coords)
-            # regional sales manager
-            # national sales manager
+            if len(conf_data) == 0: 
+                # sales agent (reseller)
+                # area sales manager / account manager (coords)
+                # regional sales manager
+                # national sales manager
 
-            useTcpUserId = 'NULL'
-            if tcp_user_id != 'None':
-                useTcpUserId = "'{}'".format(tcp_user_id)
+                useTcpUserId = 'NULL'
+                if tcp_user_id != 'None':
+                    useTcpUserId = "'{}'".format(tcp_user_id)
 
-            print('mcp>new>request', mobile_generated_id, reason) 
+                print('mcp>new>request', mobile_generated_id, reason) 
 
-            item = [(tbluserid,tc_tcp_store_id,useTcpUserId,mobile_generated_id,schedule,schedule_type,'pending',reason,date_created,date_created)]
-            args_str = ','.join(['%s'] * len(item)) 
-            conn.mogrify('INSERT INTO confirm_mcp(tbluserid,tc_tcp_store_id,tcp_user_id,mobile_generated_id,schedule,schedule_type,adjustment_status,reason, date_created,date_updated) VALUES {} '.format(args_str),item,commit=True)
+                item = [(tbluserid,tc_tcp_store_id,useTcpUserId,mobile_generated_id,schedule,schedule_type,'pending',reason,date_created,date_created)]
+                args_str = ','.join(['%s'] * len(item)) 
+                conn.mogrify('INSERT INTO confirm_mcp(tbluserid,tc_tcp_store_id,tcp_user_id,mobile_generated_id,schedule,schedule_type,adjustment_status,reason, date_created,date_updated) VALUES {} '.format(args_str),item,commit=True)
 
-        else:
-            useTcpUserId = 'NULL'
-            if tcp_user_id != 'None':
-                useTcpUserId = "'{}'".format(tcp_user_id)
+            else:
+                useTcpUserId = 'NULL'
+                if tcp_user_id != 'None':
+                    useTcpUserId = "'{}'".format(tcp_user_id)
 
-            print('mcp>update>quest', mobile_generated_id,
-                conf_data[0]['id'], reason, tcp_user_id, useTcpUserId) 
-            conn.execute("UPDATE confirm_mcp  SET tcp_user_id = "+useTcpUserId+", schedule = '{a}',schedule_type = '{b}',tc_tcp_store_id = '{c}',reason = '{d}',date_created='{e}',date_updated='{f}',date_sync ='{g}' WHERE mobile_generated_id = '{h}' AND id ='{i}'".format(a=schedule, b=schedule_type, c=tc_tcp_store_id, d=reason, e=date_created, f=date_created, g=date_created, h=mobile_generated_id, i=conf_data[0]['id']),commit=True)
+                print('mcp>update>quest', mobile_generated_id,
+                    conf_data[0]['id'], reason, tcp_user_id, useTcpUserId) 
+                conn.execute("UPDATE confirm_mcp  SET tcp_user_id = "+useTcpUserId+", schedule = '{a}',schedule_type = '{b}',tc_tcp_store_id = '{c}',reason = '{d}',date_created='{e}',date_updated='{f}',date_sync ='{g}' WHERE mobile_generated_id = '{h}' AND id ='{i}'".format(a=schedule, b=schedule_type, c=tc_tcp_store_id, d=reason, e=date_created, f=date_created, g=date_created, h=mobile_generated_id, i=conf_data[0]['id']),commit=True)
+                
+            return {'status' : 'success', 'message' : 'success'} 
+        except psycopg2.ProgrammingError as exc:
+            return {'status' : 'failed', 'message' : str(exc)}
             
-        return {'status' : 'success', 'message' : 'success'} 
-        # except psycopg2.ProgrammingError as exc:
-        #     return {'status' : 'failed', 'message' : str(exc)}
-            
-        # except BaseException as e:
-        #     return {'status' : 'failed', 'message' : str(e)}
-        # except Exception as e:
-        #     x = str(e)
-        #     x.replace('\n', '')
-        #     return {'status' : 'failed', 'message' : str(x)}
-        # finally:
-        #     print("completed")
+        except BaseException as e:
+            return {'status' : 'failed', 'message' : str(e)}
+        except Exception as e:
+            x = str(e)
+            x.replace('\n', '')
+            return {'status' : 'failed', 'message' : str(x)}
+        finally:
+            print("completed")
 class ApiGetMCPPending(Resource):
     def get(self,userid=None):
 
