@@ -4,3 +4,4 @@ node_modules
 uploads
 .next
 out
+api-service/reports

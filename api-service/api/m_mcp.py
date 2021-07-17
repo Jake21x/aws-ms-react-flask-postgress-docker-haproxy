@@ -410,6 +410,8 @@ class ApiPostMCPChangeRequest(Resource):
         json_dict = request.get_json(force=True, silent=True)
         try: 
 
+            print('json_dict',json_dict)
+
             tbluserid = str(json_dict[0]['tbluserid'])
             tc_tcp_store_id = str(json_dict[0]['tc_tcp_store_id'])
             tcp_user_id = str(json_dict[0]['tcp_user_id'])
@@ -439,7 +441,7 @@ class ApiPostMCPChangeRequest(Resource):
                     useTcpUserId = "'{}'".format(tcp_user_id)
 
                 print('mcp>new>request', mobile_generated_id, reason) 
-                
+
                 item = [tbluserid,tc_tcp_store_id,useTcpUserId,mobile_generated_id,schedule,schedule_type,'pending',reason,date_created,date_created]
                 args_str = ','.join(['%s'] * len(item)) 
                 conn.mogrify('INSERT INTO tbl_mcp_confirmation(tbluserid,tc_tcp_store_id,tcp_user_id,mobile_generated_id,schedule,schedule_type,adjustment_status,reason, date_created,date_updated) VALUES {} '.format(args_str),item,commit=True)

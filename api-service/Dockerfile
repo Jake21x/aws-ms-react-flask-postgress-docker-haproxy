@@ -11,6 +11,7 @@ RUN mkdir -p uploads/media
 RUN mkdir -p uploads/templates
 RUN mkdir -p uploads/photo
 RUN mkdir -p uploads/tutorials
+RUN mkdir -p reports
 
 COPY . .
 
