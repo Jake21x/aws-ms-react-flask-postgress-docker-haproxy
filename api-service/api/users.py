@@ -15,7 +15,8 @@ class ApiGetUserHeirarchyACSUP(Resource):
                     select userid from users_schedules where storeid in (
                         select storeid  from users_schedules where userid = '{u}'
                     ) and userid != '{u}'
-                ) and roleid ='6'""".format(u=userid),result=True)
+                ) and roleid ='6'
+            """.format(u=userid),result=True)
              
         data  = [dict(((cursor.description[i][0]), value) for i, value in enumerate(row)) for row in cursor.fetchall()]
         print('ApiGetUserHeirarchyACSUP > data',data)
@@ -42,10 +43,11 @@ class ApiGetUserHeirarchyAC(Resource):
                     select userid from users_schedules where storeid in (
                         select storeid  from users_schedules where userid = '{u}'
                     ) and userid != '{u}'
-                ) and roleid not in ('1','2','7','12','11') """.format(u=userid),result=True)
+                ) and roleid not in ('1','2','7','12','11');
+            """.format(u=userid),result=True)
              
         data  = [dict(((cursor.description[i][0]), value) for i, value in enumerate(row)) for row in cursor.fetchall()]
-        print('ApiGetSKUs > data',data)
+        print('ApiGetUserHeirarchyAC > data',data)
 
         # [{
         #     "tbluserid": "m100911",
