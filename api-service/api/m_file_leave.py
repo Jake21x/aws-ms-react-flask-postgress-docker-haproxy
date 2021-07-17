@@ -87,7 +87,7 @@ class ApiGetLeavePerMerch(Resource):
                         confirmation, 
                         confirm_by, 
                         mobile_generated_id, 
-                        to_char(date_created,'yyyy-mm-dd HH24:MI:SS') 
+                        to_char(date_created,'yyyy-mm-dd HH24:MI:SS') as date_created  
                         from m_file_leave where tbluserid in (
                         select userid as tbluserid from users where userid in (
                         select  userid  from users where userid in 
