@@ -55,11 +55,9 @@ class ApiPostConfirmChangeDayoff(Resource):
 
         conn = Database() 
         json_dict = request.get_json(force=True, silent=True)
-        try: 
+        try:  
 
-
-            tbl_confirmation_change_dayoff = [] 
-
+            tbl_confirmation_change_dayoff = []  
             for c in chain(range(0, len(json_dict))): 
                 tbl_confirmation_change_dayoff.append((
                     json_dict[c]['tbluserid'],
