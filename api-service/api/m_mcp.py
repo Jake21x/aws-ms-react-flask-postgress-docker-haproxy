@@ -518,7 +518,7 @@ class ApiGetMCPNotPending(Resource):
                         schedule_type,
                         office,
                         tc_tcp_store_id,
-                        (select name from stores where storeid = confirm_mcp.tblstoreid) AS tc_tcp_store_name,
+                        (select name from stores where storeid = confirm_mcp.tc_tcp_store_id) AS tc_tcp_store_name,
                         tcp_user_id,
                         (select userrole from users,users_role where users.roleid = users_role.roleid AND userid = confirm_mcp.tbluserid ) AS userrole,
                          (select CONCAT(trim(firstname),' ',trim(lastname)) from users where userid = confirm_mcp.tcp_user_id ) AS tcp_user, 
