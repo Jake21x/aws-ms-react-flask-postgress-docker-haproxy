@@ -196,13 +196,13 @@ api.add_resource(ApiPostPlanograms,  BASE_API_URI + '/insert/planograms_api')
 api.add_resource(ApiPostLogsMobile, BASE_API_URI + '/insert/tbl_logs_api') 
 api.add_resource(ApiPostFileLeave, BASE_API_URI + '/insert/file_leave_api') 
 api.add_resource(ApiPostChangeDayoff, BASE_API_URI + '/insert/change_dayoff_api') 
-api.add_resource(ApiPostIndividualAttendance, BASE_API_URI + '/insert/individual_attendance_api') 
 api.add_resource(ApiPostBreaks, BASE_API_URI + '/insert/break_time_api') 
 api.add_resource(ApiPostTeamAttendance, BASE_API_URI + '/insert/team_attendance_api') 
 api.add_resource(ApiPostPromoCompetActs, BASE_API_URI + '/insert/competitors_promotion_api') 
 api.add_resource(ApiPostStoreAuditData, BASE_API_URI + '/insert/store_audit_api')
 api.add_resource(ApiPostStoreAuditImages, BASE_API_URI +'/insert/store_audit_media_api')
 api.add_resource(ApiPostTCP, BASE_API_URI +'/insert/tcp_api')
+api.add_resource(ApiPostIndividualAttendance, BASE_API_URI +'/insert/individual_attendance_api')
 
 
 # API UPLOADS
