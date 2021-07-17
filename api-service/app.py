@@ -33,7 +33,7 @@ from api.m_changdayoff import ApiPostChangeDayoff,ApiGetChangedayOff,ApiPostConf
 from api.m_attendance import ApiPostTeamAttendance,ApiPostIndividualAttendance,ApiGetAttendanceACACSUP
 from api.logs_mobile import ApiPostLogsMobile
 from api.m_breaks import ApiPostBreaks
-from api.m_file_leave import ApiPostFileLeave,ApiGetLeavePerMerch
+from api.m_file_leave import ApiPostFileLeave,ApiGetLeavePerMerch,ApiPostConfirmLeave
 from api.m_facings import ApiPostFacings
 from api.m_mcp import ApiPostMCP,ApiPostTCP,ApiGetMCPPending,ApiGetMCPNotPending,ApiPostMCPChangeRequest
 from api.m_osa import ApiPostOSA
@@ -204,7 +204,9 @@ api.add_resource(ApiPostOSA, BASE_API_URI + '/insert/shelf_availability_api')
 api.add_resource(ApiPostFacings, BASE_API_URI + '/insert/facings_api') 
 api.add_resource(ApiPostPlanograms,  BASE_API_URI + '/insert/planograms_api') 
 api.add_resource(ApiPostLogsMobile, BASE_API_URI + '/insert/tbl_logs_api') 
+
 api.add_resource(ApiPostFileLeave, BASE_API_URI + '/insert/file_leave_api') 
+api.add_resource(ApiPostConfirmLeave, BASE_API_URI + '/insert/confirmation_file_leave_api') 
 
 api.add_resource(ApiPostChangeDayoff, BASE_API_URI + '/insert/change_dayoff_api') 
 api.add_resource(ApiPostConfirmChangeDayoff, BASE_API_URI +'/insert/confirm_change_dayoff_api')

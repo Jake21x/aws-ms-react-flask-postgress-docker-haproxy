@@ -52,6 +52,39 @@ class ApiPostFileLeave(Resource):
         finally:
             print("completed")
 
+class ApiPostConfirmLeave(Resource):
+    def post(self):
+
+        conn = Database() 
+        json_dict = request.get_json(force=True, silent=True)
+        try: 
+
+            x = len(json_dict)
+            data = []
+            for i in chain(range(0, x)):
+                data.append((json_dict[i]['tblfileleaveid'], json_dict[i]['confirmation'], json_dict[i]['confirm_by'], json_dict[i]['date_confirmed'], json_dict[i]['cancel_mobile_generated_id'], ))
+                conn.execute('UPDATE m_file_leave SET confirmation = \'{confirmation}\', confirm_by = \'{confirm_by}\' WHERE tbluserid = \'{tbluserid}\' AND mobile_generated_id = \'{mobile_generated_id}\' '.format(confirmation = str(json_dict[i]['confirmation']), confirm_by = str(json_dict[i]['confirm_by']), tbluserid = str(json_dict[i]['tbluserid']), mobile_generated_id = str(json_dict[i]['mobile_generated_id']) ),commit=True)
+            
+
+            args_str = ','.join(['%s'] * len(data)) 
+            query = conn.mogrify("""
+                INSERT INTO confirm_file_leave(tblfileleaveid, confirmation, confirm_by, date_confirmed,cancel_generated_id) VALUES {};
+                """.format(args_str) , tbl_confirmation , commit=True) 
+        
+            return {'status' : 'success', 'message' : 'success'}
+
+        except psycopg2.ProgrammingError as exc:
+            return {'status' : 'failed', 'message' : str(exc)}
+            
+        except BaseException as e:
+            return {'status' : 'failed', 'message' : str(e)}
+        except Exception as e:
+            x = str(e)
+            x.replace('\n', '')
+            return {'status' : 'failed', 'message' : str(x)}
+        finally:
+            print("completed")
+
 class ApiGetLeavePerMerch(Resource):
     def get(self,userid=None):
 
