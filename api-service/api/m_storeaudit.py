@@ -3,6 +3,7 @@ from utils import server_generated_id,UPLOAD_FOLDER_MEDIA
 from database import Database  
 from itertools import chain 
 import psycopg2 
+import os
 
 class ApiPostStoreAuditData(Resource):
     def post(self):
@@ -101,7 +102,7 @@ class ApiPostStoreAuditImages(Resource):
     def post(self):
 
         conn = Database() 
-        sitelink = 'http://34.221.170.139:8080/uploads/media/'
+        sitelink = '/uploads/media/'
         # try: 
 
         data = []
@@ -116,8 +117,7 @@ class ApiPostStoreAuditImages(Resource):
         ac_name = request.form['ac_name']
         tl_usercode = request.form['tl_usercode']
         tl_name = request.form['tl_name']
-        agency = request.form['agency']
-
+        agency = request.form['agency'] 
         mobile_generated_id = request.form['mobile_generated_id']
 
         filename1 = ''
@@ -157,16 +157,16 @@ class ApiPostStoreAuditImages(Resource):
             print('no file or invalid 3')
 
         filename4 = ''
-        try:
-            media4 = request.files['media4']
-            if media4.filename != '':
-                print('media4', media4)
-                filename4 = str(mobile_generated_id) + '_acp4.' + \
-                    media4.filename.split(".")[-1]
-                media4.save(os.path.join(UPLOAD_FOLDER_MEDIA, filename4))
-                filename4 = sitelink + filename4
-        except:
-            print('no file or invalid 4')
+        # try:
+        media4 = request.files['media4'] 
+        if media4.filename != '':
+            print('media4', media4)
+            filename4 = str(mobile_generated_id) + '_acp4.' + \
+                media4.filename.split(".")[-1]
+            media4.save(os.path.join(UPLOAD_FOLDER_MEDIA, filename4))
+            filename4 = sitelink + filename4
+        # except:
+        #     print('no file or invalid 4')
 
         filename5 = ''
         try:
