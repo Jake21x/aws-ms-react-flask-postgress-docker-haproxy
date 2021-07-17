@@ -90,7 +90,7 @@ class ApiGetChangedayOff(Resource):
                                     select storeid  from users_schedules where userid = '{u}'
                                 ) and userid != '{u}'
                             )
-                            ) and roleid = ('5')
+                            ) and roleid = '6'
                         ) and date_sync::date >= now()::date - INTERVAL '3 DAY' 
                         """.format(u=userid),result=True)
                     data =  [dict(((item.description[i][0]), value) for i, value in enumerate(row)) for row in item.fetchall() if row]
