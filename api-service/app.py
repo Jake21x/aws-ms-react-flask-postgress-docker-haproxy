@@ -189,13 +189,15 @@ api.add_resource(ApiGetUserHeirarchyAC, BASE_API_URI + '/get/users_heirarchy_ac/
 api.add_resource(ApiGetMCPNotPending, BASE_API_URI + '/get/mcp_not_pending/<string:userid>')
 api.add_resource(ApiGetMCPPending, BASE_API_URI + '/get/mcp_pending/<string:userid>')
 api.add_resource(ApiGetPendingOT, BASE_API_URI + '/get/request_ot/<string:userid>')
-api.add_resource(ApiGetAnnUsers, BASE_API_URI + '/get/Announcements_for_users/<string:userid>')
-api.add_resource(ApiGetAnnAll, BASE_API_URI + '/get/get/announcements_for_all')
-api.add_resource(ApiGetVideoAccessUser, BASE_API_URI + '/get/video_access/<string:userid>')
 
+
+api.add_resource(ApiGetVideoAccessUser, BASE_API_URI + '/get/video_access/<string:userid>')
 api.add_resource(ApiGetLeavePerMerch, BASE_API_URI + '/get/file_leave_per_mechandiser/<string:userid>')
 api.add_resource(ApiGetChangedayOff, BASE_API_URI + '/get/changed_dayoff/<string:userid>')
 api.add_resource(ApiGetAttendanceACACSUP, BASE_API_URI + '/get/attendance_ac_acsup/<string:userid>')
+api.add_resource(ApiGetAnnAll, BASE_API_URI + '/get/announcements_for_all/')
+api.add_resource(ApiGetAnnUsers, BASE_API_URI + '/get/Announcements_for_users/<string:userid>')
+
 
 # POST REQUEST
 api.add_resource(ApiPostOSA, BASE_API_URI + '/insert/shelf_availability_api') 

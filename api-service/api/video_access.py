@@ -6,7 +6,7 @@ from itertools import chain
 import psycopg2 
 
 class ApiGetVideoAccessUser(Resource):
-    def get(self):
+    def get(self,userid=None):
 
         conn = Database() 
         json_dict = request.get_json(force=True, silent=True)
