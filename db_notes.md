@@ -42,6 +42,25 @@ ON CONFLICT (tblstoreid,tblskuid) DO UPDATE
 SET (carry,app_update) = (EXCLUDED.carry, now());
 select * from tbl_sku_stocks_per_store_new order by date_transaction desc limit 200;
 
+CREATE TABLE public.m_changedayoff
+(
+id bigserial PRIMARY KEY,
+tblstoreid character varying(50) COLLATE pg_catalog."default",
+tbluserid character varying(255) COLLATE pg_catalog."default",
+tbldailystockid bigint,
+current_day_off character varying(50) COLLATE pg_catalog."default",
+mobile_generated_id character varying(255) COLLATE pg_catalog."default",
+change_by_id character varying(255) COLLATE pg_catalog."default",
+confirm_by character varying(50) COLLATE pg_catalog."default",
+confirm_status character varying(50) COLLATE pg_catalog."default",
+new_day_off character varying(50) COLLATE pg_catalog."default",
+date_confirmed date,
+confirmation character varying(50) COLLATE pg_catalog."default",
+date_created timestamp without time zone,
+date_sync timestamp with time zone DEFAULT now(),
+UNIQUE(tbluserid,mobile_generated_id)
+);
+
 CREATE TABLE public.m_team_attendance
 (
 id bigserial PRIMARY KEY,

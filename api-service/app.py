@@ -24,7 +24,7 @@ from api.stores import ApiGetAllStores,ApiGetStoreSKUs,ApiGetAssignUsersInStore
 from api.category import ApiGetCategory
 from api.user_stores_skus import ApiGetUserStoresSKU
 
-
+from api.m_changdayoff import ApiPostChangeDayoff
 from api.m_team_attendance import ApiPostTeamAttendance
 from api.logs_mobile import ApiPostLogsMobile
 from api.m_breaks import ApiPostBreaks
@@ -34,7 +34,6 @@ from api.m_mcp import ApiPostMCP
 from api.m_osa import ApiPostOSA
 from api.m_planograms import ApiPostPlanograms
 from api.m_promo_compet_acts import ApiPostPromoCompetActs
-
 
 from utils import BASE_API_URI
 
@@ -189,6 +188,7 @@ api.add_resource(ApiPostPlanograms,  BASE_API_URI + '/insert/planograms_api')
 api.add_resource(ApiPostLogsMobile, BASE_API_URI + '/insert/tbl_logs_api') 
 api.add_resource(ApiPostPromoCompetActs, BASE_API_URI + '/insert/promotions_api"') 
 api.add_resource(ApiPostFileLeave, BASE_API_URI + '/insert/file_leave_api') 
+api.add_resource(ApiPostChangeDayoff, BASE_API_URI + '/insert/change_dayoff_api') 
 api.add_resource(ApiPostBreaks, BASE_API_URI + '/insert/break_time_api') 
 
 
