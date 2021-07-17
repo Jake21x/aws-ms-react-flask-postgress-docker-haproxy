@@ -47,7 +47,7 @@ class ApiPostOSA(Resource):
                 """.format(args_str) , data , commit=True)
 
 
-            args_str = ','.join(['%s'] * len(data_store_sku)) 
+            args_str_up = ','.join(['%s'] * len(data_store_sku)) 
             conn.mogrify("""
                 insert into stores_skus (storeid,skuid,carry,date_updated) values {}
                 ON CONFLICT (storeid,skuid) DO UPDATE 
@@ -56,7 +56,7 @@ class ApiPostOSA(Resource):
                         EXCLUDED.carry,
                         EXCLUDED.date_updated
                     );
-                """.format(args_str) , data_store_sku , commit=True) 
+                """.format(args_str_up) , data_store_sku , commit=True) 
 
 
             return {'status' : 'success', 'message' : 'success'}
