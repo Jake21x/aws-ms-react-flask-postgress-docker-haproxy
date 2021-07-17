@@ -29,11 +29,11 @@ from api.video_access import ApiGetVideoAccessUser
 
 from api.users import ApiGetUserHeirarchyAC,ApiGetUserHeirarchyACSUP
  
-from api.m_changdayoff import ApiPostChangeDayoff
+from api.m_changdayoff import ApiPostChangeDayoff,ApiGetChangedayOff
 from api.m_attendance import ApiPostTeamAttendance,ApiPostIndividualAttendance
 from api.logs_mobile import ApiPostLogsMobile
 from api.m_breaks import ApiPostBreaks
-from api.m_file_leave import ApiPostFileLeave
+from api.m_file_leave import ApiPostFileLeave,ApiGetLeavePerMerch
 from api.m_facings import ApiPostFacings
 from api.m_mcp import ApiPostMCP,ApiPostTCP,ApiGetMCPPending,ApiGetMCPNotPending
 from api.m_osa import ApiPostOSA
@@ -192,7 +192,8 @@ api.add_resource(ApiGetPendingOT, BASE_API_URI + '/get/request_ot/<string:userid
 api.add_resource(ApiGetAnnUsers, BASE_API_URI + '/get/Announcements_for_users/<string:userid>')
 api.add_resource(ApiGetAnnAll, BASE_API_URI + '/get/get/announcements_for_all')
 api.add_resource(ApiGetVideoAccessUser, BASE_API_URI + '/get/video_access/<string:userid>')
-
+api.add_resource(ApiGetLeavePerMerch, BASE_API_URI + '/get/file_leave_per_mechandiser/<string:userid>')
+api.add_resource(ApiGetChangedayOff, BASE_API_URI + '/get/changed_dayoff/<string:userid>')
 
 # POST REQUEST
 api.add_resource(ApiPostOSA, BASE_API_URI + '/insert/shelf_availability_api') 

@@ -51,3 +51,24 @@ class ApiPostFileLeave(Resource):
             return {'status' : 'failed', 'message' : str(x)}
         finally:
             print("completed")
+
+class ApiGetLeavePerMerch(Resource):
+    def get(self,userid=None):
+
+        conn = Database() 
+        json_dict = request.get_json(force=True, silent=True)
+        try:  
+             
+            return []
+
+        except psycopg2.ProgrammingError as exc:
+            return {'status' : 'failed', 'message' : str(exc)}
+            
+        except BaseException as e:
+            return {'status' : 'failed', 'message' : str(e)}
+        except Exception as e:
+            x = str(e)
+            x.replace('\n', '')
+            return {'status' : 'failed', 'message' : str(x)}
+        finally:
+            print("completed")
