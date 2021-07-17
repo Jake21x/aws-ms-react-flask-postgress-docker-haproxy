@@ -36,7 +36,7 @@ class ApiGetAnnAll(Resource):
         try:  
              
             data = conn.execute("""
-                SELECT id, 
+                SELECT id as tblannouncementsid, 
                 (select CONCAT(firstname,\' \',lastname) from users where userid = announcements.tbluserid)  AS name, 
                 (select userrole from users,users_role where users.roleid = users_role.roleid AND userid = announcements.tbluserid ) AS position, 
                 announcements,
