@@ -7,6 +7,8 @@ BASE_API_URI = '/api/gmsi/mobiletracker'
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 APP_ROOT_UPLOAD = os.path.dirname(os.path.abspath('api-service'))
 UPLOAD_FOLDER = 'uploads' 
+UPLOAD_FOLDER_PHOTO = 'uploads/photo/' 
+UPLOAD_FOLDER_MEDIA = 'uploads/media/' 
 
 DEV_ROOTPASSPORT = 'root.admin-'
 DEV_PASSPORT = 'dev.admin-'

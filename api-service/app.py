@@ -32,12 +32,13 @@ from api.logs_mobile import ApiPostLogsMobile
 from api.m_breaks import ApiPostBreaks
 from api.m_file_leave import ApiPostFileLeave
 from api.m_facings import ApiPostFacings
-from api.m_mcp import ApiPostMCP
+from api.m_mcp import ApiPostMCP,ApiPostTCP
 from api.m_osa import ApiPostOSA
 from api.m_planograms import ApiPostPlanograms
 from api.m_promo_compet_acts import ApiPostPromoCompetActs
+from api.m_storeaudit import ApiPostStoreAuditData,ApiPostStoreAuditImages
 
-from utils import BASE_API_URI
+from utils import BASE_API_URI,server_generated_id,UPLOAD_FOLDER_PHOTO 
 
 app = Flask(__name__)
 jwt = JWTManager()
@@ -98,7 +99,6 @@ class HelloWorld(Resource):
     def get(self):
         return json.dumps({"Messagesssssss ":"ok "})
 class UPFILE(Resource):
-    @verify_token
     def post(self):
 
         json_dict = request.get_json(force=True, silent=True)
@@ -107,13 +107,13 @@ class UPFILE(Resource):
         for i in chain(range(0, x)): 
             use_id = server_generated_id() 
             if json_dict[i]['photo'] !=".":
-                with open(os.path.join(UPLOAD_FOLDER, use_id + ".jpg"), "wb") as fh:
-                    photo_name.append(str('uploads/' + use_id + ".jpg"), )
+                with open(os.path.join(UPLOAD_FOLDER_PHOTO, use_id + ".jpg"), "wb") as fh:
+                    photo_name.append(str(UPLOAD_FOLDER_PHOTO + use_id + ".jpg"), )
                     fh.write(base64.b64decode(json_dict[i]['photo']))
             else:
                 print('no photo')
 
-        list = os.listdir(UPLOAD_FOLDER)
+        list = os.listdir(UPLOAD_FOLDER_PHOTO)
         number_files = len(list) 
 
         print('json_dict > ',json_dict , number_files)
@@ -189,12 +189,15 @@ api.add_resource(ApiPostMCP, BASE_API_URI + '/insert/mcp_api')
 api.add_resource(ApiPostFacings, BASE_API_URI + '/insert/facings_api') 
 api.add_resource(ApiPostPlanograms,  BASE_API_URI + '/insert/planograms_api') 
 api.add_resource(ApiPostLogsMobile, BASE_API_URI + '/insert/tbl_logs_api') 
-api.add_resource(ApiPostPromoCompetActs, BASE_API_URI + '/insert/promotions_api"') 
 api.add_resource(ApiPostFileLeave, BASE_API_URI + '/insert/file_leave_api') 
 api.add_resource(ApiPostChangeDayoff, BASE_API_URI + '/insert/change_dayoff_api') 
 api.add_resource(ApiPostIndividualAttendance, BASE_API_URI + '/insert/individual_attendance_monitoring_api') 
 api.add_resource(ApiPostBreaks, BASE_API_URI + '/insert/break_time_api') 
 api.add_resource(ApiPostTeamAttendance, BASE_API_URI + '/insert/team_attendance_api') 
+api.add_resource(ApiPostPromoCompetActs, BASE_API_URI + '/insert/competitors_promotion_api') 
+api.add_resource(ApiPostStoreAuditData, BASE_API_URI + '/insert/store_audit_api')
+api.add_resource(ApiPostStoreAuditImages, BASE_API_URI +'/insert/store_audit_media_api')
+api.add_resource(ApiPostTCP, BASE_API_URI +'/insert/tcp_api')
 
 
 # API UPLOADS

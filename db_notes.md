@@ -4,14 +4,14 @@ select _ from users_role;
 select _ from areas;
 select _ from agency;
 select _ from stores;
-select _ from users;
-select _ from users*schedules;
-select * from skus;
+select \_ from users;
+select * from users*schedules;
+select _ from skus;
 select _ from category;
-select _ from category*refs;
+select * from category*refs;
 select * from stores*skus;
-select * from devices;
-select \_ from logs_logins;
+select _ from devices;
+select _ from logs_logins;
 
 -- SELECT
 -- tbl_stores.store_name
@@ -41,6 +41,95 @@ insert into tbl*sku_stocks_per_store_new select * from tbl*sku_stocks_per_store
 ON CONFLICT (tblstoreid,tblskuid) DO UPDATE
 SET (carry,app_update) = (EXCLUDED.carry, now());
 select * from tbl_sku_stocks_per_store_new order by date_transaction desc limit 200;
+
+CREATE TABLE public.m_storeaudit_media
+(
+id serial primary key,
+store_id text COLLATE pg_catalog."default",
+store_name text COLLATE pg_catalog."default",
+auditor_usercode text COLLATE pg_catalog."default",
+auditor_name text COLLATE pg_catalog."default",
+ac_usercode text COLLATE pg_catalog."default",
+ac_name text COLLATE pg_catalog."default",
+tl_usercode text COLLATE pg_catalog."default",
+tl_name text COLLATE pg_catalog."default",
+agency text COLLATE pg_catalog."default",
+media text COLLATE pg_catalog."default",
+mobile_generated_id text COLLATE pg_catalog."default",
+date_created text COLLATE pg_catalog."default",
+date_updated text COLLATE pg_catalog."default",
+date_synced timestamp without time zone DEFAULT now(),
+media1 text COLLATE pg_catalog."default",
+media2 text COLLATE pg_catalog."default",
+media3 text COLLATE pg_catalog."default",
+media4 text COLLATE pg_catalog."default",
+media5 text COLLATE pg_catalog."default"
+);
+
+CREATE TABLE public.m_storeaudit
+(
+id bigserial PRIMARY KEY,
+store_id text COLLATE pg_catalog."default",
+store_name text COLLATE pg_catalog."default",
+auditor_usercode text COLLATE pg_catalog."default",
+auditor_name text COLLATE pg_catalog."default",
+ac_usercode text COLLATE pg_catalog."default",
+ac_name text COLLATE pg_catalog."default",
+tl_usercode text COLLATE pg_catalog."default",
+tl_name text COLLATE pg_catalog."default",
+agency text COLLATE pg_catalog."default",
+avail_refil_per_sku text COLLATE pg_catalog."default",
+avail_refil_per_sku_remarks text COLLATE pg_catalog."default",
+bo_mgt_per_category text COLLATE pg_catalog."default",
+bo_mgt_per_category_remarks text COLLATE pg_catalog."default",
+vst_and_p_completed text COLLATE pg_catalog."default",
+vst_and_p_completed_remarks text COLLATE pg_catalog."default",
+vm_and_p_mass_display text COLLATE pg_catalog."default",
+vm_and_p_mass_display_remarks text COLLATE pg_catalog."default",
+vm_and_p_tactical_bin text COLLATE pg_catalog."default",
+vm_and_p_tactical_bin_remarks text COLLATE pg_catalog."default",
+vm_and_p_in_store_exec text COLLATE pg_catalog."default",
+vm_and_p_in_store_exec_remarks text COLLATE pg_catalog."default",
+vm_and_p_in_store_promo text COLLATE pg_catalog."default",
+vm_and_p_in_store_promo_remarks text COLLATE pg_catalog."default",
+bp_acp_total_acp_score text COLLATE pg_catalog."default",
+bp_acp_acp_1 text COLLATE pg_catalog."default",
+bp_acp_type_of_acp_1 text COLLATE pg_catalog."default",
+bp_acp_location_1 text COLLATE pg_catalog."default",
+bp_acp_acp_1_score text COLLATE pg_catalog."default",
+bp_acp_acp_2 text COLLATE pg_catalog."default",
+bp_acp_type_of_acp_2 text COLLATE pg_catalog."default",
+bp_acp_location_2 text COLLATE pg_catalog."default",
+bp_acp_acp_2_score text COLLATE pg_catalog."default",
+bp_acp_acp_3 text COLLATE pg_catalog."default",
+bp_acp_type_of_acp_3 text COLLATE pg_catalog."default",
+bp_acp_location_3 text COLLATE pg_catalog."default",
+bp_acp_acp_3_score text COLLATE pg_catalog."default",
+bp_acp_acp_4 text COLLATE pg_catalog."default",
+bp_acp_type_of_acp_4 text COLLATE pg_catalog."default",
+bp_acp_location_4 text COLLATE pg_catalog."default",
+bp_acp_acp_4_score text COLLATE pg_catalog."default",
+bp_acp_acp_5 text COLLATE pg_catalog."default",
+bp_acp_type_of_acp_5 text COLLATE pg_catalog."default",
+bp_acp_location_5 text COLLATE pg_catalog."default",
+bp_acp_acp_5_score text COLLATE pg_catalog."default",
+bp_acp_acp_6 text COLLATE pg_catalog."default",
+bp_acp_type_of_acp_6 text COLLATE pg_catalog."default",
+bp_acp_location_6 text COLLATE pg_catalog."default",
+bp_acp_acp_6_score text COLLATE pg_catalog."default",
+other_remarks text COLLATE pg_catalog."default",
+total_score text COLLATE pg_catalog."default",
+media text COLLATE pg_catalog."default",
+mobile_generated_id text COLLATE pg_catalog."default",
+date_created text COLLATE pg_catalog."default",
+date_updated text COLLATE pg_catalog."default",
+date_synced timestamp without time zone DEFAULT now(),
+vst_and_p_implemented text COLLATE pg_catalog."default",
+vst_and_p_implemented_remarks text COLLATE pg_catalog."default",
+UNIQUE(mobile_generated_id)
+);
+CREATE INDEX idx_m_storeaudit_s_d ON m_storeaudit (store_id,date_created);
+CREATE INDEX idx_m_storeaudite_m ON m_storeaudit (mobile_generated_id);
 
 CREATE TABLE public.m_attendance_monitoring(
 id bigserial PRIMARY KEY,
@@ -116,6 +205,35 @@ date_updated timestamp without time zone,
 date_sync timestamp with time zone DEFAULT now()
 );
 
+CREATE TABLE public.m_tcp(
+id bigserial not null,
+tblstoreid character varying(50) COLLATE pg_catalog."default",
+tbluserid character varying(255) COLLATE pg_catalog."default",
+tcp_date date,
+score integer,
+feedback character varying(200) COLLATE pg_catalog."default",
+tblmcpid integer,
+mcp_user_id character varying(200) COLLATE pg_catalog."default",
+mobile_generated_id character varying(255) COLLATE pg_catalog."default",
+date_created timestamp without time zone,
+date_updated timestamp without time zone,
+date_sync timestamp with time zone DEFAULT now(),
+\_type character varying(255) COLLATE pg_catalog."default",
+constraint m_tcp_pk primary key (id, date_created)
+) PARTITION BY RANGE (date_created);
+
+CREATE INDEX idx_m_tcp_u_y_s ON m_tcp (tbluserid,tblstoreid,tcp_date);
+CREATE INDEX idx_m_tcp_u_s ON m_tcp (tbluserid,tcp_date);
+
+CREATE TABLE m_tcp_y21p1 PARTITION OF m_tcp
+FOR VALUES FROM ('2020-12-01') TO ('2021-03-01');
+CREATE TABLE m_tcp_y21p2 PARTITION OF m_tcp
+FOR VALUES FROM ('2021-03-01') TO ('2021-06-01');
+CREATE TABLE m_tcp_y21p3 PARTITION OF m_tcp
+FOR VALUES FROM ('2021-06-01') TO ('2021-09-01');
+CREATE TABLE m_tcp_y21p4 PARTITION OF m_tcp
+FOR VALUES FROM ('2021-09-01') TO ('2021-12-01');
+
 CREATE TABLE public.m_mcp
 (
 id bigserial not null,
@@ -164,11 +282,11 @@ date_updated timestamp without time zone,
 date_sync timestamp with time zone DEFAULT now(),
 sku_generated_id character varying(255) COLLATE pg_catalog."default",
 constraint m_osa_pk primary key (id, date_created),
-UNIQUE(tbluserid,tblstoreid,sku_generated_id,date_created)
+UNIQUE(tbluserid,tblstoreid,tblskuid,date_created)
 ) PARTITION BY RANGE (date_created);
 
-CREATE INDEX idx_m_osa_m_dc ON logs_mobile (tbluserid,module,date_created);
-CREATE INDEX idx_m_osa_dc ON logs_mobile (tbluserid,date_created);
+CREATE INDEX idx_m_osa_m_dc ON m_osa (tbluserid,mobile_generated_id,date_created);
+CREATE INDEX idx_m_osa_dc ON m_osa (tbluserid,date_created);
 
 CREATE TABLE m_osa_y21p1 PARTITION OF m_osa
 FOR VALUES FROM ('2020-12-01') TO ('2021-03-01');
@@ -198,18 +316,9 @@ date_sync timestamp with time zone DEFAULT now(),
 mobile_generated_id character varying(50) COLLATE pg_catalog."default",
 constraint m_facings_pk primary key (id,date_created),
 UNIQUE(tbluserid,mobile_generated_id,date_created)
-) PARTITION BY RANGE (date_created);
+);
 
 CREATE INDEX idx_m_facings_u ON m_facings (tbluserid,tblstoreid,date_created);
-
-CREATE TABLE m_facings_y21p1 PARTITION OF m_facings
-FOR VALUES FROM ('2020-12-01') TO ('2021-03-01');
-CREATE TABLE m_facings_y21p2 PARTITION OF m_facings
-FOR VALUES FROM ('2021-03-01') TO ('2021-06-01');
-CREATE TABLE m_facings_y21p3 PARTITION OF m_facings
-FOR VALUES FROM ('2021-06-01') TO ('2021-09-01');
-CREATE TABLE m_facings_y21p4 PARTITION OF m_facings
-FOR VALUES FROM ('2021-09-01') TO ('2021-12-01');
 
 CREATE TABLE public.m_planograms
 (
@@ -228,18 +337,9 @@ date_sync timestamp with time zone DEFAULT now(),
 mobile_generated_id character varying(255) COLLATE pg_catalog."default",
 constraint m_planograms_pk primary key (id, date_created),
 UNIQUE(tbluserid,mobile_generated_id,date_created)
-) PARTITION BY RANGE (date_created);
+);
 
 CREATE INDEX idx_m_planograms_u ON m_planograms (tbluserid,tblstoreid,date_created);
-
-CREATE TABLE m_planograms_y21p1 PARTITION OF m_planograms
-FOR VALUES FROM ('2020-12-01') TO ('2021-03-01');
-CREATE TABLE m_planograms_y21p2 PARTITION OF m_planograms
-FOR VALUES FROM ('2021-03-01') TO ('2021-06-01');
-CREATE TABLE m_planograms_y21p3 PARTITION OF m_planograms
-FOR VALUES FROM ('2021-06-01') TO ('2021-09-01');
-CREATE TABLE m_planograms_y21p4 PARTITION OF m_planograms
-FOR VALUES FROM ('2021-09-01') TO ('2021-12-01');
 
 CREATE TABLE public.m_compet_acts
 (
@@ -268,24 +368,14 @@ competitor character varying(255) COLLATE pg_catalog."default",
 mobile_generated_id character varying(255) COLLATE pg_catalog."default",
 sku_price character varying(255) COLLATE pg_catalog."default",
 brand character varying(255) COLLATE pg_catalog."default",
-constraint m_compet_acts_pk primary key (id, date_created),
-UNIQUE(tbluserid,mobile_generated_id,date_created)
+UNIQUE(tbluserid,mobile_generated_id)
 ) PARTITION BY RANGE (date_created);
 
 CREATE INDEX idx_m_compet_acts_u ON m_compet_acts (tbluserid,tblstoreid,date_created);
 
-CREATE TABLE m_compet_acts_y21p1 PARTITION OF m_compet_acts
-FOR VALUES FROM ('2020-12-01') TO ('2021-03-01');
-CREATE TABLE m_compet_acts_y21p2 PARTITION OF m_compet_acts
-FOR VALUES FROM ('2021-03-01') TO ('2021-06-01');
-CREATE TABLE m_compet_acts_y21p3 PARTITION OF m_compet_acts
-FOR VALUES FROM ('2021-06-01') TO ('2021-09-01');
-CREATE TABLE m_compet_acts_y21p4 PARTITION OF m_compet_acts
-FOR VALUES FROM ('2021-09-01') TO ('2021-12-01');
-
 CREATE TABLE public.m_promo_acts
 (
-id bigserial not null,
+id bigserial primary key,
 tbluserid character varying(255) COLLATE pg_catalog."default",
 tblstoreid character varying(50) COLLATE pg_catalog."default",
 tblskuid character varying(255) COLLATE pg_catalog."default",
@@ -310,20 +400,10 @@ competitor character varying(255) COLLATE pg_catalog."default",
 mobile_generated_id character varying(255) COLLATE pg_catalog."default",
 sku_price character varying(255) COLLATE pg_catalog."default",
 brand character varying(255) COLLATE pg_catalog."default",
-constraint m_promo_acts_pk primary key (id, date_created),
-UNIQUE(tbluserid,mobile_generated_id,date_created)
-) PARTITION BY RANGE (date_created);
+UNIQUE(tbluserid,mobile_generated_id)
+);
 
 CREATE INDEX idx_m_promo_acts_u ON m_promo_acts (tbluserid,tblstoreid,date_created);
-
-CREATE TABLE m_promo_acts_y21p1 PARTITION OF m_promo_acts
-FOR VALUES FROM ('2020-12-01') TO ('2021-03-01');
-CREATE TABLE m_promo_acts_y21p2 PARTITION OF m_promo_acts
-FOR VALUES FROM ('2021-03-01') TO ('2021-06-01');
-CREATE TABLE m_promo_acts_y21p3 PARTITION OF m_promo_acts
-FOR VALUES FROM ('2021-06-01') TO ('2021-09-01');
-CREATE TABLE m_promo_acts_y21p4 PARTITION OF m_promo_acts
-FOR VALUES FROM ('2021-09-01') TO ('2021-12-01');
 
 CREATE TABLE public.m_file_leave
 (

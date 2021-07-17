@@ -1,5 +1,6 @@
-from flask_restful import Resource,request
-from utils import server_generated_id
+import os,base64
+from flask_restful import Resource,request 
+from utils import server_generated_id,UPLOAD_FOLDER_PHOTO
 from database import Database  
 from itertools import chain 
 import psycopg2 
@@ -15,14 +16,12 @@ class ApiPostIndividualAttendance(Resource):
 
             x = len(json_dict)
             data = []
-            for i in chain(range(0, x)): 
-                 
-                use_id = server_generated_id()  
-                
+            for i in chain(range(0, x)):  
+                use_id = server_generated_id() 
                 if json_dict[i]['base64_string'] !=".":
-                    with open(os.path.join(UPLOAD_FOLDER, use_id + ".jpg"), "wb") as fh:
-                        json_dict[i]['base64_string'] = str('uploads/' + use_id + ".jpg")
+                    with open(os.path.join(UPLOAD_FOLDER_PHOTO, use_id + ".jpg"), "wb") as fh: 
                         fh.write(base64.b64decode(json_dict[i]['base64_string']))
+                        json_dict[i]['base64_string'] = str(UPLOAD_FOLDER_PHOTO + use_id + ".jpg")
                 else:
                     print('no photo')
 

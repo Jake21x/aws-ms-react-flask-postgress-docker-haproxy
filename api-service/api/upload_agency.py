@@ -1,8 +1,7 @@
 import os
-from utils import server_generated_id
 import psycopg2
 import xlrd
-from utils import UPLOAD_FOLDER 
+from utils import server_generated_id,UPLOAD_FOLDER 
 import datetime
 from flask_restful import Resource,request
 from database import Database  
@@ -20,7 +19,7 @@ def UploadAgency(conn,template):
         
     if template.filename != '':
         filename = server_generated_id('agency_',2)+'.'+ template.filename.split(".")[-1]
-        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        file_path = os.path.join(UPLOAD_FOLDER+'/templates', filename)
         template.save(file_path)
 
         book = xlrd.open_workbook(file_path)

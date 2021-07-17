@@ -7,6 +7,7 @@ COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
 RUN mkdir -p uploads
+RUN mkdir -p uploads/templates
 
 COPY . .
 

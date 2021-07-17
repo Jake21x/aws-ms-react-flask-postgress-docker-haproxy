@@ -19,7 +19,7 @@ def UploadSKUs(conn,template):
         
     if template.filename != '':
         filename = server_generated_id('skus_',2)+'.'+ template.filename.split(".")[-1]
-        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        file_path = os.path.join(UPLOAD_FOLDER+'/templates', filename)
         template.save(file_path)
 
         book = xlrd.open_workbook(file_path)

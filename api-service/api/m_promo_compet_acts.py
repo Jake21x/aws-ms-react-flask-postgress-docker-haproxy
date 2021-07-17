@@ -1,5 +1,5 @@
 from flask_restful import Resource,request
-from utils import server_generated_id,UPLOAD_FOLDER
+from utils import server_generated_id,UPLOAD_FOLDER_PHOTO
 from database import Database  
 from itertools import chain 
 import psycopg2 
@@ -20,9 +20,9 @@ class ApiPostPromoCompetActs(Resource):
                 use_id = server_generated_id() if gid in ('.','') else gid
 
                 if json_dict[i]['image_path'] !=".":
-                    with open(os.path.join(UPLOAD_FOLDER, use_id + ".jpg"), "wb") as fh:
-                        json_dict[i]['image_path'] = str('uploads/' + use_id + ".jpg")
+                    with open(os.path.join(UPLOAD_FOLDER_PHOTO, use_id + ".jpg"), "wb") as fh: 
                         fh.write(base64.b64decode(json_dict[i]['image_path']))
+                        json_dict[i]['image_path'] = str(UPLOAD_FOLDER_PHOTO + use_id + ".jpg")
                 else:
                     print('no photo') 
                  
@@ -52,14 +52,27 @@ class ApiPostPromoCompetActs(Resource):
                         json_dict[i]['brand'],
                     )
 
-                pdata.append(item)
-                cdata.append(item)
+                if str(json_dict[i]['type']) == 'Competitors Act.':
+                    cdata.append(item) 
+                else:
+                    pdata.append(item)
+                
 
-            # args_str = ','.join(['%s'] * len(data)) 
-            # query = conn.mogrify("""
-            #     insert into m_planograms (tbluserid,tblstoreid, type, tblcategoryid,tblrefid, followed, notes, image_path, mobile_generated_id, date_created, date_updated) values {}
-            #     ON CONFLICT (tbluserid,mobile_generated_id) DO NOTHING;
-            #     """.format(args_str) , data , commit=True) 
+            cols = 'tbluserid, tblstoreid, tblskuid,tblcategoryid,competitor, activity_name, mechanics, sku_name, notes, scheme, price, placement, duration_type, date_from, date_to, has_effect_on_offtake, image_path,type, mobile_generated_id,sku_price, date_created, date_updated,brand'
+            if len(pdata)!=0:
+                args_str = ','.join(['%s'] * len(pdata)) 
+                query = conn.mogrify("""
+                    insert into m_promo_acts({cols}) values {ar}
+                    ON CONFLICT (tbluserid,mobile_generated_id) DO NOTHING;
+                    """.format(ar=args_str,cols=cols) , pdata , commit=True)
+
+
+            if len(cdata)!=0:
+                args_str = ','.join(['%s'] * len(cdata)) 
+                query = conn.mogrify("""
+                    insert into m_compet_acts ({cols}) values {ar}
+                    ON CONFLICT (tbluserid,mobile_generated_id) DO NOTHING;
+                    """.format(ar=args_str,cols=cols) , cdata , commit=True) 
         
             return {'status' : 'success', 'message' : 'success'}
 

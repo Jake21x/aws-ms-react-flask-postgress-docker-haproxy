@@ -1,5 +1,5 @@
 from flask_restful import Resource,request
-from utils import server_generated_id,UPLOAD_FOLDER
+from utils import server_generated_id,UPLOAD_FOLDER_PHOTO
 from database import Database  
 from itertools import chain 
 import psycopg2 
@@ -18,10 +18,10 @@ class ApiPostPlanograms(Resource):
                 gid = json_dict[i]['mobile_generated_id'] 
                 use_id = server_generated_id() if gid in ('.','') else gid
 
-                if json_dict[i]['photo'] !=".":
-                    with open(os.path.join(UPLOAD_FOLDER, use_id + ".jpg"), "wb") as fh:
-                        json_dict[i]['photo'] = str('uploads/' + use_id + ".jpg")
-                        fh.write(base64.b64decode(json_dict[i]['photo']))
+                if json_dict[i]['image_path'] !=".":
+                    with open(os.path.join(UPLOAD_FOLDER_PHOTO, use_id + ".jpg"), "wb") as fh:
+                        fh.write(base64.b64decode(json_dict[i]['image_path']))
+                        json_dict[i]['image_path'] = str(UPLOAD_FOLDER_PHOTO + use_id + ".jpg")
                 else:
                     print('no photo')
 
@@ -33,7 +33,7 @@ class ApiPostPlanograms(Resource):
                     json_dict[i]['tblrefid'],
                     json_dict[i]['followed'],
                     json_dict[i]['notes'],
-                    json_dict[i]['photo'],
+                    json_dict[i]['image_path'],
                     use_id,
                     json_dict[i]['date_created'],
                     json_dict[i]['date_updated'], 
@@ -47,10 +47,6 @@ class ApiPostPlanograms(Resource):
         
             return {'status' : 'success', 'message' : 'success'}
 
-        except psycopg2.ProgrammingError as exc:
-            conn.rollback()
-            return {'status' : 'failed', 'message' : str(exc)}
-            
         except psycopg2.ProgrammingError as exc:
             return {'status' : 'failed', 'message' : str(exc)}
             
