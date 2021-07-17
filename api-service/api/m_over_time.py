@@ -67,23 +67,21 @@ class ApiGetPendingOT(Resource):
                 elif int(tblsingleroleid[0]['tblsingleroleid']) == 6:
                     item = conn.execute("""
                         select 
-                        (select name from stores where storeid = m_file_leave.tblstoreid) as store_name,
+
                         tbluserid, 
-                        id AS tblfileleaveid, 
-                        ot_hour,
+                        (select name from stores where storeid = m_over_time.tblstoreid) as store_name,
+                        id as tblovertimeid, 
+                        ot_hour, 
                         tblstoreid,
                         tbluserid AS employee_id, 
-                        (select CONCAT(trim(firstname),' ',trim(lastname)) from users where userid = m_file_leave.tbluserid ) AS employee_name, 
-                        (select roleid from users where userid = m_file_leave.tbluserid ) AS employee_role, 
-                        leave_category, 
-                        to_char(date_of_leave_from,'yyyy-mm-dd') as date_of_leave_from, 
-                        to_char(date_of_leave_to,'yyyy-mm-dd') as date_of_leave_to, 
-                        reason, 
-                        confirmation, 
+                        (select CONCAT(trim(firstname),' ',trim(lastname)) from users where userid = m_over_time.tbluserid ) AS employee_name, 
+                        (select roleid from users where userid = m_over_time.tbluserid ) AS employee_role,
+                        reason,
+                        confirmation,
                         confirm_by, 
                         mobile_generated_id, 
-                        to_char(date_created,'yyyy-mm-dd HH24:MI:SS') 
-                        from m_file_leave where tbluserid in (
+                        to_char(date_created,\'yyyy-mm-dd HH24:MI:SS\') AS date_created
+                        from m_over_time where tbluserid in (
                         select userid as tbluserid from users where userid in (
                         select  userid  from users where userid in 
                         ( 
