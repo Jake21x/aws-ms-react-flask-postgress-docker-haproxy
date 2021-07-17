@@ -35,7 +35,18 @@ class ApiGetAnnAll(Resource):
         json_dict = request.get_json(force=True, silent=True)
         try:  
              
-            return []
+            data = conn.execute("""
+                SELECT 
+                id, 
+                (select CONCAT(firstname,\' \',lastname) from users where userid = announcements.tbluserid)  AS name, 
+                (select userrole from users,users_role where users.roleid = users_role.roleid AND userid = announcements.tbluserid ) AS position, 
+                announcements,
+                announcements.date_posted::date 
+                FROM announcements  where announcements.date_posted::date >= now()::date - INTERVAL \'3 DAY\' AND 
+                announcements.date_posted::date <= now()::date ORDER BY date_posted DESC""",result=True)
+            announcements = [dict(((data.description[i][0]), value) for i, value in enumerate(row)) for row in data.fetchall() if row]
+        
+            return announcements
 
         except psycopg2.ProgrammingError as exc:
             return {'status' : 'failed', 'message' : str(exc)}

@@ -79,7 +79,7 @@ class ApiGetLeavePerMerch(Resource):
                         tblstoreid,
                         tbluserid AS employee_id, 
                         (select CONCAT(trim(firstname),' ',trim(lastname)) from users where userid = m_file_leave.tbluserid ) AS employee_name, 
-                        (select roleid from users where userid = m_file_leave.tbluserid ) AS employee_role, 
+                        (select userrole from users,users_role where users.roleid = users_role.roleid AND userid = m_file_leave.tbluserid ) AS employee_role, 
                         leave_category, 
                         to_char(date_of_leave_from,'yyyy-mm-dd') as date_of_leave_from, 
                         to_char(date_of_leave_to,'yyyy-mm-dd') as date_of_leave_to, 

@@ -42,6 +42,16 @@ ON CONFLICT (tblstoreid,tblskuid) DO UPDATE
 SET (carry,app_update) = (EXCLUDED.carry, now());
 select * from tbl_sku_stocks_per_store_new order by date_transaction desc limit 200;
 
+CREATE TABLE public.announcements;
+(
+id serial primary key,
+announcements text COLLATE pg_catalog."default",
+tbluserid character varying(255) COLLATE pg_catalog."default",
+targets character varying(255) COLLATE pg_catalog."default",
+agencyid character varying(255) COLLATE pg_catalog."default",
+date_posted timestamp with time zone DEFAULT now()
+);
+
 CREATE TABLE public.m_storeaudit_media
 (
 id serial primary key,

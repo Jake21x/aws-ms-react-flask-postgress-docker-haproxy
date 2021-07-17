@@ -135,6 +135,10 @@ POST http://{{host}}/insert/shelf_availability_api
 Content-Type: application/json
 Authorization:  Bearer {{token}}
 
+### ANN ALL
+GET http://{{host}}/get/announcements_for_all
+Authorization:  Bearer {{token}}
+
 ### LOGS
 POST http://{{host}}/insert/tbl_logs_api
 Content-Type: application/json
