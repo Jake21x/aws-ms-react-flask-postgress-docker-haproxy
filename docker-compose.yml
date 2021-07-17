@@ -39,7 +39,7 @@ services:
       - ./api-service/reports:/home/app/reports
       - ./api-service/uploads:/home/app/uploads
       - ./api-service/app.py:/home/app/app.py
-      - ./api-service/database:/home/app/database
+      - ./api-service/database.py:/home/app/database.py
       - ./api-service/utils.py:/home/app/utils.py
 
   dashboard-nextjs:
