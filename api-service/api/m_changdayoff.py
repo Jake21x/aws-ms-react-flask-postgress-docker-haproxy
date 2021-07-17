@@ -50,6 +50,49 @@ class ApiPostChangeDayoff(Resource):
             print("completed")
 
 
+class ApiPostConfirmChangeDayoff(Resource):
+    def post(self):
+
+        conn = Database() 
+        json_dict = request.get_json(force=True, silent=True)
+        try: 
+
+
+            tbl_confirmation_change_dayoff = [] 
+
+            for c in chain(range(0, len(json_dict))): 
+                tbl_confirmation_change_dayoff.append((
+                    json_dict[c]['tbluserid'],
+                    json_dict[c]['confirmation'],
+                    json_dict[c]['confirm_by'],
+                    json_dict[c]['mobile_generated_id'],
+                    json_dict[c]['date_confirmed'],
+                ))
+
+                if json_dict[c]['confirmation'] == 'approved': 
+                    conn.execute('UPDATE users_schedules SET day_off = \''+json_dict[c]['new_day_off']+'\',date_updated = \''+json_dict[c]['updated_date']+'\'  WHERE userid = \''+json_dict[c]['tbluserid']+'\'',commit=True)
+                    conn.execute('UPDATE m_changedayoff SET confirmation = \''+json_dict[c]['confirmation']+'\', confirm_by = \''+json_dict[c]['confirm_by']+'\',  date_confirmed = \''+json_dict[c]['date_confirmed']+'\' WHERE mobile_generated_id = \''+json_dict[c]['mobile_generated_id']+'\'',commit=True)
+                else:
+                    conn.execute('UPDATE m_changedayoff SET confirmation = \''+json_dict[c]['confirmation']+'\', confirm_by = \''+json_dict[c]['confirm_by']+'\',  date_confirmed = \''+json_dict[c]['date_confirmed']+'\' WHERE mobile_generated_id = \''+json_dict[c]['mobile_generated_id']+'\'',commit=True)
+                    
+            
+            str_args = ','.join(['%s'] * len(tbl_confirmation_change_dayoff))
+            conn.mogrify('INSERT INTO confirm_changedayoff(tbluserid, confirmation, confirm_by, mobile_generated_id, date_confirmed) VALUES {}'.format(str_args), tbl_confirmation_change_dayoff,commit=True)
+            return {'status' : 'success', 'message' : 'success'}
+ 
+        except psycopg2.ProgrammingError as exc:
+            return {'status' : 'failed', 'message' : str(exc)}
+            
+        except BaseException as e:
+            return {'status' : 'failed', 'message' : str(e)}
+        except Exception as e:
+            x = str(e)
+            x.replace('\n', '')
+            return {'status' : 'failed', 'message' : str(x)}
+        finally:
+            print("completed")
+
+
 class ApiGetChangedayOff(Resource):
     def get(self,userid=None):
 
