@@ -29,7 +29,7 @@ from api.video_access import ApiGetVideoAccessUser
 
 from api.users import ApiGetUserHeirarchyAC,ApiGetUserHeirarchyACSUP
  
-from api.m_changdayoff import ApiPostChangeDayoff,ApiGetChangedayOff
+from api.m_changdayoff import ApiPostChangeDayoff,ApiGetChangedayOff,ApiPostConfirmChangeDayoff
 from api.m_attendance import ApiPostTeamAttendance,ApiPostIndividualAttendance,ApiGetAttendanceACACSUP
 from api.logs_mobile import ApiPostLogsMobile
 from api.m_breaks import ApiPostBreaks
@@ -205,7 +205,10 @@ api.add_resource(ApiPostFacings, BASE_API_URI + '/insert/facings_api')
 api.add_resource(ApiPostPlanograms,  BASE_API_URI + '/insert/planograms_api') 
 api.add_resource(ApiPostLogsMobile, BASE_API_URI + '/insert/tbl_logs_api') 
 api.add_resource(ApiPostFileLeave, BASE_API_URI + '/insert/file_leave_api') 
+
 api.add_resource(ApiPostChangeDayoff, BASE_API_URI + '/insert/change_dayoff_api') 
+api.add_resource(ApiPostConfirmChangeDayoff, BASE_API_URI +'/insert/confirm_change_dayoff_api')
+
 api.add_resource(ApiPostBreaks, BASE_API_URI + '/insert/break_time_api') 
 api.add_resource(ApiPostTeamAttendance, BASE_API_URI + '/insert/team_attendance_api') 
 api.add_resource(ApiPostPromoCompetActs, BASE_API_URI + '/insert/competitors_promotion_api') 
