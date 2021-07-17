@@ -69,7 +69,7 @@ class ApiPostConfirmLeave(Resource):
         args_str = ','.join(['%s'] * len(data)) 
         query = conn.mogrify("""
             INSERT INTO confirm_file_leave(tblfileleaveid, confirmation, confirm_by, date_confirmed,cancel_generated_id) VALUES {};
-            """.format(args_str) , tbl_confirmation , commit=True) 
+            """.format(args_str) , data , commit=True) 
     
         return {'status' : 'success', 'message' : 'success'}
 
