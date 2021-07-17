@@ -1,16 +1,15 @@
+from flask_restful import Resource,request
 from utils import server_generated_id
-from flask_restful import Resource,request  
+from database import Database  
 from itertools import chain 
-import psycopg2
-from database import Database
+import psycopg2 
 
 class ApiPostLogsMobile(Resource):
     def post(self):
 
         conn = Database() 
-
         json_dict = request.get_json(force=True, silent=True)
-
+        print(len(json_dict))
         try: 
 
             x = len(json_dict)
@@ -20,7 +19,7 @@ class ApiPostLogsMobile(Resource):
                 print('gid',str(gid)) 
 
                 json_dict[i]['mgenerated_id'] = server_generated_id() if gid in ('.','',None) else gid
-
+                print('mgenerated_id',json_dict[i]['mgenerated_id'])
                 data.append((
                     json_dict[i]['tbluserid'],
                     json_dict[i]['tblstoreid'],
@@ -41,9 +40,9 @@ class ApiPostLogsMobile(Resource):
             args_str = ','.join(['%s'] * len(data)) 
             query = conn.mogrify("""
                 insert into logs_mobile (tbluserid,tblstoreid,mgenerated_id,module, event, current_longitude, current_latitude, end_longitude, end_latitude, gps_accuracy, gps_provider, battery,netinfo,device_id, date_created) values {}
-                ON CONFLICT (tbluserid,mgenerated_id) DO NOTHING;
+                ON CONFLICT (tbluserid,mgenerated_id,date_created) DO NOTHING;
                 """.format(args_str) , data , commit=True) 
-        
+
             return {'status' : 'success', 'message' : 'success'}
 
         except psycopg2.ProgrammingError as exc:

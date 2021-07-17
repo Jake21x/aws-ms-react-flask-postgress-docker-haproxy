@@ -25,6 +25,7 @@ from api.category import ApiGetCategory
 from api.user_stores_skus import ApiGetUserStoresSKU
 
 
+from api.m_team_attendance import ApiPostTeamAttendance
 from api.logs_mobile import ApiPostLogsMobile
 from api.m_breaks import ApiPostBreaks
 from api.m_file_leave import ApiPostFileLeave
@@ -180,7 +181,7 @@ api.add_resource(ApiGetUserStoresSKU, BASE_API_URI + '/get/sku_per_store_lists/<
 
 
 # POST REQUEST
-# api.add_resource(ApiLatestUpdates, '/insert/team_attendance_api') 
+api.add_resource(ApiPostTeamAttendance, '/insert/team_attendance_api') 
 api.add_resource(ApiPostOSA, BASE_API_URI + '/insert/shelf_availability_api') 
 api.add_resource(ApiPostMCP, BASE_API_URI + '/insert/mcp_api') 
 api.add_resource(ApiPostFacings, BASE_API_URI + '/insert/facings_api') 

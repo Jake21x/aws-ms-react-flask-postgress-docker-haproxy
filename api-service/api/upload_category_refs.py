@@ -38,7 +38,7 @@ def UploadCategoryRefs(conn,template):
         args_str = ','.join(['%s'] * len(data)) 
         try:
             query = conn.mogrify("""
-            insert into category_refs (catid,refsid,cat_name,segment,brand,percent_share,facing_count,pulloutday,facing_segment,facing_brand) values {}
+            insert into category_refs (refsid,catid,cat_name,segment,brand,percent_share,facing_count,pulloutday,facing_segment,facing_brand) values {}
             ON CONFLICT (catid,refsid) DO UPDATE 
             SET (segment,brand,percent_share,facing_count,pulloutday,facing_segment,facing_brand,date_updated) = 
                 (
