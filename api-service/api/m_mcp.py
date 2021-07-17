@@ -444,7 +444,7 @@ class ApiPostMCPChangeRequest(Resource):
 
                 item = [tbluserid,tc_tcp_store_id,useTcpUserId,mobile_generated_id,schedule,schedule_type,'pending',reason,date_created,date_created]
                 args_str = ','.join(['%s'] * len(item)) 
-                conn.mogrify('INSERT INTO tbl_mcp_confirmation(tbluserid,tc_tcp_store_id,tcp_user_id,mobile_generated_id,schedule,schedule_type,adjustment_status,reason, date_created,date_updated) VALUES {} '.format(args_str),item,commit=True)
+                conn.mogrify('INSERT INTO confirm_mcp(tbluserid,tc_tcp_store_id,tcp_user_id,mobile_generated_id,schedule,schedule_type,adjustment_status,reason, date_created,date_updated) VALUES {} '.format(args_str),item,commit=True)
 
             else:
                 useTcpUserId = 'NULL'
@@ -453,7 +453,7 @@ class ApiPostMCPChangeRequest(Resource):
 
                 print('mcp>update>quest', mobile_generated_id,
                     conf_data[0]['id'], reason, tcp_user_id, useTcpUserId) 
-                conn.execute("UPDATE tbl_mcp_confirmation  SET tcp_user_id = "+useTcpUserId+", schedule = '{a}',schedule_type = '{b}',tc_tcp_store_id = '{c}',reason = '{d}',date_created='{e}',date_updated='{f}',date_sync ='{g}' WHERE mobile_generated_id = '{h}' AND id ='{i}'".format(a=schedule, b=schedule_type, c=tc_tcp_store_id, d=reason, e=date_created, f=date_created, g=date_created, h=mobile_generated_id, i=conf_data[0]['id']),commit=True)
+                conn.execute("UPDATE confirm_mcp  SET tcp_user_id = "+useTcpUserId+", schedule = '{a}',schedule_type = '{b}',tc_tcp_store_id = '{c}',reason = '{d}',date_created='{e}',date_updated='{f}',date_sync ='{g}' WHERE mobile_generated_id = '{h}' AND id ='{i}'".format(a=schedule, b=schedule_type, c=tc_tcp_store_id, d=reason, e=date_created, f=date_created, g=date_created, h=mobile_generated_id, i=conf_data[0]['id']),commit=True)
                 
             return {'status' : 'success', 'message' : 'success'}
 
