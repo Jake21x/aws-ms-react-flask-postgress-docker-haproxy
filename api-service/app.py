@@ -184,7 +184,6 @@ api.add_resource(ApiGetUserHeirarchyAC, BASE_API_URI + '/get/users_heirarchy_ac/
 
 
 # POST REQUEST
-api.add_resource(ApiPostTeamAttendance, '/insert/team_attendance_api') 
 api.add_resource(ApiPostOSA, BASE_API_URI + '/insert/shelf_availability_api') 
 api.add_resource(ApiPostMCP, BASE_API_URI + '/insert/mcp_api') 
 api.add_resource(ApiPostFacings, BASE_API_URI + '/insert/facings_api') 
@@ -195,6 +194,7 @@ api.add_resource(ApiPostFileLeave, BASE_API_URI + '/insert/file_leave_api')
 api.add_resource(ApiPostChangeDayoff, BASE_API_URI + '/insert/change_dayoff_api') 
 api.add_resource(ApiPostIndividualAttendance, BASE_API_URI + '/insert/individual_attendance_monitoring_api') 
 api.add_resource(ApiPostBreaks, BASE_API_URI + '/insert/break_time_api') 
+api.add_resource(ApiPostTeamAttendance, BASE_API_URI + '/insert/team_attendance_api') 
 
 
 # API UPLOADS
