@@ -79,7 +79,7 @@ class ApiGetChangedayOff(Resource):
                         confirm_by,
                         mobile_generated_id,
                         change_by_id,
-                        to_char(date_created,'yyyy-mm-dd HH24:MI:SS') AS date_create
+                        to_char(date_created,'yyyy-mm-dd HH24:MI:SS') AS date_created
                         from m_changedayoff where tbluserid in (
                             select userid as tbluserid from users where userid in (
                             select  userid  from users where userid in 

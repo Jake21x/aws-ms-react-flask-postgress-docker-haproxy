@@ -70,6 +70,7 @@ class ApiGetPendingOT(Resource):
                         (select name from stores where storeid = m_file_leave.tblstoreid) as store_name,
                         tbluserid, 
                         id AS tblfileleaveid, 
+                        ot_hour,
                         tblstoreid,
                         tbluserid AS employee_id, 
                         (select CONCAT(trim(firstname),' ',trim(lastname)) from users where userid = m_file_leave.tbluserid ) AS employee_name, 
