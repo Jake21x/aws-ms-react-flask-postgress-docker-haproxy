@@ -67,6 +67,8 @@ class ApiGetChangedayOff(Resource):
                     data =  []
 
                 elif int(tblsingleroleid[0]['tblsingleroleid']) == 6:
+                    data = [] 
+                elif int(tblsingleroleid[0]['tblsingleroleid']) == 5:
                     item = conn.execute("""
                         select 
                         tbluserid, 
@@ -92,35 +94,6 @@ class ApiGetChangedayOff(Resource):
                         ) and date_sync::date >= now()::date - INTERVAL '3 DAY' 
                         """.format(u=userid),result=True)
                     data =  [dict(((item.description[i][0]), value) for i, value in enumerate(row)) for row in item.fetchall() if row]
-
-                elif int(tblsingleroleid[0]['tblsingleroleid']) == 5:
-                    print('request for 5 acsup')
-                    # item = conn.execute("""
-                    #     select 
-                    #     tbluserid, 
-                    #     (select CONCAT(trim(firstname),' ',trim(lastname)) from users where userid = m_changedayoff.tbluserid ) AS employee_name, 
-                    #     tblstoreid,
-                    #     (select name from stores where storeid = m_changedayoff.tblstoreid) as store_name,
-                    #     current_day_off,
-                    #     new_day_off,
-                    #     confirmation,
-                    #     confirm_by,
-                    #     mobile_generated_id,
-                    #     change_by_id,
-                    #     to_char(date_created,'yyyy-mm-dd HH24:MI:SS') AS date_create
-                    #     from m_changedayoff where tbluserid in (
-                    #         select userid as tbluserid from users where userid in (
-                    #         select  userid  from users where userid in 
-                    #         ( 
-                    #             select userid from users_schedules where storeid in (
-                    #                 select storeid  from users_schedules where userid = 'DPUSER001'
-                    #             ) and userid != 'DPUSER001'
-                    #         )
-                    #         ) and roleid = '6'
-                    #     ) and date_sync::date >= now()::date - INTERVAL '3 DAY' 
-                    #     """.format(userid),result=True)
-                    # data =  [dict(((item.description[i][0]), value) for i, value in enumerate(row)) for row in item.fetchall() if row]
-                    data = []
 
             return data
 

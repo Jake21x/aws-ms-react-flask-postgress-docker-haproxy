@@ -494,7 +494,50 @@ class ApiGetMCPNotPending(Resource):
         json_dict = request.get_json(force=True, silent=True)
         try:  
              
-            return []
+            data = []
+            user = conn.execute('SELECT roleid as tblsingleroleid,agencyid FROM users WHERE userid = \'{}\''.format(userid) ,result=True )
+
+            tblsingleroleid = [dict(((user.description[i][0]), value) for i, value in enumerate(row)) for row in user.fetchall() if row]
+
+            if len(tblsingleroleid) !=0:
+                if int(tblsingleroleid[0]['tblsingleroleid']) == 8:
+                    print('request for 8 manager')
+                    data =  [] 
+                elif int(tblsingleroleid[0]['tblsingleroleid']) == 6:
+                    data = []
+                elif int(tblsingleroleid[0]['tblsingleroleid']) == 5:
+                    item = conn.execute("""
+                        select  
+                        tbluserid, 
+                        mobile_generated_id, 
+                        adjustment_status, 
+                        confirmed_by, 
+                        reason , 
+                        (select CONCAT(trim(firstname),' ',trim(lastname)) from users where userid = confirm_mcp.tbluserid ) AS mpc_user,
+                        schedule ,
+                        schedule_type,
+                        office,
+                        tc_tcp_store_id,
+                        (select name from stores where storeid = confirm_mcp.tblstoreid) AS tc_tcp_store_name,
+                        tcp_user_id,
+                        (select userrole from users,users_role where users.roleid = users_role.roleid AND userid = confirm_mcp.tbluserid ) AS userrole,
+                         (select CONCAT(trim(firstname),' ',trim(lastname)) from users where userid = confirm_mcp.tcp_user_id ) AS tcp_user, 
+                        date_created, 
+                        date_updated   
+                        from confirm_mcp where tbluserid in (
+                        select userid as tbluserid from users where userid in (
+                        select  userid  from users where userid in 
+                        ( 
+                            select userid from users_schedules where storeid in (
+                                select storeid  from users_schedules where userid = '{u}'
+                            ) and userid != '{u}'
+                        )
+                        ) and roleid = '5'
+                        ) and date_sync::date >= now()::date - INTERVAL '3 DAY' 
+                        """.format(u=userid),result=True)
+                    data =  [dict(((item.description[i][0]), value) for i, value in enumerate(row)) for row in item.fetchall() if row]
+
+            return jsonify(data)
 
         except psycopg2.ProgrammingError as exc:
             return {'status' : 'failed', 'message' : str(exc)}

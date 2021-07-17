@@ -30,10 +30,13 @@
 # @password = dev.admin-123456
 # @device_id = d81edde9172f-caba8fde38179625234
 # @appversion = v03032020
+
+#torgphadmin
+#MNC2021
 # @device_info = OPPO-CPH1909
 @passport = dev.admin-
-@username = torgphadmin
-@password = MNC2021
+@username = dev.admin-DP-ACSUP
+@password = dev.admin-MNC2021
 @device_id = caba8fde38179625234
 @imei = d81edde9172f-caba8fde38179625234
 @appversion = v03032020
@@ -148,6 +151,11 @@ Authorization:  Bearer {{token}}
 
 ### CHANGE DAY OFF REQ
 GET http://{{host}}/get/changed_dayoff/DPUSER001
+Authorization:  Bearer {{token}}
+### Leave req
+
+### REQ OT
+GET http://{{host}}/get/request_ot/DPUSER001
 Authorization:  Bearer {{token}}
 ### Leave req
 GET http://{{host}}/get/file_leave_per_mechandiser/DPUSER001
