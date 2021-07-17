@@ -30,7 +30,7 @@ from api.video_access import ApiGetVideoAccessUser
 from api.users import ApiGetUserHeirarchyAC,ApiGetUserHeirarchyACSUP
  
 from api.m_changdayoff import ApiPostChangeDayoff,ApiGetChangedayOff
-from api.m_attendance import ApiPostTeamAttendance,ApiPostIndividualAttendance
+from api.m_attendance import ApiPostTeamAttendance,ApiPostIndividualAttendance,ApiGetAttendanceACACSUP
 from api.logs_mobile import ApiPostLogsMobile
 from api.m_breaks import ApiPostBreaks
 from api.m_file_leave import ApiPostFileLeave,ApiGetLeavePerMerch
@@ -40,7 +40,7 @@ from api.m_osa import ApiPostOSA
 from api.m_planograms import ApiPostPlanograms
 from api.m_promo_compet_acts import ApiPostPromoCompetActs
 from api.m_storeaudit import ApiPostStoreAuditData,ApiPostStoreAuditImages
-from api.m_over_time import ApiGetPendingOT
+from api.m_over_time import ApiPostOvertime,ApiGetPendingOT
 
 from utils import BASE_API_URI,server_generated_id,UPLOAD_FOLDER_PHOTO 
 
@@ -192,8 +192,10 @@ api.add_resource(ApiGetPendingOT, BASE_API_URI + '/get/request_ot/<string:userid
 api.add_resource(ApiGetAnnUsers, BASE_API_URI + '/get/Announcements_for_users/<string:userid>')
 api.add_resource(ApiGetAnnAll, BASE_API_URI + '/get/get/announcements_for_all')
 api.add_resource(ApiGetVideoAccessUser, BASE_API_URI + '/get/video_access/<string:userid>')
+
 api.add_resource(ApiGetLeavePerMerch, BASE_API_URI + '/get/file_leave_per_mechandiser/<string:userid>')
 api.add_resource(ApiGetChangedayOff, BASE_API_URI + '/get/changed_dayoff/<string:userid>')
+api.add_resource(ApiGetAttendanceACACSUP, BASE_API_URI + '/get/attendance_ac_acsup/<string:userid>')
 
 # POST REQUEST
 api.add_resource(ApiPostOSA, BASE_API_URI + '/insert/shelf_availability_api') 
@@ -210,6 +212,7 @@ api.add_resource(ApiPostStoreAuditData, BASE_API_URI + '/insert/store_audit_api'
 api.add_resource(ApiPostStoreAuditImages, BASE_API_URI +'/insert/store_audit_media_api')
 api.add_resource(ApiPostTCP, BASE_API_URI +'/insert/tcp_api')
 api.add_resource(ApiPostIndividualAttendance, BASE_API_URI +'/insert/individual_attendance_api')
+api.add_resource(ApiPostOvertime, BASE_API_URI +'/insert/request_over_time_api')
 
 
 # API UPLOADS

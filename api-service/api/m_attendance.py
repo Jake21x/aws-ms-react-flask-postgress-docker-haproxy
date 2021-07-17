@@ -117,9 +117,39 @@ class ApiGetAttendanceACACSUP(Resource):
 
         conn = Database() 
         json_dict = request.get_json(force=True, silent=True)
-        try:  
+        try:   
+            
+            cursor = conn.execute("""
+            select remarks from m_team_attendance where tbluserid in ( select 
+                userid as tbluserid  
+                from users where userid in 
+                ( 
+                    select userid from users_schedules where storeid in (
+                        select storeid  from users_schedules where userid = 'DPUSER001'
+                    ) and userid != 'DPUSER001'
+                )
+            ) and date_sync::date = DATE(TO_CHAR(now(),'yyyy-mm-dd'));
+            """.format(u=userid),result=True)
              
-            return []
+            data  = [dict(((cursor.description[i][0]), value) for i, value in enumerate(row)) for row in cursor.fetchall()]
+
+
+            conso_np = list(filter(lambda att: str(att['remarks']) == 'no report', data))
+            conso_present = list(filter(lambda att: str(att['remarks']) == 'present', data))
+            conso_absent = list(filter(lambda att: str(att['remarks']) == 'absent', data))
+
+            print('data',data)
+
+
+            return [
+                    {
+                        "number_of_stores": len(data),
+                        "server_id": server_generated_id("SRATT"),
+                        "total_absent": len(conso_absent),
+                        "total_noreport": len(conso_np),
+                        "total_present": len(conso_present)
+                    }
+                ]
 
         except psycopg2.ProgrammingError as exc:
             return {'status' : 'failed', 'message' : str(exc)}

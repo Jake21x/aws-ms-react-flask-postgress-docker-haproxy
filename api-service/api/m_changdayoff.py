@@ -56,8 +56,73 @@ class ApiGetChangedayOff(Resource):
         conn = Database() 
         json_dict = request.get_json(force=True, silent=True)
         try:  
-             
-            return []
+            data = []
+            user = conn.execute('SELECT roleid as tblsingleroleid,agencyid FROM users WHERE userid = \'{}\''.format(userid) ,result=True )
+
+            tblsingleroleid = [dict(((user.description[i][0]), value) for i, value in enumerate(row)) for row in user.fetchall() if row]
+
+            if len(tblsingleroleid) !=0:
+                if int(tblsingleroleid[0]['tblsingleroleid']) == 8:
+                    print('request for 8 manager')
+                    data =  []
+
+                elif int(tblsingleroleid[0]['tblsingleroleid']) == 6:
+                    item = conn.execute("""
+                        select 
+                        tbluserid, 
+                        (select CONCAT(trim(firstname),' ',trim(lastname)) from users where userid = m_changedayoff.tbluserid ) AS employee_name, 
+                        tblstoreid,
+                        (select name from stores where storeid = m_changedayoff.tblstoreid) as store_name,
+                        current_day_off,
+                        new_day_off,
+                        confirmation,
+                        confirm_by,
+                        mobile_generated_id,
+                        change_by_id,
+                        to_char(date_created,'yyyy-mm-dd HH24:MI:SS') AS date_create
+                        from m_changedayoff where tbluserid in (
+                            select userid as tbluserid from users where userid in (
+                            select  userid  from users where userid in 
+                            ( 
+                                select userid from users_schedules where storeid in (
+                                    select storeid  from users_schedules where userid = '{u}'
+                                ) and userid != '{u}'
+                            )
+                            ) and roleid = ('5')
+                        ) and date_sync::date >= now()::date - INTERVAL '3 DAY' 
+                        """.format(u=userid),result=True)
+                    data =  [dict(((item.description[i][0]), value) for i, value in enumerate(row)) for row in item.fetchall() if row]
+
+                elif int(tblsingleroleid[0]['tblsingleroleid']) == 5:
+                    print('request for 5 acsup')
+                    # item = conn.execute("""
+                    #     select 
+                    #     tbluserid, 
+                    #     (select CONCAT(trim(firstname),' ',trim(lastname)) from users where userid = m_changedayoff.tbluserid ) AS employee_name, 
+                    #     tblstoreid,
+                    #     (select name from stores where storeid = m_changedayoff.tblstoreid) as store_name,
+                    #     current_day_off,
+                    #     new_day_off,
+                    #     confirmation,
+                    #     confirm_by,
+                    #     mobile_generated_id,
+                    #     change_by_id,
+                    #     to_char(date_created,'yyyy-mm-dd HH24:MI:SS') AS date_create
+                    #     from m_changedayoff where tbluserid in (
+                    #         select userid as tbluserid from users where userid in (
+                    #         select  userid  from users where userid in 
+                    #         ( 
+                    #             select userid from users_schedules where storeid in (
+                    #                 select storeid  from users_schedules where userid = 'DPUSER001'
+                    #             ) and userid != 'DPUSER001'
+                    #         )
+                    #         ) and roleid = '6'
+                    #     ) and date_sync::date >= now()::date - INTERVAL '3 DAY' 
+                    #     """.format(userid),result=True)
+                    # data =  [dict(((item.description[i][0]), value) for i, value in enumerate(row)) for row in item.fetchall() if row]
+                    data = []
+
+            return data
 
         except psycopg2.ProgrammingError as exc:
             return {'status' : 'failed', 'message' : str(exc)}

@@ -142,7 +142,17 @@ Authorization:  Bearer {{token}}
 
 []
 
-[]
+### CHANGE DAY OFF REQ
+GET http://{{host}}/get/changed_dayoff/DPUSER001
+Authorization:  Bearer {{token}}
+### Leave req
+GET http://{{host}}/get/file_leave_per_mechandiser/DPUSER001
+Authorization:  Bearer {{token}}
+
+### ATT AC ACSUP
+GET http://{{host}}/get/attendance_ac_acsup/s100001
+Authorization:  Bearer {{token}}
+
 ### ATTENDANCE
 POST http://{{host}}/insert/team_attendance_api
 Content-Type: application/json
