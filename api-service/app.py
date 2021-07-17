@@ -24,6 +24,8 @@ from api.appversion import ApiAppVersion
 from api.stores import ApiGetAllStores,ApiGetStoreSKUs,ApiGetAssignUsersInStore
 from api.category import ApiGetCategory
 from api.user_stores_skus import ApiGetUserStoresSKU
+from api.announcement import ApiGetAnnUsers,ApiGetAnnAll
+from api.video_access import ApiGetVideoAccessUser
 
 from api.users import ApiGetUserHeirarchyAC,ApiGetUserHeirarchyACSUP
  
@@ -33,7 +35,7 @@ from api.logs_mobile import ApiPostLogsMobile
 from api.m_breaks import ApiPostBreaks
 from api.m_file_leave import ApiPostFileLeave
 from api.m_facings import ApiPostFacings
-from api.m_mcp import ApiPostMCP,ApiPostTCP,ApiGetMCPPending
+from api.m_mcp import ApiPostMCP,ApiPostTCP,ApiGetMCPPending,ApiGetMCPNotPending
 from api.m_osa import ApiPostOSA
 from api.m_planograms import ApiPostPlanograms
 from api.m_promo_compet_acts import ApiPostPromoCompetActs
@@ -184,8 +186,12 @@ api.add_resource(ApiGetUserStoresSKU, BASE_API_URI + '/get/sku_per_store_lists/<
 api.add_resource(ApiGetUserHeirarchyACSUP, BASE_API_URI + '/get/users_heirarchy_ac_acsup/<string:userid>')
 api.add_resource(ApiGetUserHeirarchyAC, BASE_API_URI + '/get/users_heirarchy_ac/<string:userid>')
 
-api.add_resource(ApiGetMCPPending, BASE_API_URI + '/get/mcp_not_pending/<string:userid>')
+api.add_resource(ApiGetMCPNotPending, BASE_API_URI + '/get/mcp_not_pending/<string:userid>')
+api.add_resource(ApiGetMCPPending, BASE_API_URI + '/get/mcp_pending/<string:userid>')
 api.add_resource(ApiGetPendingOT, BASE_API_URI + '/get/request_ot/<string:userid>')
+api.add_resource(ApiGetAnnUsers, BASE_API_URI + '/get/Announcements_for_users/<string:userid>')
+api.add_resource(ApiGetAnnAll, BASE_API_URI + '/get/get/announcements_for_all')
+api.add_resource(ApiGetVideoAccessUser, BASE_API_URI + '/get/video_access/<string:userid>')
 
 
 # POST REQUEST
