@@ -7,6 +7,9 @@ services:
       - "8080:8080"
     volumes:
       - ./haproxy:/usr/local/etc/haproxy
+    logging:
+      options:
+        max-size: 50m
 
   api-service1:
     image: api-service
@@ -24,6 +27,9 @@ services:
       - ./api-service/app.py:/home/app/app.py
       - ./api-service/database:/home/app/database
       - ./api-service/utils.py:/home/app/utils.py
+    logging:
+      options:
+        max-size: 50m
 
   api-service2:
     image: api-service
@@ -41,6 +47,9 @@ services:
       - ./api-service/app.py:/home/app/app.py
       - ./api-service/database.py:/home/app/database.py
       - ./api-service/utils.py:/home/app/utils.py
+    logging:
+      options:
+        max-size: 50m
 
   dashboard-nextjs:
     image: dashboard-nextjs
@@ -55,3 +64,6 @@ services:
       - /app/.next
     ports:
       - "3000:3000"
+    logging:
+      options:
+        max-size: 50m
