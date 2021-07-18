@@ -72,7 +72,8 @@ def LoginAuth(conn,args):
                     employeeid,
                     roleid,userid,
                     (select userrole from users_role where roleid = users.roleid),
-                    agencyid
+                    agencyid,
+                    (select name from agency where agencyid = users.agencyid) as agency_name
                     FROM users WHERE 
                     username =  \'{u}\' AND 
                     password = \'{p}\';""".format(u=_user, p=m)
@@ -142,6 +143,8 @@ def LoginAuth(conn,args):
             "lastname": data[0]["lastname"],
             "employee_id": data[0]['employeeid'],
             "user_role": data[0]['userrole'], 
+            "agencyid":data[0]['agencyid'],
+            "agency_name":data[0]['agency_name'],
             "image_path":'.',
             "access_token":access_token,
             "status": "success",

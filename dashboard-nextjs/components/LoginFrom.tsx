@@ -1,3 +1,4 @@
+import { getAsUriParameters } from "@/utils/helpers";
 import { Button } from "@chakra-ui/button";
 import { Input } from "@chakra-ui/input";
 import { Box, Text } from "@chakra-ui/layout";
@@ -19,24 +20,19 @@ function LoginFrom() {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = (form: TLogin) => {
-    // http://34.221.170.139:8080
-    const url_params = `/api/gmsi/mobiletracker/login_api?username=${form.username}&password=${form.password}&device_id=${form.device_id}&appversion=${form.appversion}&device_info=${form.device_info}`;
-    console.log("url_params", url_params);
+    const url = `/login_api?${getAsUriParameters(form)}`;
+    console.log({ url });
     setLoading(true);
-    axios
-      .post("/api/auth", {
-        url: url_params,
-      })
-      .then(
-        (res) => {
-          console.log("res", res);
-          setLoading(false);
-        },
-        (err: AxiosError) => {
-          setLoading(false);
-          console.log("error", err.message);
-        }
-      );
+    axios.post("/api/auth", { url }).then(
+      (res) => {
+        console.log("res", res);
+        setLoading(false);
+      },
+      (err: AxiosError) => {
+        setLoading(false);
+        console.log("error", err.message);
+      }
+    );
     console.log("onSubmit", form);
   };
 
