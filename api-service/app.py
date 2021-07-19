@@ -67,7 +67,6 @@ def verify(username, password):
         return False
     return USER_DATA.get(username) == password
 
-
 class Login(Resource): 
     @auth.login_required
     def get(self):

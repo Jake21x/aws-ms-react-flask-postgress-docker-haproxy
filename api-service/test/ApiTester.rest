@@ -1,9 +1,10 @@
 ### SetUp 
-@baselocal = localhost:8080
-@local = localhost:8080/api/gmsi/mobiletracker
-@server = 34.221.170.139:8080/api/gmsi/mobiletracker
+@docker=172.17.0.2:8080
+@local = localhost:8080
+@server = 34.221.170.139:8080
+@base = /api/gmsi/mobiletracker
  
-@host = {{local}}
+@host = {{docker}}{{base}}
 
 #gms@drive
 #kaelmercury
