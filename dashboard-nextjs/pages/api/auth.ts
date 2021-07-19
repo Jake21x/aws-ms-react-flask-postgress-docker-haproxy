@@ -8,10 +8,7 @@ export default function (req: NextApiRequest, res: NextApiResponse) {
   const url = req.body.url;
   const use_ip = getIp(req.headers.host);
   const loginURL = "http://" + use_ip + process.env.API_BASE_URL + url;
-  console.log("base", {
-    host: req.headers.host,
-    url: loginURL,
-  });
+  console.log("base", loginURL);
 
   axios.post(loginURL).then(
     (data) => {

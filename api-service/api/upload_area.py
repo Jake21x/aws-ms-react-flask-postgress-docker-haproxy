@@ -3,6 +3,14 @@ from utils import server_generated_id
 import psycopg2
 import xlrd
 from utils import UPLOAD_FOLDER
+from flask_restful import Resource,request
+from database import Database 
+
+class ApiUploadArea(Resource):
+    def post(self):   
+        conn = Database() 
+        template = request.files['file']  
+        return UploadArea(conn,template)
 
 def UploadArea(conn,template): 
     data = []

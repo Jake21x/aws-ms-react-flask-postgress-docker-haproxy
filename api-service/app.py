@@ -10,13 +10,13 @@ from database import Database
 
 from api.upload_agency import ApiUploadAgency
 from api.upload_skus import ApiUploadSKUs
-from api.upload_category import UploadCategory
-from api.upload_category_refs import UploadCategoryRefs
-from api.upload_area import UploadArea
-from api.upload_chain import UploadChain
-from api.upload_stores import UploadStores
-from api.upload_users import UploadUsers
-from api.upload_users_schedules import UploadUsersSchedules
+from api.upload_category import ApiUploadCategory
+from api.upload_category_refs import ApiUploadCategoryRefs
+from api.upload_area import ApiUploadArea
+from api.upload_chain import ApiUploadChain
+from api.upload_stores import ApiUploadStores
+from api.upload_users import ApiUploadUsers
+from api.upload_users_schedules import ApiUploadUsersSchedules
 from api.auth import ApiAuth
 from api.skus import ApiGetSKUs
 from api.latestupdates import ApiLatestUpdates
@@ -125,44 +125,10 @@ class UPFILE(Resource):
 
 class STATUS(Resource):
     def get(self):    
-        data = conn.execute('select version()') 
+        # data = conn.execute('select version()') 
+        data = []
         print('result',data) 
         return {"result ":data}
-
-class ApiUploadCategoryRefs(Resource):
-    def post(self):
-        template = request.files['file']  
-        return UploadCategoryRefs(conn,template) 
-
-class ApiUploadCategory(Resource):
-    def post(self):
-        template = request.files['file']  
-        return UploadCategory(conn,template) 
-
-class ApiUploadStores(Resource):
-    def post(self):
-        template = request.files['file']  
-        return UploadStores(conn,template) 
-class ApiUploadUsers(Resource):
-    def post(self):
-        template = request.files['file']  
-        return UploadUsers(conn,template) 
-
-class ApiUploadUsersSchedules(Resource):
-    def post(self):   
-        template = request.files['file']  
-        return UploadUsersSchedules(conn,template) 
- 
-
-class ApiUploadArea(Resource):
-    def post(self):   
-        template = request.files['file']  
-        return UploadArea(conn,template) 
-
-class ApiUploadChain(Resource):
-    def post(self):   
-        template = request.files['file']  
-        return UploadChain(conn,template)
 
 
 api.add_resource(Login, '/api/login')
@@ -182,8 +148,8 @@ api.add_resource(ApiGetCategory, BASE_API_URI + '/get/category_api')
 api.add_resource(ApiGetStoreSKUs, BASE_API_URI + '/get/store_api/<string:storeid>')
 api.add_resource(ApiGetAssignUsersInStore, BASE_API_URI + '/get/assigned_user_in_store_api/<string:storeid>')
 api.add_resource(ApiGetUserStoresSKU, BASE_API_URI + '/get/sku_per_store_lists/<string:userid>')
-api.add_resource(ApiGetUserHeirarchyAC, BASE_API_URI + '/get/users_heirarchy_ac_acsup/<string:userid>')
-api.add_resource(ApiGetUserHeirarchyACSUP, BASE_API_URI + '/get/users_heirarchy_ac/<string:userid>')
+api.add_resource(ApiGetUserHeirarchyACSUP, BASE_API_URI + '/get/users_heirarchy_ac_acsup/<string:userid>')
+api.add_resource(ApiGetUserHeirarchyAC, BASE_API_URI + '/get/users_heirarchy_ac/<string:userid>')
 
 api.add_resource(ApiGetMCPNotPending, BASE_API_URI + '/get/mcp_not_pending/<string:userid>')
 api.add_resource(ApiGetMCPPending, BASE_API_URI + '/get/mcp_pending/<string:userid>')

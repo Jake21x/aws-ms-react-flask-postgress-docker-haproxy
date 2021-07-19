@@ -9,7 +9,7 @@ class ApiGetUserHeirarchyACSUP(Resource):
             select 
             userid as tbluserid,
             concat(firstname,' ',lastname) as mechandiser, 
-            (select userrole from users_role where roleid = users.roleid) users_role 
+            (select userrole from users_role where roleid = users.roleid) user_role 
             from users where userid in 
                 ( 
                     select userid from users_schedules where storeid in (
@@ -37,13 +37,13 @@ class ApiGetUserHeirarchyAC(Resource):
             select 
             userid as tbluserid,
             concat(firstname,' ',lastname) as mechandiser, 
-            (select userrole from users_role where roleid = users.roleid) users_role 
+            (select userrole from users_role where roleid = users.roleid) user_role 
             from users where userid in 
                 ( 
                     select userid from users_schedules where storeid in (
                         select storeid  from users_schedules where userid = '{u}'
                     ) and userid != '{u}'
-                ) and roleid not in ('1','2','7','12','11');
+                ) and roleid in ('1','2','7','12','11');
             """.format(u=userid),result=True)
              
         data  = [dict(((cursor.description[i][0]), value) for i, value in enumerate(row)) for row in cursor.fetchall()]

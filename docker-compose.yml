@@ -51,16 +51,31 @@ services:
       options:
         max-size: 50m
 
-  dashboard-nextjs:
-    image: dashboard-nextjs
+  # dashboard-nextjs:
+  #   image: dashboard-nextjs
+  #   restart: always
+  #   environment:
+  #     - CHOKIDAR_USEPOLLING=true
+  #   stdin_open: true
+  #   volumes:
+  #     - ./dashboard-nextjs:/app
+  #     - /app/node_modules
+  #     - /app/.next
+  #   ports:
+  #     - "3000:3000"
+  #   logging:
+  #     options:
+  #       max-size: 50m
+
+  dashboard:
+    image: dashboard
     restart: always
     environment:
       - CHOKIDAR_USEPOLLING=true
     stdin_open: true
     volumes:
-      - ./dashboard-nextjs:/app
+      - ./dashboard:/app
       - /app/node_modules
-      - /app/.next
     ports:
       - "3000:3000"
     logging:

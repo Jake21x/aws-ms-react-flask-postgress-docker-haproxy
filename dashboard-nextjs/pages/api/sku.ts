@@ -5,9 +5,10 @@ import axios, { AxiosError } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default function (req: NextApiRequest, res: NextApiResponse) {
+  const url = req.body.url;
   const use_ip = getIp(req.headers.host);
-  const url = "http://" + use_ip + process.env.API_BASE_URL + "/get/sku";
-  axios.get(url).then(
+  const baseUrl = "http://" + use_ip + process.env.API_BASE_URL + url;
+  axios.post(baseUrl).then(
     (data) => {
       res.status(200).json(data.data);
     },

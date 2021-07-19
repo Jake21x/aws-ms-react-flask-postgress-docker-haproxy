@@ -4,6 +4,14 @@ import psycopg2
 import xlrd
 from utils import UPLOAD_FOLDER
 import hashlib
+from flask_restful import Resource,request
+from database import Database 
+
+class ApiUploadUsers(Resource):
+    def post(self):
+        conn = Database()  
+        template = request.files['file']  
+        return UploadUsers(conn,template) 
 
 def UploadUsers(conn,template): 
     data = []

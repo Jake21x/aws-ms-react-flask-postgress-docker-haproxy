@@ -2,8 +2,14 @@ import os
 from utils import server_generated_id
 import psycopg2
 import xlrd
-from utils import UPLOAD_FOLDER
-import hashlib
+from utils import UPLOAD_FOLDER 
+from flask_restful import Resource,request
+from database import Database 
+class ApiUploadCategoryRefs(Resource):
+    def post(self):
+        conn = Database() 
+        template = request.files['file']  
+        return UploadCategoryRefs(conn,template) 
 
 def UploadCategoryRefs(conn,template): 
     data = []

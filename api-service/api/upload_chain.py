@@ -4,6 +4,16 @@ import psycopg2
 import xlrd
 from utils import UPLOAD_FOLDER
 
+from flask_restful import Resource,request
+from database import Database 
+
+
+class ApiUploadChain(Resource):
+    def post(self):   
+        conn = Database() 
+        template = request.files['file']  
+        return UploadChain(conn,template)
+
 def UploadChain(conn,template): 
     data = []
     result = {'status': 'success','message':'sucess'}
