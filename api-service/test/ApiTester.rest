@@ -1,10 +1,11 @@
 ### SetUp 
 @docker=172.17.0.2:8080
 @local = localhost:8080
-@server = 34.221.170.139:8080
+@server_prod = 34.221.170.139:8080
+@server_dev = 13.228.23.99:8080
 @base = /api/gmsi/mobiletracker
  
-@host = {{docker}}{{base}}
+@host = {{server_dev}}{{base}}
 
 #gms@drive
 #kaelmercury
@@ -187,7 +188,7 @@ Authorization:  Bearer {{token}}
 [{"tbluserid":"mtorg1001","fullname":"Kael Merchandiser","tblstoreid":"torgteststore01","store_name":"EVER COMMONWEALTH BATASAN","category":"BEVERAGE","competitor_company":"test","competitor_company_others":" ","activity_type":"REDEMPTION","activity_name":"tst","activity_type_other":"","brand":"d","sku_name":"OTHER COMPANY","sku_price":"8","placement":"d","estimated_offtake_per_day":"5","allocation":"","duration_date_from":"June\/08\/2021","duration_date_to":"June\/30\/2021","until_supply_last":"","direct_effect_offtake":"No","notes":"","photo":"","mobile_generated_id":"MTORG10010621J02QHN5","date_created":"2021-06-08 19:57:09","date_updated":"2021-06-08 19:57:09"}]
 
 ### TEST UPLOAD
-POST http://{{baselocal}}/api/upload?token={{token}}
+POST http://{{host}}/api/upload?token={{token}}
 Content-Type: application/json
 Authorization:  Bearer {{token}}
 
