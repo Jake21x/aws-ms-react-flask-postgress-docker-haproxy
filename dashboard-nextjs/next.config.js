@@ -4,8 +4,6 @@ module.exports = {
       poll: 1000,
       aggregateTimeout: 300,
     };
-
     return config;
   },
-  reactStrictMode: true,
 };

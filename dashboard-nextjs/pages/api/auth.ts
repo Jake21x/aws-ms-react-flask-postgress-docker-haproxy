@@ -2,11 +2,13 @@
 
 import axios, { AxiosError } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
+var os = require("os");
+var hostname = os.hostname();
 
 export default function (req: NextApiRequest, res: NextApiResponse) {
   const url = req.body.url;
   const loginURL = process.env.API_BASE_URL + url;
-  console.log("base", loginURL);
+  console.log("base", hostname, loginURL);
 
   axios.post(loginURL).then(
     (data) => {

@@ -13,9 +13,6 @@ then
 sudo docker-compose down
 sudo docker rm -f $(sudo docker ps -a -q)
 sudo docker rmi $(sudo docker images | grep "^<none" | awk '{print $3}') --force
-elif [ $input == 'run' ]
-then
-sudo docker run $service
 elif [ $input == 'clean' ]
 then
 sudo docker rm -f $(sudo docker ps -a -q)

@@ -13,7 +13,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>MNC Other Agency</h1>
+        <h1 className={styles.title}>Monde Agencies</h1>
 
         <p className={styles.description}>
           Get started by editing{" "}
