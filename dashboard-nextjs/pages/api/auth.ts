@@ -8,8 +8,8 @@ var hostname = os.hostname();
 export default function (req: NextApiRequest, res: NextApiResponse) {
   const url = req.body.url;
   req.headers.host;
-  const loginURL = process.env.API_BASE_URL + url;
-
+  const loginURL =
+    "http://" + req.headers.host + process.env.API_BASE_URL + url;
   console.log("base", {
     host: req.headers.host,
     hostname: hostname,

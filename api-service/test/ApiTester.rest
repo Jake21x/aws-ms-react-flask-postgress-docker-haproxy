@@ -2,7 +2,7 @@
 @docker=172.17.0.2:8080
 @local = localhost:8080
 @server_prod = 34.221.170.139:8080
-@server_dev = 13.228.23.99:8080
+@server_dev = 54.179.12.234:8080
 @base = /api/gmsi/mobiletracker
  
 @host = {{server_dev}}{{base}}
