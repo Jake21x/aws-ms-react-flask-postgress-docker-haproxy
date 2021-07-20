@@ -1,0 +1,6 @@
+Flask
+psycopg2
+Flask-HTTPAuth 
+Flask-JWT-Extended 
+Flask-RESTful
+xlrd
