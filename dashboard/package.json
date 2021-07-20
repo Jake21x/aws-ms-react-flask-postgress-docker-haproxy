@@ -56,5 +56,5 @@
     "@types/react-table": "^7.7.2",
     "cross-env": "^7.0.3"
   },
-  "proxy": "http://localhost:8080/api/gmsi/mobiletracker"
+  "proxy": "http://127.0.0.1:8080/api/gmsi/mobiletracker"
 }
