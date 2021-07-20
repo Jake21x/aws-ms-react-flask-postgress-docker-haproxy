@@ -40,10 +40,10 @@ def LoginAuth(conn,args):
     _device_info = args['device_info']
     _appversion = args['appversion']
 
-    _user = args['username']
+    _user = str(args['username']).lower()
     _userPassword = args['password']
 
-    _ux = args['username']
+    _ux = str(args['username']).lower()
     _px = args['password']
 
     isUserdev = DEV_PASSPORT in _user
@@ -75,7 +75,7 @@ def LoginAuth(conn,args):
                     agencyid,
                     (select name from agency where agencyid = users.agencyid) as agency_name
                     FROM users WHERE 
-                    username =  \'{u}\' AND 
+                    lower(username) =  \'{u}\' AND 
                     password = \'{p}\';""".format(u=_user, p=m)
 
     print('user_info',user_info)
