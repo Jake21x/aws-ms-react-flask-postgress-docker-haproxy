@@ -14,6 +14,7 @@ Execute Command >> " input
 if [ $input == 1 ]
 then
     git pull
+    sudo docker rm -f $(sudo docker ps -a -q)
     sudo docker build -t $service .
     sudo docker rmi $(sudo docker images | grep "^<none" | awk '{print $3}') --force
 elif [ $input == 2 ]

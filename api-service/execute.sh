@@ -4,8 +4,8 @@ service=${PWD##*/}
 
 read -p "Available Command :
 1.build
-2.run
-3.bash
+2.bash
+3.run
 4.clean
 5.images
 6.status 
@@ -13,9 +13,10 @@ Execute Command >> " input
 
 if [ $input == 1 ]
 then
-git pull
-sudo docker build -t $service .
-sudo docker rmi $(sudo docker images | grep "^<none" | awk '{print $3}') --force
+    git pull
+    sudo docker rm -f $(sudo docker ps -a -q)
+    sudo docker build -t $service .
+    sudo docker rmi $(sudo docker images | grep "^<none" | awk '{print $3}') --force
 elif [ $input == 2 ]
 then
     sudo docker run -it $service bash
