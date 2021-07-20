@@ -4,8 +4,8 @@ service=${PWD##*/}
 
 read -p "Available Command :
 1.build
-2.run
-3.bash
+2.bash
+3.run
 4.clean
 5.images
 6.status 

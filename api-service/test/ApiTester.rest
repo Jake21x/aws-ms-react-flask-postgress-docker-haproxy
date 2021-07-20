@@ -5,7 +5,7 @@
 @server_dev = 54.179.12.234:8080
 @base = /api/gmsi/mobiletracker
  
-@host = {{server_dev}}{{base}}
+@host = {{local}}{{base}}
 
 #gms@drive
 #kaelmercury
@@ -37,8 +37,8 @@
 #MNC2021
 # @device_info = OPPO-CPH1909
 @passport = dev.admin-
-@username = dev.admin-DP-ACSUP
-@password = dev.admin-MNC2021
+@username = dev.admin-Trainingac2
+@password = dev.admin-TR123456
 @device_id = caba8fde38179625234
 @imei = d81edde9172f-caba8fde38179625234
 @appversion = v03032020
@@ -116,11 +116,11 @@ GET http://{{host}}/get/store_sku_50
 Authorization:  Bearer {{token}}
 
 ### GET MCP PENDING
-GET http://{{host}}/get/mcp_pending/ctorg1001
+GET http://{{host}}/get/mcp_pending/DPUSER001
 Authorization:  Bearer {{token}}
 
 ### GET MCP APPROVE
-GET http://{{host}}/get/mcp_not_pending/c100021
+GET http://{{host}}/get/mcp_not_pending/DPUSER002
 Authorization:  Bearer {{token}}
 
 ### CATEGORY

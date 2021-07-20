@@ -504,14 +504,14 @@ class ApiGetMCPPending(Resource):
                         date_updated   
                         from confirm_mcp where tbluserid in (
                         select userid as tbluserid from users where userid in (
-                        select  userid  from users where userid in 
-                        ( 
-                            select userid from users_schedules where storeid in (
-                                select storeid  from users_schedules where userid = '{u}'
-                            ) and userid != '{u}'
-                        )
-                        ) and roleid = '6'
-                        ) and date_sync::date >= now()::date - INTERVAL '3 DAY' 
+                            select  userid  from users where userid in 
+                            ( 
+                                select userid from users_schedules where storeid in (
+                                    select storeid  from users_schedules where userid = '{u}'
+                                ) and userid != '{u}'
+                            )
+                            ) and roleid = '6'
+                        ) and adjustment_status = \'pending\' and date_sync::date >= now()::date - INTERVAL '3 DAY' 
                         """.format(u=userid),result=True)
                     data =  [dict(((item.description[i][0]), value) for i, value in enumerate(row)) for row in item.fetchall() if row]
                     print('data',data)
@@ -534,56 +534,35 @@ class ApiGetMCPPending(Resource):
 class ApiGetMCPNotPending(Resource):
     def get(self,userid=None):
 
-        conn = Database() 
-        json_dict = request.get_json(force=True, silent=True)
+        conn = Database()  
         try:  
-             
-            data = []
-            user = conn.execute('SELECT roleid as tblsingleroleid,agencyid FROM users WHERE userid = \'{}\''.format(userid) ,result=True )
-
-            tblsingleroleid = [dict(((user.description[i][0]), value) for i, value in enumerate(row)) for row in user.fetchall() if row]
-
-            if len(tblsingleroleid) !=0:
-                if int(tblsingleroleid[0]['tblsingleroleid']) == 8:
-                    print('request for 8 manager')
-                    data =  [] 
-                elif int(tblsingleroleid[0]['tblsingleroleid']) == 6:
-                    data = []
-                elif int(tblsingleroleid[0]['tblsingleroleid']) == 5:
-                    item = conn.execute("""
-                        select  
-                        tbluserid, 
-                        mobile_generated_id, 
-                        adjustment_status, 
-                        confirmed_by, 
-                        reason , 
-                        (select CONCAT(trim(firstname),' ',trim(lastname)) from users where userid = confirm_mcp.tbluserid ) AS mpc_user,
-                        schedule ,
-                        schedule_type,
-                        office,
-                        tc_tcp_store_id,
-                        (select name from stores where storeid = confirm_mcp.tc_tcp_store_id) AS tc_tcp_store_name,
-                        tcp_user_id,
-                        (select userrole from users,users_role where users.roleid = users_role.roleid AND userid = confirm_mcp.tbluserid ) AS userrole,
-                         (select CONCAT(trim(firstname),' ',trim(lastname)) from users where userid = confirm_mcp.tcp_user_id ) AS tcp_user, 
-                        date_created, 
-                        date_updated   
-                        from confirm_mcp where tbluserid in (
-                        select userid as tbluserid from users where userid in (
-                        select  userid  from users where userid in 
-                        ( 
-                            select userid from users_schedules where storeid in (
-                                select storeid  from users_schedules where userid = '{u}'
-                            ) and userid != '{u}'
-                        )
-                        ) and roleid = '6'
-                        ) and date_sync::date >= now()::date - INTERVAL '3 DAY' 
-                        """.format(u=userid),result=True)
-                    data =  [dict(((item.description[i][0]), value) for i, value in enumerate(row)) for row in item.fetchall() if row]
-                    print('data',data)
-
-            return jsonify(data)
-
+            data = [] 
+            item = conn.execute(""" 
+                SELECT 
+                tbluserid,
+                mobile_generated_id,
+                adjustment_status,
+                confirmed_by,
+                reason,
+                (select CONCAT(trim(firstname),' ',trim(lastname)) from users where userid = confirm_mcp.tbluserid ) AS mpc_user,
+                schedule,
+                schedule_type,
+                office,
+                tc_tcp_store_id,
+                (select name from stores where storeid = confirm_mcp.tc_tcp_store_id) AS tc_tcp_store_name,
+                tcp_user_id,
+                (select userrole from users,users_role where users.roleid = users_role.roleid AND userid = confirm_mcp.tbluserid ) AS userrole,
+                (select CONCAT(trim(firstname),' ',trim(lastname)) from users where userid = confirm_mcp.tcp_user_id ) AS tcp_user,
+                date_created,
+                date_updated 
+                FROM confirm_mcp  
+                WHERE adjustment_status != \'pending\' AND  
+                tbluserid = \'{u}\' AND 
+                date_sync::date >= now()::date - INTERVAL \'3 DAY\' 
+                """.format(u=userid),result=True)
+            data =  [dict(((item.description[i][0]), value) for i, value in enumerate(row)) for row in item.fetchall() if row]
+            print('data',data)
+            return jsonify(data) 
         except psycopg2.ProgrammingError as exc:
             return {'status' : 'failed', 'message' : str(exc)}
             
@@ -595,3 +574,41 @@ class ApiGetMCPNotPending(Resource):
             return {'status' : 'failed', 'message' : str(x)}
         finally:
             print("completed")
+
+class ApiPostConfirmRequest(Resource):
+    def post(self):
+
+        conn = Database()  
+        json_dict = request.get_json(force=True, silent=True)
+        try: 
+            adjustment_status = str(json_dict[0]['adjustment_status'])
+            confirmed_by = str(json_dict[0]['confirmed_by'])
+            date_confirmed = str(json_dict[0]['date_confirmed'])
+            mobile_generated_id = str(json_dict[0]['mobile_generated_id'])
+
+            requests = conn.execute(str("SELECT mobile_generated_id,id from confirm_mcp where mobile_generated_id = '{}' order by date_created desc limit 1".format(mobile_generated_id)),result=True)
+            req_rest = [dict(((requests.description[i][0]), value) for i, value in enumerate(row)) for row in requests.fetchall()]
+            
+            conn.execute("UPDATE confirm_mcp  SET adjustment_status = '{a}', confirmed_by = '{b}', date_confirmed = '{c}' WHERE mobile_generated_id = '{d}' AND id = '{e}'".format(
+                a=adjustment_status,
+                b=confirmed_by, 
+                c=date_confirmed,
+                d=mobile_generated_id,
+                e=req_rest[0]['id'], 
+                ),commit=True)
+            
+            return {'status': 'success', 'message': 'success'}
+        except psycopg2.ProgrammingError as exc:
+            return {'status' : 'failed', 'message' : str(exc)}
+            
+        except BaseException as e:
+            return {'status' : 'failed', 'message' : str(e)}
+        except Exception as e:
+            x = str(e)
+            x.replace('\n', '')
+            return {'status' : 'failed', 'message' : str(x)}
+        finally:
+            print("completed")
+
+
+

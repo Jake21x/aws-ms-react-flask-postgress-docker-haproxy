@@ -35,7 +35,7 @@ from api.logs_mobile import ApiPostLogsMobile
 from api.m_breaks import ApiPostBreaks
 from api.m_file_leave import ApiPostFileLeave,ApiGetLeavePerMerch,ApiPostConfirmLeave
 from api.m_facings import ApiPostFacings
-from api.m_mcp import ApiPostMCP,ApiPostTCP,ApiGetMCPPending,ApiGetMCPNotPending,ApiPostMCPChangeRequest
+from api.m_mcp import ApiPostMCP,ApiPostTCP,ApiGetMCPPending,ApiGetMCPNotPending,ApiPostMCPChangeRequest,ApiPostConfirmRequest
 from api.m_osa import ApiPostOSA
 from api.m_planograms import ApiPostPlanograms
 from api.m_promo_compet_acts import ApiPostPromoCompetActs
@@ -164,6 +164,8 @@ api.add_resource(ApiGetAnnUsers, BASE_API_URI + '/get/Announcements_for_users/<s
 
 # POST REQUEST
 api.add_resource(ApiPostMCPChangeRequest, BASE_API_URI + '/update/mcp_api')
+api.add_resource(ApiPostConfirmRequest, BASE_API_URI + '/update/confirm_mpc')
+
 api.add_resource(ApiPostMCP, BASE_API_URI + '/insert/mcp_api') 
 api.add_resource(ApiPostOSA, BASE_API_URI + '/insert/shelf_availability_api')  
 api.add_resource(ApiPostFacings, BASE_API_URI + '/insert/facings_api') 
