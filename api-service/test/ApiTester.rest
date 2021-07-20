@@ -3,9 +3,11 @@
 @local = localhost:8080
 @server_prod = 34.221.170.139:8080
 @server_dev = 54.179.12.234:8080
+@server_dev_2 = 13.212.113.136:8080
+@server_dev_3 = 54.254.171.11:8080
 @base = /api/gmsi/mobiletracker
  
-@host = {{local}}{{base}}
+@host = {{server_dev_3}}{{base}}
 
 #gms@drive
 #kaelmercury
@@ -37,7 +39,7 @@
 #MNC2021
 # @device_info = OPPO-CPH1909
 @passport = dev.admin-
-@username = dev.admin-Trainingac2
+@username = dev.admin-trainingac3
 @password = dev.admin-TR123456
 @device_id = caba8fde38179625234
 @imei = d81edde9172f-caba8fde38179625234
@@ -73,7 +75,7 @@ Authorization:  Bearer {{token}}
 
 ### "store_sku_latest_update": "2021-04-29 18:50:32",
 ### Get latest update of user store , sku , store sku &  category from master
-GET http://{{host}}/get/latest_store_sku_category_ref/{{general_tbluserid}}
+GET http://{{host}}/get/latest_store_sku_category_ref/DPUSER002
 Authorization:  Bearer {{token}}
 
 ### appversion
@@ -99,7 +101,7 @@ Authorization:  Bearer {{token}}
 }]
 
 ### acsup
-GET http://{{host}}/get/users_heirarchy_ac_acsup/DPUSER001
+GET http://{{host}}/get/users_heirarchy_ac_acsup/TTA-U3
 Authorization:  Bearer {{token}}
 
 
@@ -128,7 +130,7 @@ GET http://{{host}}/get/category_api
 Authorization:  Bearer {{token}}
 
 ### Store SKUs
-GET http://{{host}}/get/store_api/{{tblstoreid}}
+GET http://{{host}}/get/store_api/TTA-S06
 Authorization:  Bearer {{token}}
 
 ### Store SKUs

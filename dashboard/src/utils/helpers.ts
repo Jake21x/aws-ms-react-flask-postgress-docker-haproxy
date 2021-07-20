@@ -7,7 +7,7 @@ export const getAsUriParameters = (data: Object) => {
   return url.substring(0, url.length - 1);
 };
 
-export const getIp = (host) => {
+export const getIp = (host: string) => {
   console.log("getIp", host);
   const port = process.env.API_BASE_PORT;
   let ip = "";
@@ -17,7 +17,7 @@ export const getIp = (host) => {
   } catch (err) {
     console.log("getIp", "no report use ip");
   }
-  return ip + (port == "" ? "" : `:${port}`);
+  return ip + (port === "" ? "" : `:${port}`);
 };
 export const getBaseEnvURL = () => {
   let ip =

@@ -15,6 +15,7 @@ sudo rm -rf /var/run/docker.sock
 
 # install docker engine
 
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gp
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 

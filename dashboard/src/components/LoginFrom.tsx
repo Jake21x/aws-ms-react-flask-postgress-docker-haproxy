@@ -1,12 +1,12 @@
-import { getAsUriParameters, getBaseEnvURL } from "@/utils/helpers";
 import { Button } from "@chakra-ui/button";
 import { Input } from "@chakra-ui/input";
 import { Box, Text } from "@chakra-ui/layout";
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { getAsUriParameters } from "src/utils/helpers";
 
-type TLogin = {
+export type TLogin = {
   username: String;
   password: String;
   mode: String;
@@ -20,26 +20,19 @@ function LoginFrom() {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = (form: TLogin) => {
-    const url = getBaseEnvURL() + `/login_api?${getAsUriParameters(form)}`;
-    console.log({ url });
+    const url: string = `/login_api?${getAsUriParameters(form)}`;
 
     setLoading(true);
     axios
-      .post(url, {
-        headers: {
-          mode: "no-cors",
-        },
+      .post(url, null)
+      .then((response) => {
+        setLoading(false);
+        console.log("response", response);
       })
-      .then(
-        (res) => {
-          console.log("res", res);
-          setLoading(false);
-        },
-        (err: AxiosError) => {
-          setLoading(false);
-          console.log("error", err.message);
-        }
-      );
+      .catch((err: AxiosError) => {
+        setLoading(false);
+        console.log("err", err);
+      });
     console.log("onSubmit", form);
   };
 

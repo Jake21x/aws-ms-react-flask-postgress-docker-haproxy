@@ -1,11 +1,11 @@
 import { Box, Flex } from "@chakra-ui/layout";
-import Login from "src/components/Login";
+import LoginFrom from "src/components/LoginFrom";
 
 function LoginPage() {
   return (
     <Flex display="grid" h="full" placeItems="center">
       <Box w="3xl">
-        <Login />
+        <LoginFrom />
       </Box>
     </Flex>
   );
