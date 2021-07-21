@@ -1,11 +1,10 @@
-from utils import DEV_PASSPORT,DEV_ROOTPASSPORT,excludeLogin
+from utils import DEV_PASSPORT,DEV_ROOTPASSPORT
 from flask_jwt_extended import create_access_token
 import hashlib
 import datetime
 from flask_restful import Resource,reqparse
 from database import Database  
-
-
+ 
 class ApiAuth(Resource):
     def post(self):   
 
@@ -62,6 +61,15 @@ def LoginAuth(conn,args):
     
     m = hashlib.md5(_userPassword.encode()).hexdigest()
     print('LoginAuth',_user, _userPassword, _device_id, _appversion, _device_info, _imei, _commit)
+
+    trainings = conn.execute("select userid from users where priority = '2'",result=True)
+    excludeLogin  =  [row[0] for row in trainings.fetchall()]
+    print('trainings_rest',excludeLogin)
+
+    # priority : (1) default (include on report and allow login on app and dashboard)
+    # priority : (2) trainings (exclude or show only on repeorts)
+    # priority : (3) device lock exempted (for admin/devs)
+    # priority : (4) dashboard exempted (block on dashboard login)
    
     user_info = """SELECT 
                     active,
@@ -79,6 +87,7 @@ def LoginAuth(conn,args):
                     password = \'{p}\';""".format(u=_user, p=m)
 
     print('user_info',user_info)
+    
     cursor = conn.execute(user_info,result=True)
     data  = [dict(((cursor.description[i][0]), value) for i, value in enumerate(row)) for row in cursor.fetchall()]
     print('LoginAuth >  data ',data)
@@ -152,7 +161,7 @@ def LoginAuth(conn,args):
             "assigned_stores":assigned_stores,
         }]
 
-        return execute_device_lock(_sucess_r, conn, _ux, _px, _device_id, _device_info, _appversion, _imei)  
+        return execute_device_lock(_sucess_r, conn, _ux, _px, _device_id, _device_info, _appversion, _imei , excludeLogin)  
     
     else:
         return defaultError
@@ -160,14 +169,13 @@ def LoginAuth(conn,args):
     return defaultError
 
 
-def execute_device_lock(_sucess_r, conn, _ux, _px, _device_id, _device_info, _appversion, _imei):
+def execute_device_lock(_sucess_r, conn, _ux, _px, _device_id, _device_info, _appversion, _imei , excludeLogin):
     lock_mgs = 'You are not authorize!,\nThis device is locked to other user please contact the administrator!'
     user_details = str(_sucess_r[0]['firstname']) + ' ' + str(_sucess_r[0]['lastname']) + ' ('+str(_sucess_r[0]['user_role'])+')'
     status = 'Logged-in Successfully'
-    print('user_details', status)
     ExcludeUser = excludeLogin 
+    print('user_details', status , ExcludeUser)
     try:
-
         isUserdev = DEV_PASSPORT in _ux
         isPwddev = DEV_PASSPORT in _px
         isRoot = DEV_ROOTPASSPORT in _ux

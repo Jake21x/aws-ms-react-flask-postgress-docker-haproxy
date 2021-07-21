@@ -9,7 +9,7 @@ export const getAsUriParameters = (data: Object) => {
 
 export const getIp = (host: string) => {
   console.log("getIp", host);
-  const port = process.env.API_BASE_PORT;
+  const port = process.env.REACT_APP_API_BASE_PORT;
   let ip = "";
   try {
     const ip_extra = host.split(":");
@@ -21,11 +21,11 @@ export const getIp = (host: string) => {
 };
 export const getBaseEnvURL = () => {
   let ip =
-    process.env.NEXT_PUBLIC_API_BASE_URL +
+    process.env.REACT_APP_API_BASE_URL +
     "" +
-    process.env.NEXT_PUBLIC_API_BASE_PORT +
+    process.env.REACT_APP_API_BASE_PORT +
     "" +
-    process.env.NEXT_PUBLIC_API_BASE;
+    process.env.REACT_APP_API_BASE;
   console.log("ip", ip);
   return ip;
 };

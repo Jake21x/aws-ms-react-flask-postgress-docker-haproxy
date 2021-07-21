@@ -7,7 +7,7 @@
 @server_dev_3 = 54.254.171.11:8080
 @base = /api/gmsi/mobiletracker
  
-@host = {{server_dev_3}}{{base}}
+@host = {{local}}{{base}}
 
 #gms@drive
 #kaelmercury

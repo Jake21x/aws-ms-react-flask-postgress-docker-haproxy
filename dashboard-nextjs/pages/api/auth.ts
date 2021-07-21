@@ -1,13 +1,13 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import { getIp } from "@/utils/helpers";
+import { getIpOnly } from "@/utils/helpers";
 import axios, { AxiosError } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default function (req: NextApiRequest, res: NextApiResponse) {
   const url = req.body.url;
-  const use_ip = getIp(req.headers.host);
-  const loginURL = "http://" + use_ip + process.env.API_BASE_URL + url;
+  const use_ip = getIpOnly(req.headers.host);
+  const loginURL = "http://" + use_ip + process.env.NEXT_PUBLIC_API_BASE + url;
   console.log("base", loginURL);
 
   axios.post(loginURL).then(

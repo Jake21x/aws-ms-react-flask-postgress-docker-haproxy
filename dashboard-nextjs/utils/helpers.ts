@@ -9,7 +9,7 @@ export const getAsUriParameters = (data: Object) => {
 
 export const getIp = (host) => {
   console.log("getIp", host);
-  const port = process.env.API_BASE_PORT;
+  const port = process.env.NEXT_PUBLIC_API_BASE_PORT;
   let ip = "";
   try {
     const ip_extra = host.split(":");
@@ -17,8 +17,22 @@ export const getIp = (host) => {
   } catch (err) {
     console.log("getIp", "no report use ip");
   }
-  return ip + (port == "" ? "" : `:${port}`);
+  return ip + (port == "" ? "" : `${port}`) + process.env.NEXT_PUBLIC_API_BASE;
 };
+
+export const getIpOnly = (host) => {
+  console.log("getIp", host);
+  const port = process.env.NEXT_PUBLIC_API_BASE_PORT;
+  let ip = "";
+  try {
+    const ip_extra = host.split(":");
+    ip = ip_extra[0];
+  } catch (err) {
+    console.log("getIp", "no report use ip");
+  }
+  return ip + (port == "" ? "" : `${port}`);
+};
+
 export const getBaseEnvURL = () => {
   let ip =
     process.env.NEXT_PUBLIC_API_BASE_URL +

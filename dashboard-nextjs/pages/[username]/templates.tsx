@@ -99,27 +99,41 @@ function Templates() {
     uploadValue(isactive, form[isactive][0]);
   };
 
-  const uploadValue = (value: string, form: Blob) => {
+  const uploadValue = async (value: string, form: Blob) => {
     const newfilename = value.replace("file_", "") + ".xlsx";
     console.log("uploadValue > ", value, form);
     setLoading(true);
-    var bodyFormData = new FormData();
-    bodyFormData.append("file", form, newfilename);
+    var body = new FormData();
+    body.append("file", form, newfilename);
     const url = "/api/upload/template/" + value.replace("file_", "");
-    console.log("url", url, bodyFormData);
+    console.log("url", url, body);
 
-    fetch(url, {
+    const result = await fetch("http://localhost:8080" + url, {
       method: "POST",
-      body: bodyFormData,
-    })
-      .then((response) => {
-        setLoading(false);
-        console.log("response", response);
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log("err", err);
-      });
+      mode: "no-cors",
+      body,
+    }).then((response) => console.log(response));
+
+    // console.log("result", result);
+    // result
+    //   .then((responseData) => {
+    //     console.log(responseData);
+    //     return responseData;
+    //   })
+    //   .catch((error) => console.warn(error));
+
+    // fetch(url, {
+    //   method: "POST",
+    //   body: bodyFormData,
+    // })
+    //   .then((response) => {
+    //     setLoading(false);
+    //     console.log("response", response);
+    //   })
+    //   .catch((err) => {
+    //     setLoading(false);
+    //     console.log("err", err);
+    //   });
   };
 
   return (

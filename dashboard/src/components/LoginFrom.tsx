@@ -4,7 +4,7 @@ import { Box, Text } from "@chakra-ui/layout";
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { getAsUriParameters } from "src/utils/helpers";
+import { getAsUriParameters, getIp } from "src/utils/helpers";
 
 export type TLogin = {
   username: String;
@@ -20,11 +20,22 @@ function LoginFrom() {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = (form: TLogin) => {
-    const url: string = `/login_api?${getAsUriParameters(form)}`;
+    const url: string = `/api/gmsi/mobiletracker/login_api?${getAsUriParameters(
+      form
+    )}`;
 
     setLoading(true);
     axios
-      .post(url, null)
+      .post(url, null, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        },
+        proxy: {
+          host: "localhost",
+          port: 8080,
+        },
+      })
       .then((response) => {
         setLoading(false);
         console.log("response", response);

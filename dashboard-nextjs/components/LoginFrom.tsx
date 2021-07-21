@@ -20,15 +20,13 @@ function LoginFrom() {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = (form: TLogin) => {
-    const url = getBaseEnvURL() + `/login_api?${getAsUriParameters(form)}`;
+    const url = `/login_api?${getAsUriParameters(form)}`;
     console.log({ url });
 
     setLoading(true);
     axios
-      .post(url, {
-        headers: {
-          mode: "no-cors",
-        },
+      .post("api/auth", {
+        url,
       })
       .then(
         (res) => {
