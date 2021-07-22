@@ -7,7 +7,7 @@ class ApiAppVersion(Resource):
 
         cursor = conn.execute("select version,mdc,coor_mgr from app_versions order by date_created desc limit 1",result=True)
         version = cursor.fetchall()
-        print('ApiAppVersion > version',version)
+        # print('ApiAppVersion > version',version)
         
         return  [{
                 'version': version[0][0],

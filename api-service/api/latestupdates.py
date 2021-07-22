@@ -44,7 +44,7 @@ class ApiLatestUpdates(Resource):
 
         result_update = conn.execute("""
             SELECT 
-            stores.name, 
+            stores.name as store_name, 
             longitude,
             latitude,
             geofence,
