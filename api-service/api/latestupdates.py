@@ -29,17 +29,16 @@ class ApiLatestUpdates(Resource):
             SELECT 
             stores_skus.storeid AS store_sku_update,
             to_char(stores_skus.date_updated,'yyyy-mm-dd HH24:MI:SS') AS latest_updated_date 
-            FROM stores_skus,users,users_schedules
+            FROM stores_skus,users_schedules
             where 
             users_schedules.storeid = stores_skus.storeid AND 
-            users_schedules.userid = users.userid AND   
-            users.userid = '{u}'  
+            users_schedules.userid = '{u}'  
             GROUP BY stores_skus.date_updated, stores_skus.storeid
             ORDER BY stores_skus.date_updated ASC
             """.format(u=userid),result=True)
-
-        ar_result_store_sku = result_store_sku.fetchall()
-        store_sku_update = [] if len(ar_result_store_sku) == 0 else [dict(result_store_sku.fetchall())]
+        
+        result_store_sku = result_store_sku.fetchall()
+        store_sku_update = [] if len([result_store_sku]) == 0 else [dict(result_store_sku)]
         data[0]['store_sku_update'] = store_sku_update
 
         result_update = conn.execute("""
