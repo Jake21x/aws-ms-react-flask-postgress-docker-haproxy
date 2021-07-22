@@ -37,7 +37,16 @@ def UploadUsers(conn,template):
             
             firstname = str(sheet.cell(r, 5).value).replace('.0', '')
             lastname = str(sheet.cell(r, 6).value).replace('.0', '')
-            data.append((code,code,posid,username,encryped_password,firstname,lastname,agencyid))
+            
+            active_row = 'Yes'
+            try:
+                active_row = str(sheet.cell(r, 7).value).replace('.0', '')
+            except:
+                print('n column')
+            active = 'Yes' if str(active_row).strip() == '' else active_row 
+            print(active)
+            
+            data.append((code,code,posid,username,encryped_password,firstname,lastname,agencyid,active))
             
     print('template',data)
     query = None
@@ -46,9 +55,9 @@ def UploadUsers(conn,template):
         args_str = ','.join(['%s'] * len(data)) 
         try:
             query = conn.mogrify("""
-            insert into users (employeeid,userid,roleid,username,password,firstname,lastname,agencyid) values {}
+            insert into users (employeeid,userid,roleid,username,password,firstname,lastname,agencyid,active) values {}
             ON CONFLICT (userid) DO UPDATE 
-            SET (employeeid,roleid,username,password,firstname,lastname,agencyid) = 
+            SET (employeeid,roleid,username,password,firstname,lastname,agencyid,active,date_updated) = 
                 (
                     EXCLUDED.employeeid,
                     EXCLUDED.roleid,
@@ -56,7 +65,9 @@ def UploadUsers(conn,template):
                     EXCLUDED.password,
                     EXCLUDED.firstname,
                     EXCLUDED.lastname,
-                    EXCLUDED.agencyid
+                    EXCLUDED.agencyid,
+                    EXCLUDED.active,
+                    now()
                 );
             """.format(args_str) , data , commit=True)  
         except psycopg2.OperationalError as err:

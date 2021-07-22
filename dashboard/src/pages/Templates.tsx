@@ -101,32 +101,27 @@ function Templates() {
     const newfilename = value.replace("file_", "") + ".xlsx";
     console.log("uploadValue > ", value);
     setLoading(true);
-    var body = new FormData();
-    body.append("file", form, newfilename);
+    var bodyFormData = new FormData();
+    bodyFormData.append("file", form, newfilename);
     const url = "/api/upload/template/" + value.replace("file_", "");
     console.log("url", url);
 
-    const response = fetch(
-      "http://localhost:8080" +
-        "/api/upload/template/" +
-        value.replace("file_", ""),
-      {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          Accept: "application/json",
+    axios
+      .post(url, bodyFormData, {
+        proxy: {
+          host: "localhost",
+          port: 8080,
+          protocol: "http",
         },
-        body,
-      }
-    )
-      .then((res) => {
-        return res.json();
       })
-      .then((json) => {
-        console.log(json); // The json object is here
+      .then((response) => {
+        setLoading(false);
+        console.log("response", response);
       })
-      .catch((err) => console.log("err", err));
-    console.log("response", response);
+      .catch((err) => {
+        setLoading(false);
+        console.log("err", err);
+      });
   };
 
   return (

@@ -68,9 +68,9 @@ class ApiPostTeamAttendance(Resource):
             for i in chain(range(0, x)): 
                 
                 gid = json_dict[i]['mobile_generated_id'] 
-                print('gid',str(gid))  
+                # print('gid',str(gid))  
                 json_dict[i]['mobile_generated_id'] = server_generated_id() if gid in ('.','',None) else gid
-                print('mobile_generated_id',json_dict[i]['mobile_generated_id'])
+                # print('mobile_generated_id',json_dict[i]['mobile_generated_id'])
 
                 early_file = "No"
                 mobile_generated_id = ""

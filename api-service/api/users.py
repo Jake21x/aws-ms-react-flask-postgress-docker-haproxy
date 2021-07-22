@@ -47,7 +47,7 @@ class ApiGetUserHeirarchyAC(Resource):
             """.format(u=userid),result=True)
              
         data  = [dict(((cursor.description[i][0]), value) for i, value in enumerate(row)) for row in cursor.fetchall()]
-        print('ApiGetUserHeirarchyAC > data',data)
+        # print('ApiGetUserHeirarchyAC > data',data)
 
         # [{
         #     "tbluserid": "m100911",

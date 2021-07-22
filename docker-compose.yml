@@ -67,18 +67,18 @@ services:
   #     options:
   #       max-size: 50m
 
-  dashboard:
-    image: dashboard
-    restart: always
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-    stdin_open: true
-    volumes:
-      - ./dashboard:/app
-      - /app/node_modules
-    ports:
-      - "3000:3000"
-      - "35729:35729"
-    logging:
-      options:
-        max-size: 50m
+  # dashboard:
+  #   image: dashboard
+  #   restart: always
+  #   environment:
+  #     - CHOKIDAR_USEPOLLING=true
+  #   stdin_open: true
+  #   volumes:
+  #     - ./dashboard:/app
+  #     - /app/node_modules
+  #   ports:
+  #     - "3000:3000"
+  #     - "35729:35729"
+  #   logging:
+  #     options:
+  #       max-size: 50m

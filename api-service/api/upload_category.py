@@ -33,7 +33,7 @@ def UploadCategory(conn,template):
             name = str(sheet.cell(r, 1).value).replace('.0', '') 
             data.append((id,name))
             
-    print('template',data)
+    # print('template',data)
     query = None
     if len(data) != 0:
         
@@ -62,5 +62,5 @@ def UploadCategory(conn,template):
                 'status': 'error',
                 'message':'Duplicated '+str(err)
             } 
-        print('result',query)
+        # print('result',query)
     return result 

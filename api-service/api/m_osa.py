@@ -39,7 +39,7 @@ class ApiPostOSA(Resource):
                     
                     data_store_sku.append((storeid,tblskuid,sku_status , updated ))
 
-            print(data) 
+            # print(data) 
             args_str = ','.join(['%s'] * len(data)) 
             conn.mogrify("""
                 insert into m_osa (tbluserid,tblstoreid,mobile_generated_id,tblskuid,availability,sku_generated_id,date_created,date_updated) values {}

@@ -39,8 +39,8 @@
 #MNC2021
 # @device_info = OPPO-CPH1909
 @passport = dev.admin-
-@username = dev.admin-trainingac3
-@password = dev.admin-TR123456
+@username = trainingac3
+@password = TR123456
 @device_id = caba8fde38179625234
 @imei = d81edde9172f-caba8fde38179625234
 @appversion = v03032020

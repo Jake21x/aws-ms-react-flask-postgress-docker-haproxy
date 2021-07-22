@@ -39,7 +39,7 @@ def UploadStores(conn,template):
             zipcode = str(sheet.cell(r, 10).value).replace('.0', '') 
             data.append((channelid,chainid,areaid,code,code,name,zipcode,geofence,longitude,latitude,address,agencyid))
             
-    print('template',data)
+    # print('template',data)
     query = None
     if len(data) != 0:
         
@@ -81,5 +81,5 @@ def UploadStores(conn,template):
                 'status': 'error',
                 'message':'Duplicated '+str(err)
             }  
-        print('result',query) 
+        # print('result',query) 
     return result 

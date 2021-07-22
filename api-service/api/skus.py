@@ -20,5 +20,5 @@ class ApiGetSKUs(Resource):
             from skus""",result=True)
              
         data  = [dict(((cursor.description[i][0]), value) for i, value in enumerate(row)) for row in cursor.fetchall()]
-        print('ApiGetSKUs > data',data)
+        # print('ApiGetSKUs > data',data)
         return data

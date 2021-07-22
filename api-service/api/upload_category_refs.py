@@ -37,7 +37,7 @@ def UploadCategoryRefs(conn,template):
             facing_brand = str(sheet.cell(r, 10).value).replace('.0', '')
             data.append((refid,catid,cat_name,segment,brand,percent_share,facing_count,pulloutday,facing_segment,facing_brand))
             
-    print('template',data)
+    # print('template',data)
     query = None
     if len(data) != 0:
         

@@ -46,7 +46,7 @@ def UploadSKUs(conn,template):
             packs_or_bags = str(sheet.cell(r, 17).value).replace('.0', '')
             data.append((refid,catid,skuid,skuid,sap_name,case_barcode,product_barcode,gross_price_case,gross_price_piece,quantity_per_case,packsize,unit_of_measure,active,image_path,size,form,packaging_description,remarks,packs_or_bags))
             
-    print('template',data)
+    # print('template',data)
     query = None
     if len(data) != 0:
         
@@ -96,5 +96,5 @@ def UploadSKUs(conn,template):
                 'status': 'error',
                 'message':'Duplicated '+str(err)
             } 
-        print('result',query)
+        # print('result',query)
     return result 

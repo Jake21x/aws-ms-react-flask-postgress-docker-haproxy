@@ -28,13 +28,13 @@ class ApiGetStoreSKUs(Resource):
         
         storeinfo =  [dict(((store.description[i][0]), value) for i, value in enumerate(row)) for row in store.fetchall()]
 
-        print('storeinfo',storeinfo)
+        # print('storeinfo',storeinfo)
 
         skus = conn.execute("select skuid as tblskuid from skus where skuid not in (select skuid from stores_skus where storeid = '{}' and carry = 'No')".format(storeid),result=True)
         
         skulist  = [dict(((skus.description[i][0]), value) for i, value in enumerate(row)) for row in skus.fetchall()]
         
-        print('ApiGetAllStores > skulist',skulist)
+        # print('ApiGetAllStores > skulist',skulist)
 
         if len(storeinfo) != 0:
             storeinfo[0]['sku'] = skulist        

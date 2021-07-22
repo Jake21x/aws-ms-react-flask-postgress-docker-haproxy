@@ -30,7 +30,7 @@ def UploadArea(conn,template):
             agencyid = str(sheet.cell(r, 2).value).replace('.0', '')
             data.append((id,name,agencyid))
             
-    print('template',data)
+    # print('template',data)
     query = None
     if len(data) != 0:
         
@@ -59,5 +59,5 @@ def UploadArea(conn,template):
                 'status': 'error',
                 'message':'Duplicated '+str(err)
             } 
-        print('result',query) 
+        # print('result',query) 
     return result 

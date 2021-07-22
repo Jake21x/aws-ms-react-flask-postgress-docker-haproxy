@@ -24,22 +24,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     console.log("api > form", { err, fields, files });
 
     let form = new FormData();
-    form.append("file", files);
+    form.append("file", files.file);
 
-    axios
-      .post(baseUrl, form, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then(
-        (data) => {
-          console.log("data", data);
-          res.status(200).json({ status: "success", message: "success" });
-        },
-        (err: AxiosError) => {
-          res.status(503).json(err.message);
-        }
-      );
+    axios.post(baseUrl, form).then(
+      (data) => {
+        console.log("data", data);
+        res.status(200).json({ status: "success", message: "success" });
+      },
+      (err: AxiosError) => {
+        res.status(503).json(err.message);
+      }
+    );
   });
 };
