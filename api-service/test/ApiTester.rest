@@ -1,13 +1,13 @@
 ### SetUp 
 @docker=172.17.0.2:8080
 @local = localhost:8080
-@server_prod = 34.221.170.139:8080
+@server_prod = 52.32.139.146:8080
 @server_dev = 54.179.12.234:8080
 @server_dev_2 = 13.212.113.136:8080
 @server_dev_3 = 54.254.171.11:8080
 @base = /api/gmsi/mobiletracker
  
-@host = {{local}}{{base}}
+@host = {{server_prod}}{{base}}
 
 #gms@drive
 #kaelmercury

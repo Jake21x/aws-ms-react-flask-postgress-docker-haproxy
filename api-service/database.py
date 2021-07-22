@@ -49,9 +49,7 @@ class Database(object):
             cursor = connection.cursor()
           
         cursor.execute(query)
-
-        if log: 
-            print('query',query)
+ 
         
         if result:
             rs = cursor
@@ -67,7 +65,7 @@ class Database(object):
         rs = None
         try: 
             connection = cls.get_connection()
-            print('db connection reused')
+            # print('db connection reused')
             cursor = connection.cursor()
         
         except psycopg2.ProgrammingError:
@@ -76,7 +74,7 @@ class Database(object):
             cursor = connection.cursor()
             
         query = cursor.mogrify(query,data)
-        print('query',query) 
+        # print('query',query) 
 
         cursor.execute(query)
          
