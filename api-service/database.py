@@ -44,7 +44,7 @@ class Database(object):
             print('db connection reused')
             cursor = connection.cursor()
         except psycopg2.ProgrammingError:
-            print('db connection created')
+            # print('db connection created')
             connection = cls.get_connection(new=True)  # Create new connection
             cursor = connection.cursor()
           
@@ -65,11 +65,11 @@ class Database(object):
         rs = None
         try: 
             connection = cls.get_connection()
-            # print('db connection reused')
+            print('db connection reused')
             cursor = connection.cursor()
         
         except psycopg2.ProgrammingError:
-            print('db connection created')
+            # print('db connection created')
             connection = cls.get_connection(new=True)  # Create new connection
             cursor = connection.cursor()
             

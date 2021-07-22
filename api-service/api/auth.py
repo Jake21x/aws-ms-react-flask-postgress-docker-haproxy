@@ -299,11 +299,10 @@ def register_new_device(conn,status, user_auth, tbluserid, device_id, version, d
 
 
 def login_log(conn,status, tbluserid, device_id, version, device_info, imei):
-    print('login_log', status, tbluserid,
-          device_id, version, device_info, imei)
+    # print('login_log', status, tbluserid, device_id, version, device_info, imei)
 
     date_updated = str(datetime.datetime.now().strftime("%Y-%m-%d %I:%M%p"))
-    print('login_log > date_updated', date_updated)
+    # print('login_log > date_updated', date_updated)
 
     conn.execute("INSERT INTO logs_logins(tbluserid, device_id ,message,date_updated,appversion,device_info,imei) VALUES ('" +
         str(tbluserid)+"','" +
