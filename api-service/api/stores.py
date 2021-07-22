@@ -8,7 +8,7 @@ class ApiGetAllStores(Resource):
         cursor = conn.execute("select storeid as tblstoreid,storecode,stores.name as store_name , chains.name as chain  from stores,chains where stores.chainid = chains.chainid",result=True)
         print('ApiGetAllStores > cursor',cursor)
         data  = [dict(((cursor.description[i][0]), value) for i, value in enumerate(row)) for row in cursor.fetchall()]
-        print('ApiGetAllStores > data',data)
+        print('ApiGetAllStores > data',len(data))
         return data
 
 
