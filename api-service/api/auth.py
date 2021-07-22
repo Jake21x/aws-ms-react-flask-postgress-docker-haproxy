@@ -60,11 +60,11 @@ def LoginAuth(conn,args):
         _userPassword = _userPassword.replace(DEV_PASSPORT, "")
     
     m = hashlib.md5(_userPassword.encode()).hexdigest()
-    print('LoginAuth',_user, _userPassword, _device_id, _appversion, _device_info, _imei, _commit)
+    # print('LoginAuth',_user, _userPassword, _device_id, _appversion, _device_info, _imei, _commit)
 
     trainings = conn.execute("select userid from users where priority = '2'",result=True)
     excludeLogin  =  [row[0] for row in trainings.fetchall()]
-    print('trainings_rest',excludeLogin)
+    # print('trainings_rest',excludeLogin)
 
     # priority : (1) default (include on report and allow login on app and dashboard)
     # priority : (2) trainings (exclude or show only on repeorts)
@@ -86,11 +86,11 @@ def LoginAuth(conn,args):
                     lower(username) =  \'{u}\' AND 
                     password = \'{p}\';""".format(u=_user, p=m)
 
-    print('user_info',user_info)
+    # print('user_info',user_info)
     
     cursor = conn.execute(user_info,result=True)
     data  = [dict(((cursor.description[i][0]), value) for i, value in enumerate(row)) for row in cursor.fetchall()]
-    print('LoginAuth >  data ',data)
+    # print('LoginAuth >  data ',data)
     x = len(list(data))
 
     status = ""
@@ -141,7 +141,7 @@ def LoginAuth(conn,args):
                 """.format(u=data[0]['username']),result=True)
         
         assigned_stores = [dict(((stores.description[i][0]), value) for i, value in enumerate(row)) for row in stores.fetchall()]
-        print('assigned_stores',assigned_stores) 
+        # print('assigned_stores',assigned_stores) 
         
         _sucess_r = [{
             "tblsingleroleid": data[0]['roleid'],
@@ -174,7 +174,7 @@ def execute_device_lock(_sucess_r, conn, _ux, _px, _device_id, _device_info, _ap
     user_details = str(_sucess_r[0]['firstname']) + ' ' + str(_sucess_r[0]['lastname']) + ' ('+str(_sucess_r[0]['user_role'])+')'
     status = 'Logged-in Successfully'
     ExcludeUser = excludeLogin 
-    print('user_details', status , ExcludeUser)
+    # print('user_details', status , ExcludeUser)
     try:
         isUserdev = DEV_PASSPORT in _ux
         isPwddev = DEV_PASSPORT in _px
@@ -278,7 +278,7 @@ def chknull(val):
 
 
 def register_new_device(conn,status, user_auth, tbluserid, device_id, version, device_info, imei):
-    print('register_new_device', user_auth, tbluserid,device_id, version, device_info, imei)
+    # print('register_new_device', user_auth, tbluserid,device_id, version, device_info, imei)
     login_log(conn,status, tbluserid, device_id, version, device_info, imei)
     if len(user_auth) == 0:
 
