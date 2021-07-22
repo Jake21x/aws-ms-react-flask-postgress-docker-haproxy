@@ -3,8 +3,8 @@ from database import Database
 
 class ApiLatestUpdates(Resource):
     def get(self,userid=None):
-
         conn = Database() 
+ 
         cursor = conn.execute("""
             SELECT 
             (SELECT to_char(skus.date_updated,'yyyy-mm-dd HH24:MI:SS') FROM skus 
@@ -23,7 +23,7 @@ class ApiLatestUpdates(Resource):
 
         # print('ApiGetSKUs > cursor',cursor)
         data  = [dict(((cursor.description[i][0]), value) for i, value in enumerate(row)) for row in cursor.fetchall()]
-        print('ApiLatestUpdates > userid',userid)
+        # print('ApiLatestUpdates > userid',userid)
         
         result_store_sku = conn.execute("""
             SELECT 
@@ -44,22 +44,17 @@ class ApiLatestUpdates(Resource):
 
         result_update = conn.execute("""
             SELECT 
-            stores.name as store_name,
+            stores.name, 
             longitude,
             latitude,
             geofence,
-            address,
-            stores.storeid as tblstoreid,
-            day_off as day_off,
-            schedule_day AS schedule_day,
-            schedule_type AS schedule_type 
-            FROM stores,users,users_schedules
-            where 
-            users_schedules.storeid = stores.storeid AND 
-            users_schedules.userid = users.userid AND 
-            users.userid = '{u}' AND
-            stores.date_updated::date = now()::date or 
-            users_schedules.date_updated::date = now()::date 
+            address, 
+            stores.storeid,'NA' as day_off,
+            stores.storeid,'NA' AS schedule_day,
+            'NA'AS schedule_type 
+            FROM stores 
+            INNER JOIN users_schedules ON users_schedules.storeid = stores.storeid 
+            WHERE users_schedules.userid = '{u}' 
             """.format(u=userid),result=True)
         
         store_update = [dict(((result_update.description[i][0]), value) for i, value in enumerate(row)) for row in result_update.fetchall()]
