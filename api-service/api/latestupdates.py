@@ -49,8 +49,9 @@ class ApiLatestUpdates(Resource):
             latitude,
             geofence,
             address, 
-            stores.storeid,'NA' as day_off,
-            stores.storeid,'NA' AS schedule_day,
+            'NA' as day_off,
+            stores.storeid as tblstoreid,
+            'NA' AS schedule_day,
             'NA'AS schedule_type 
             FROM stores 
             INNER JOIN users_schedules ON users_schedules.storeid = stores.storeid 
